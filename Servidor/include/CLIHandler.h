@@ -5,6 +5,7 @@
 #include <string>
 #include "User.h"
 #include <optional>
+#include <vector>
 // Incluimos las cabeceras del cliente XML-RPC
 #include <xmlrpc-c/client_simple.hpp>
 
@@ -58,6 +59,12 @@ private:
 
   xmlrpc_c::clientSimple& rpcClient;
   std::string serverUrl;
+
+  // --- Atributos para el modo de aprendizaje ---
+  bool learningModeActive = false;
+  std::string learningTaskId;
+  std::string learningTaskName;
+  std::vector<std::string> learnedGCodeCommands;
 
 };
 

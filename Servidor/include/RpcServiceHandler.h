@@ -5,6 +5,7 @@
 #include <string>
 #include "Robot.h"
 #include "ReportGenerator.h"
+#include "TaskManager.h"
 #include "AuthenticationService.h"
 
 #include <xmlrpc-c/registry.hpp>
@@ -23,7 +24,8 @@ public:
   // Constructors/Destructors  
   RpcServiceHandler(
     AuthenticationServiceNamespace::AuthenticationService& authService,
-    RobotNamespace::Robot& robot
+    RobotNamespace::Robot& robot,
+    TaskManager& taskManager
   );
 
   /// 
@@ -37,6 +39,7 @@ public:
 private:
   AuthenticationServiceNamespace::AuthenticationService& authService;
   RobotNamespace::Robot& robot;
+  TaskManager& taskManager;
   ReportGenerator reportGenerator;
 
 };

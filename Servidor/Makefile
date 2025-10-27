@@ -1,7 +1,7 @@
 # --- Variables ---
 CXX = g++
 CXXFLAGS = -std=c++17 -Iinclude -I$(LIBRARY_DIR)
-LDFLAGS_SERVER = -lxmlrpc_server_abyss++ -lxmlrpc_server++ -lxmlrpc_client++ -lxmlrpc++ -lxmlrpc_xmlparse -lxmlrpc_xmltok -lxmlrpc_util -lsqlite3
+LDFLAGS_SERVER = -lxmlrpc_server_abyss++ -lxmlrpc_server++ -lxmlrpc_client++ -lxmlrpc++ -lxmlrpc_abyss -lxmlrpc_xmlparse -lxmlrpc_xmltok -lxmlrpc_util -lsqlite3
 LDFLAGS_CLIENT = -lxmlrpc_client++ -lxmlrpc++ -lxmlrpc_xmlparse -lxmlrpc_xmltok -lxmlrpc_util -lsqlite3
 
 SRC_DIR = src
@@ -32,12 +32,23 @@ CLI_TEST_OBJ = $(patsubst $(TEST_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(CLI_TEST_SRC))
 SERIAL_TEST_SRC = $(TEST_DIR)/serial_comunicator_test.cpp
 SERIAL_TEST_OBJ = $(patsubst $(TEST_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SERIAL_TEST_SRC))
 
+# Fuentes y objetos para el test de array RPC
+ARRAY_RPC_TEST_SRC = $(TEST_DIR)/array_rpc_test.cpp
+ARRAY_RPC_TEST_OBJ = $(patsubst $(TEST_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(ARRAY_RPC_TEST_SRC))
+
+# Fuentes y objetos para el test de estado del Arduino
+STATUS_TEST_SRC = $(TEST_DIR)/status_arduino_test.cpp
+STATUS_TEST_OBJ = $(patsubst $(TEST_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(STATUS_TEST_SRC))
+
+
 # --- Reglas de Compilación ---
 all:
 	mkdir -p $(BIN_DIR) $(OBJ_DIR)
 	$(MAKE) $(BIN_DIR)/cli_main
 	$(MAKE) $(BIN_DIR)/mainServer
 	$(MAKE) $(BIN_DIR)/serial_tests
+	$(MAKE) $(BIN_DIR)/array_rpc_test
+	$(MAKE) $(BIN_DIR)/status_arduino_test
 
 # Regla para enlazar el servidor
 $(BIN_DIR)/mainServer: $(SHARED_OBJECTS) $(SERVER_MAIN_OBJ)
@@ -64,6 +75,14 @@ $(BIN_DIR)/cli_tests: $(filter-out $(OBJ_DIR)/Server.o $(OBJ_DIR)/RpcServiceHand
 $(BIN_DIR)/serial_tests: $(OBJ_DIR)/SerialComunicator.o $(OBJ_DIR)/SerialPortConfiguration.o $(SERIAL_TEST_OBJ)
 	$(CXX) $(CXXFLAGS) $^ -o $@
 
+# Regla para compilar y enlazar el test de array RPC
+$(BIN_DIR)/array_rpc_test: $(ARRAY_RPC_TEST_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS_CLIENT)
+
+# Regla para compilar y enlazar el test de estado del Arduino
+$(BIN_DIR)/status_arduino_test: $(OBJ_DIR)/Robot.o $(OBJ_DIR)/GCode.o $(OBJ_DIR)/SerialComunicator.o $(OBJ_DIR)/SerialPortConfiguration.o $(STATUS_TEST_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS_CLIENT)
+
 # Inicia el servidor XML-RPC
 run:
 	sudo ./$(BIN_DIR)/mainServer
@@ -80,6 +99,14 @@ test: $(BIN_DIR)/cli_tests
 # Ejecuta los tests de comunicación serial (requiere hardware y sudo)
 serial_test: $(BIN_DIR)/serial_tests
 	sudo ./$(BIN_DIR)/serial_tests
+
+# Ejecuta el test de array RPC (requiere que el servidor esté corriendo)
+array_rpc_test: $(BIN_DIR)/array_rpc_test
+	./$(BIN_DIR)/array_rpc_test
+
+# Ejecuta el test de parseo de estado del Arduino
+status_test: $(BIN_DIR)/status_arduino_test
+	./$(BIN_DIR)/status_arduino_test
 
 clean:
 	rm -rf $(BIN_DIR) $(OBJ_DIR)

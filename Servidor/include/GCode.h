@@ -37,6 +37,14 @@ public:
   static std::string generateMoveCommand(double x, double y, double z, double speed);
 
 
+  /// @brief Genera un comando G-Code para un movimiento lineal (G1) con velocidad por defecto.
+  /// @param x Coordenada X del destino.
+  /// @param y Coordenada Y del destino.
+  /// @param z Coordenada Z del destino.
+  /// @return Una cadena de texto con el comando G-Code formateado.
+  static std::string generateMoveCommand(double x, double y, double z);
+
+
   /// @param x Coordenada X.
   /// @param y Coordenada Y.
   /// @param z Coordenada Z.
@@ -53,6 +61,9 @@ private:
     
     // Alcance máximo del brazo (L1 + L2)
     static constexpr double MAX_REACH = L1 + L2; // 240.0 mm
+
+    // Velocidad por defecto para movimientos si no se especifica una.
+    static constexpr double DEFAULT_SPEED = 2000.0; // 2000 mm/min
 
 };
 

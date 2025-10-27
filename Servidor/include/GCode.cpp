@@ -32,8 +32,14 @@ std::string GCodeNamespace::GCode::generateMoveCommand(double x, double y, doubl
        << "X" << std::fixed << std::setprecision(3) << x << " "
        << "Y" << std::fixed << std::setprecision(3) << y << " "
        << "Z" << std::fixed << std::setprecision(3) << z << " "
-       << "F" << std::fixed << std::setprecision(1) << speed;
+       << "E" << std::fixed << std::setprecision(1) << speed;
     return ss.str();
+}
+
+
+std::string GCodeNamespace::GCode::generateMoveCommand(double x, double y, double z) {
+    // Llama a la otra versión de la función con la velocidad por defecto.
+    return generateMoveCommand(x, y, z, DEFAULT_SPEED);
 }
 
 

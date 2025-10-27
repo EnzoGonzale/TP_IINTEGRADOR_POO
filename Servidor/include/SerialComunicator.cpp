@@ -4,6 +4,7 @@
 #include <unistd.h>  // For read(), write(), close()
 #include <stdexcept> // For std::runtime_error
 #include <fcntl.h>   // For file control options
+#include <chrono>    // Para el manejo del tiempo
 #include <cerrno>    // Para errno
 #include <termios.h> // For tcflush()
 // Constructors/Destructors
@@ -34,6 +35,8 @@ void ComunicatorPort::SerialComunicator::config(std::string port, int speed)
   configurator_.applyConfig(fileDescriptor_, speed);
 
   std::cout << "Puerto serie " << port << " abierto con éxito a " << speed << " baudios." << std::endl;
+
+   isConfigured_ = true;
 }
 
 std::string ComunicatorPort::SerialComunicator::sendMessage(std::string message)
@@ -52,28 +55,34 @@ std::string ComunicatorPort::SerialComunicator::sendMessage(std::string message)
   return "Mensaje enviado."; // El método ahora retorna inmediatamente.
 }
 
-std::string ComunicatorPort::SerialComunicator::reciveMessage()
+std::string ComunicatorPort::SerialComunicator::reciveMessage(int time)
 {
   if (fileDescriptor_ == -1)
   {
       throw std::runtime_error("No se puede recibir datos, el puerto no está configurado.");
   }
 
-  ssize_t bytesRead = read(fileDescriptor_, buffer_, sizeof(buffer_) - 1);
-  if (bytesRead < 0)
-  {
-      // En modo no bloqueante (O_NDELAY), si read() devuelve -1,
-      // debemos comprobar 'errno'. EAGAIN o EWOULDBLOCK significan
-      // "no hay datos disponibles ahora", lo cual no es un error fatal.
-      if (errno == EAGAIN || errno == EWOULDBLOCK) {
-          return ""; // No hay datos, devolvemos una cadena vacía.
-      }
-      // Si es otro tipo de error, sí es un problema real.
-      throw std::runtime_error("Error al leer desde el puerto serie.");
-  }
+    std::string full_response;
+    auto startTime = std::chrono::steady_clock::now();
+    
+    while (std::chrono::duration_cast<std::chrono::seconds>(std::chrono::steady_clock::now() - startTime).count() < time) {
+        ssize_t bytesRead = read(fileDescriptor_, buffer_, sizeof(buffer_) - 1);
+        
+        if (bytesRead > 0) {
+            // Si leemos datos, los añadimos a nuestra respuesta.
+            full_response.append(buffer_, bytesRead);
+        } else if (bytesRead < 0) {
+            // En modo no bloqueante, EAGAIN o EWOULDBLOCK no son errores,
+            // simplemente significan que no hay datos ahora.
+            if (errno != EAGAIN && errno != EWOULDBLOCK) {
+                throw std::runtime_error("Error al leer desde el puerto serie.");
+            }
+        }
+        // Si bytesRead es 0 o -1 (con EAGAIN), simplemente continuamos el bucle
+        // hasta que se cumpla el tiempo.
+    }
 
-  buffer_[bytesRead] = '\0'; // Null-terminate the received string
-  return std::string(buffer_, bytesRead); // Creamos el string con el tamaño exacto leído.
+    return full_response;
 }
 
 

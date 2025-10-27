@@ -27,20 +27,21 @@ std::string sendAndReceive(ComunicatorPort::SerialComunicator& serial, const std
 
 // --- Suite de Pruebas de Integración para SerialComunicator ---
 TEST_SUITE("SerialComunicator Integration Test") {
+    // Setup shared resources
+    static ComunicatorPort::SerialComunicator serial;
 
     TEST_CASE("Prueba de comandos de control del robot (M3, M5, M17, M18)") {
         ComunicatorPort::SerialComunicator serial;
 
-        // --- Configuración ---
-        // Esta prueba requiere un Arduino físico conectado a /dev/ttyUSB0
-        // y permisos para acceder al puerto (ejecutar con sudo).
-        INFO("Configurando puerto /dev/ttyUSB0 a 115200 baudios...");
-        REQUIRE_NOTHROW(serial.config("/dev/ttyUSB0", 115200));
-        
-        // Esperamos a que el Arduino se reinicie tras abrir el puerto.
-        INFO("Esperando reinicio del Arduino (2 segundos)...");
-        std::this_thread::sleep_for(std::chrono::seconds(2));
-        serial.cleanBuffer(); // Limpiamos cualquier mensaje de arranque.
+        // Move configuration to a separate setup function
+        if (!serial.isConfigured()) {
+            INFO("Configurando puerto /dev/ttyUSB0 a 115200 baudios...");
+            serial.config("/dev/ttyUSB0", 115200);
+            
+            INFO("Esperando reinicio del Arduino (2 segundos)...");
+            std::this_thread::sleep_for(std::chrono::seconds(2));
+            serial.cleanBuffer();
+        }
 
         // --- Pruebas de Comandos ---
         SUBCASE("Activar Motores (M17)") {

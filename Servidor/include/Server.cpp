@@ -21,8 +21,16 @@ Server::Server()
       authService(dbManager),
       robot(),
       reportGenerator(), // Se mantiene por si los métodos RPC la necesitan
-      rpcHandler(authService, robot)
-{}
+      taskManager("./tasks.json"),
+      rpcHandler(authService, robot, taskManager)
+{ 
+    // Cargamos las tareas al iniciar el servidor.
+    if (taskManager.loadTasks()) {
+        std::cout << "[Server] Tareas cargadas exitosamente desde tasks.json." << std::endl;
+    } else {
+        std::cout << "[Server] Error al cargar las tareas desde tasks.json." << std::endl;
+    }
+}
 
 Server::~Server()
 {

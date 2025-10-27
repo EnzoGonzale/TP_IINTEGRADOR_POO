@@ -77,8 +77,9 @@ bool ConfigurationPort::SerialPortConfiguration::applyConfig(int fileDescriptor,
     tty.c_cflag |= CS8;              // 8 data bits
     tty.c_lflag = 0;                 // No local flags
     tty.c_oflag = 0;                 // No output processing
-    tty.c_cc[VMIN] = 1;              // Esperar hasta que haya al menos 1 byte para leer.
-    tty.c_cc[VTIME] = 0;             // Sin timeout de lectura. La llamada a read() será bloqueante indefinidamente.
+    // Configuración de lectura no bloqueante.
+    tty.c_cc[VMIN] = 0;  // read() puede devolver 0 bytes.
+    tty.c_cc[VTIME] = 0; // read() no espera, devuelve inmediatamente.
 
     if (tcsetattr(fileDescriptor, TCSANOW, &tty) != 0)
     {

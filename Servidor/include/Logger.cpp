@@ -36,18 +36,25 @@ std::string Logger::levelToString(LogLevel level) {
     }
 }
 
-void Logger::log(LogLevel level, const std::string& message) {
+void Logger::log(LogLevel level, 
+                 const std::string& message, 
+                 const std::optional<std::string>& user, 
+                 const std::optional<std::string>& node) {
     // Obtener la fecha y hora actual
     auto now = std::chrono::system_clock::now();
     auto in_time_t = std::chrono::system_clock::to_time_t(now);
 
     std::stringstream ss;
-    ss << std::put_time(std::localtime(&in_time_t), "%Y-%m-%dT%H:%M:%S");
-    
-    // Crear un objeto CSV para la entrada de log
-    std::string log_line = ss.str() + ", " + levelToString(level) + ", " + message + "\n";
+    ss << std::put_time(std::localtime(&in_time_t), "%Y-%m-%d | %H:%M:%S");
+
+    // Formato CSV: timestamp, level, message, user, node
+    ss << ", " << levelToString(level) 
+       << ", " << message
+       << ", " << (user.has_value() ? *user : "SYSTEM") // Si no hay usuario, ponemos "SYSTEM"
+       << ", " << (node.has_value() ? *node : "N/A");   // Si no hay nodo, ponemos "N/A"
+
+    std::string log_line = ss.str() + "\n";
 
     // Escribir en el archivo de log (application.json) en modo "append"
     file_.write("application.csv", log_line, true);
 }
-

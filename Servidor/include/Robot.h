@@ -12,14 +12,21 @@
 // --- Definiciones de Platzhalter ---
 // Estas definiciones deben moverse a sus propios archivos .h a medida que las desarrolles.
 struct RobotStatus {
-  bool isConnected;
-  bool areMotorsEnabled;
+  bool isConnected = false;
+  std::string activityState = "DESCONOCIDO";
+  bool areMotorsEnabled = false;
+  Position currentPosition;
+  bool isAbsolute = true; // Por defecto, asumimos modo absoluto
   // ... otros campos de estado
 };
 
+/// @brief Representa una orden ejecutada por el robot.
 struct Order {
-  std::string command;
-  // ... otros detalles de la orden
+  std::string timestamp;
+  std::string username;
+  std::string commandName;
+  std::string details;
+  std::string success;
 };
 
 
@@ -62,10 +69,29 @@ public:
   /// @param  speed 
   void moveTo(const Position& position, double speed);
 
+  /// @param  position 
+  void moveTo(const Position& position);
+  void executeMivement(Position& position, double speed = 2000.0);
+
+  /// @brief Envía un comando G-Code crudo al robot.
+  /// @param gcode El comando G-Code a enviar (ej. "G1 X10").
+  void sendRawGCode(const std::string& gcode);
+
   /// 
   /// @param  active 
   void setEffector(bool active);
 
+  /// @brief Establece el modo de coordenadas del robot.
+  /// @param isAbsolute True para modo absoluto (G90), False para modo relativo (G91).
+  void setCoordinateMode(bool isAbsolute);
+
+  /// @brief Registra una orden ejecutada en el historial del robot.
+  void recordOrder(const std::string& username, const std::string& commandName, 
+                   const std::string& details);
+
+  
+  void coutExecuteState(std::string state);
+  
   /// 
   /// @param  command 
   void learnTrajectoryStep(const GCodeNamespace::GCode& command)
@@ -79,17 +105,12 @@ public:
   {
   }
 
+  /// 
+  void parseM114Response(const std::string& response);
 
   /// 
   /// @return RobotStatus
-  RobotStatus getStatus() const
-  {
-    RobotStatus status;
-    status.isConnected = isConnected;
-    status.areMotorsEnabled = areMotorsEnabled;
-    // ... llenar otros campos de estado
-    return status;
-  }
+  RobotStatus getStatus();
 
 private:
   // Private attributes  
@@ -97,8 +118,11 @@ private:
 
   bool isConnected;
   bool areMotorsEnabled;
+  bool isAbsolute_ = true; // Nuevo miembro para el modo de coordenadas
   Position currentPosition;
+  std::string connectionStartTime; // New attribute
   std::string activityState;
+  std::string executeState;
   std::list<Order> lastOrders; // Lista de las últimas órdenes ejecutadas
   ComunicatorPort::SerialComunicator serialCommunicator;
 
@@ -138,6 +162,24 @@ public:
   }
 
   /// 
+  /// Get the value of isAbsolute_
+  /// @return the value of isAbsolute_
+  bool getIsAbsolute() const {
+      return isAbsolute_;
+  }
+
+  /// 
+  /// Get the value of connectionStartTime
+  /// @return the value of connectionStartTime
+  std::string getConnectionStartTime() const {
+    return connectionStartTime;
+  }
+  std::string getExecuteState() const
+  {
+    return executeState;
+  }
+
+  /// 
   /// Get the value of lastOrders
   /// @return the value of lastOrders
   const std::list<Order>& getLastOrders() const
@@ -145,6 +187,15 @@ public:
     return lastOrders;
   }
 
+
+
+  // --- Setters Públicos ---
+
+  void setExecuteState(const std::string& state)
+  {
+    executeState = state;
+  }
+  
 };
 
 } // namespace RobotNamespace

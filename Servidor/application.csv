@@ -1,7 +1,4 @@
-2025-10-22T17:24:17, INFO, Logger inicializado.
-2025-10-22T17:24:17, INFO, RPC call from user 'enzo': robot.connect
-2025-10-22T17:24:34, INFO, RPC call from user 'enzo': robot.enableMotors
-2025-10-22T17:25:03, INFO, RPC call from user 'enzo': robot.move
-2025-10-22T17:26:09, INFO, RPC call from user 'enzo': robot.disconnect
-2025-10-22T17:26:17, INFO, RPC call from user 'enzo': robot.enableMotors
-2025-10-22T17:26:37, INFO, Logger finalizado.
+2025-10-27 | 17:15:29, INFO, Logger inicializado., SYSTEM, N/A
+2025-10-27 | 17:15:29, INFO, Successful login attempt, enzo, 127.0.0.1
+2025-10-27 | 17:15:33, INFO, robot.connect, enzo, 127.0.0.1
+2025-10-27 | 17:56:19, INFO, Logger finalizado., SYSTEM, N/A

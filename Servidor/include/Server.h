@@ -10,6 +10,7 @@
 #include "AuthenticationService.h" // El servidor es dueño de los servicios
 #include "DatabaseManager.h"
 #include "ReportGenerator.h"
+#include "TaskManager.h"
 
 /// 
 /// class Server
@@ -54,6 +55,7 @@ private:
 
   RobotNamespace::Robot robot;
   ReportGenerator reportGenerator; // Se mantiene por si los métodos RPC la necesitan
+  TaskManager taskManager;
 
   // --- Capa de Aplicación/Interfaces (Servidor RPC) ---
   RpcServiceHandlerNamespace::RpcServiceHandler rpcHandler;

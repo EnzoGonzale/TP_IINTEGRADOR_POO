@@ -3,6 +3,7 @@
 #define LOGGER_H
 
 #include <string>
+#include <optional> // Para std::optional
 #include "FileManager.h"
 
 
@@ -40,7 +41,10 @@ public:
     void operator=(const Logger&) = delete;
 
     // Método principal para registrar un mensaje
-    void log(LogLevel level, const std::string& message);
+    void log(LogLevel level, 
+             const std::string& message, 
+             const std::optional<std::string>& user = std::nullopt, 
+             const std::optional<std::string>& node = std::nullopt);
 
 private:
     // Constructor y destructor privados para asegurar que no se creen instancias externamente

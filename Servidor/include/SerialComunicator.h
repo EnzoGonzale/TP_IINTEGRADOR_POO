@@ -44,7 +44,7 @@ public:
   /// 
   /// @return string
   /// @param  message 
-  std::string reciveMessage();
+  std::string reciveMessage(int time = 2);
 
 
   /// 
@@ -54,11 +54,26 @@ public:
   /// 
   void close();
 
+  bool isConfigured() const {
+    return isConfigured_;
+  }
+
+
+  // Prevent copying to avoid double-free issues
+  SerialComunicator(const SerialComunicator&) = delete;
+  SerialComunicator& operator=(const SerialComunicator&) = delete;
+    
+  // Allow moving if needed
+  SerialComunicator(SerialComunicator&&) noexcept = default;
+  SerialComunicator& operator=(SerialComunicator&&) noexcept = default;
+
+
 private:
   // Private attributes  
   ConfigurationPort::SerialPortConfiguration configurator_;
   int fileDescriptor_ = -1;
   char buffer_[4096];
+  bool isConfigured_ = false;
 
   // Public attribute accessor methods  
 
