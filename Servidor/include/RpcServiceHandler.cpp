@@ -4,18 +4,18 @@ extern "C" {
     #include <xmlrpc-c/abyss.h>
     #include <arpa/inet.h> // Para inet_ntoa
 }
-#include <iostream> // Para std::cout
 #include <iomanip> // Para std::setprecision
 #include <thread>   // Para std::this_thread
 #include <chrono>   // Para std::chrono
 #include "RpcServiceHandler.h"
 #include <xmlrpc-c/base.hpp>
 #include <xmlrpc-c/server_abyss.hpp> // Necesario para callInfo_serverAbyss
-#include "Logger.h" // Incluimos el Logger
+// #include "Logger.h" // Incluimos el Logger
 #include "TaskManager.h"
+#include "Utils.h" // Incluimos nuestro nuevo archivo de utilidades
+#include "Exceptions.h"
 
 // Constructors/Destructors
-
 
 RpcServiceHandlerNamespace::RpcServiceHandler::RpcServiceHandler(
     AuthenticationServiceNamespace::AuthenticationService& authService,
@@ -29,10 +29,6 @@ RpcServiceHandlerNamespace::RpcServiceHandler::~RpcServiceHandler()
 {
 }
  
-// Methods
-std::string double_a_string_con_precision(double valor, int precision);
-
-
 // --- Clase Base para Métodos RPC con Autenticación ---
 // Centraliza la lógica de autenticación para no repetirla en cada método.
 class AuthenticatedMethod : public xmlrpc_c::method2 {
@@ -51,10 +47,10 @@ protected:
     void execute(xmlrpc_c::paramList const& paramList,
                  const xmlrpc_c::callInfo * const callInfoP,
                  xmlrpc_c::value*       const retvalP) override {
-        try {
+        
             std::string const username(paramList.getString(0));
             std::string const password(paramList.getString(1));
-            
+           
             // Obtenemos la IP del cliente de forma segura.
             std::string clientIp = "unknown";
             auto const * const abyssCallInfoP =
@@ -67,25 +63,23 @@ protected:
                 if (channelInfo)
                     clientIp = inet_ntoa(((struct sockaddr_in*)&channelInfo->peerAddr)->sin_addr);
             }
-
-            auto userOpt = authService.authenticate(username, password);
-            if (!userOpt) {
-                throw xmlrpc_c::fault("Authentication failed: Invalid username or password.", xmlrpc_c::fault::CODE_INTERNAL);
-            }
-
+            
+        try { 
+            auto userOpt = authService.authenticate(username, password); // Ahora puede lanzar excepciones
             // Log de la llamada
             std::string logMessage = "RPC call from user '" + username + "': " + this->_name;
-            std::cout << "[RPC] " << logMessage << std::endl;
-            
-            // Registramos la petición con el usuario y la IP del nodo cliente.
-            Logger::getInstance().log(LogLevel::INFO, this->_name, username, clientIp);
+            Logger::getInstance().log(LogLevel::INFO, "RPC] " + logMessage, username, clientIp);
 
             // Llama a la lógica específica del método hijo.
             // Los métodos que no necesitan parámetros adicionales ignoran el paramList.
             // Por ejemplo, connect, disconnect, getStatus, etc.
             executeAuthenticated(paramList, retvalP, *userOpt, clientIp);
 
-        } catch (std::exception const& e) {
+        } catch (const AuthenticationException& e) {
+            // Capturamos específicamente las excepciones de autenticación
+            Logger::getInstance().log(LogLevel::WARNING, "Failed RPC call: " + std::string(e.what()), username, clientIp);
+            throw xmlrpc_c::fault(e.what(), xmlrpc_c::fault::CODE_INTERNAL);
+        } catch (const std::exception& e) {
             // Captura errores de autenticación o de ejecución y los devuelve como un "fault" RPC.
             throw xmlrpc_c::fault(e.what(), xmlrpc_c::fault::CODE_INTERNAL);
         }
@@ -392,13 +386,13 @@ public:
     void executeAuthenticated(xmlrpc_c::paramList const& paramList, 
                               xmlrpc_c::value* const retvalP, 
                               UserNamespace::User& adminUser,
-                              const std::string& clientIp) override {
+                              const std::string& clientIp) override { // Lanza xmlrpc_c::fault
         // 1. Verificar que el usuario autenticado es un administrador.
         if (adminUser.getRole() != UserRole::ADMIN) {
-            throw xmlrpc_c::fault("Permission denied: Only administrators can add users.", xmlrpc_c::fault::CODE_INTERNAL);
+            throw PermissionDeniedException("Solo los administradores pueden añadir usuarios.");
         }
 
-        // 2. Extraer los parámetros del nuevo usuario.
+        // 2. Extraer los parámetros del nuevo usuario. Lanza xmlrpc_c::fault si los params son incorrectos
         // Los parámetros del admin (0 y 1) ya fueron usados para la autenticación.
         std::string const newUsername(paramList.getString(2));
         std::string const newPassword(paramList.getString(3));
@@ -408,10 +402,7 @@ public:
         UserRole newRole = static_cast<UserRole>(newRoleInt);
 
         // 3. Llamar al servicio para crear el usuario.
-        bool success = authService.createUser(newUsername, newPassword, newRole);
-        if (!success) {
-            throw xmlrpc_c::fault("Failed to create user. It might already exist.", xmlrpc_c::fault::CODE_INTERNAL);
-        }
+        bool success = authService.createUser(newUsername, newPassword, newRole); // Lanza DatabaseException en caso de fallo
 
         // 4. Devolver el resultado.
         robot.recordOrder(adminUser.getUsername(), "user_add", "Added user: " + newUsername);
@@ -680,10 +671,4 @@ void RpcServiceHandlerNamespace::RpcServiceHandler::registerMethods(xmlrpc_c::re
     registry.addMethod("robot.listTasks", new ListTasksMethod(authService, robot, taskManager));
     registry.addMethod("robot.executeTask", new ExecuteTaskMethod(authService, robot, taskManager));
     registry.addMethod("robot.addTask", new AddTaskMethod(authService, robot, taskManager));
-}
-
-std::string double_a_string_con_precision(double valor, int precision) {
-    std::ostringstream oss;
-    oss << std::fixed << std::setprecision(precision) << valor;
-    return oss.str();
 }

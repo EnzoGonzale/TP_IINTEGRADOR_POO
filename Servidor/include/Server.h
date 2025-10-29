@@ -5,7 +5,6 @@
 #include <string>
 #include <thread> // Para std::thread
 #include "Robot.h"
-#include "CLIHandler.h"
 #include "RpcServiceHandler.h"
 #include "AuthenticationService.h" // El servidor es dueño de los servicios
 #include "DatabaseManager.h"

@@ -198,7 +198,7 @@ void executeCommand(Cmd cmd) {
 #if SIMULATION
         interpolator.setInterpolation(INITIAL_X, INITIAL_Y, INITIAL_Z, INITIAL_E0, INITIAL_X, INITIAL_Y, INITIAL_Z, INITIAL_E0);
         delay(3000);
-        Serial.println("HOMING COMPLETE");
+        Logger::logINFO("HOMING COMPLETE");
         break;
 #else
       if  (USE_UNO){
@@ -234,33 +234,21 @@ void executeCommand(Cmd cmd) {
       Logger::logERROR("PUMP DISABLED NOT IMPLEMENTED");  
       break;
     case 3: 
-      #if SIMULATION
-        Serial.println("SOLTAR");
-        break;
-      #else
-        if (GRIPPER == 0){
+      if (GRIPPER == 0){
         byj_gripper.cmdOn(); break;
-        } else if (GRIPPER == 1){
+      } else if (GRIPPER == 1){
         servo_gripper.cmdOn(); break;
-        } else if (GRIPPER == 2){
+      } else if (GRIPPER == 2){
         byj_gripper.cmdOn(); break;
-        }
-      #endif
-
+      }
     case 5:
-      #if SIMULATION
-        Serial.println("AGARRAR");
-        break;
-      #else
-        if (GRIPPER == 0){
+      if (GRIPPER == 0){
         byj_gripper.cmdOff(); break;
-        } else if (GRIPPER == 1){
+      } else if (GRIPPER == 1){
         servo_gripper.cmdOff(); break;
-        } else if (GRIPPER == 2){
+      } else if (GRIPPER == 2){
         byj_gripper.cmdOff(); break;
-        }
-      #endif
-     
+      }
     case 6: 
       laser.cmdOn(); 
       Logger::logERROR("LASER ENABLED NOT IMPLEMENTED");  
@@ -269,23 +257,8 @@ void executeCommand(Cmd cmd) {
       laser.cmdOff(); 
       Logger::logERROR("LASER DISABLED NOT IMPLEMENTED");  
       break;
-    case 17: 
-      #if SIMULATION
-        Serial.println("Motores ACTIVADOS");
-        break;
-      #else
-        setStepperEnable(true); 
-        break;
-      #endif
-    case 18:
-      #if SIMULATION
-        Serial.println("Motores DESACTIVADOS");
-        break;
-      #else
-        setStepperEnable(false); 
-        break;
-      #endif
-     
+    case 17: setStepperEnable(true); break;
+    case 18: setStepperEnable(false); break;
     case 106: 
       fan.enable(true); 
       Logger::logINFO("FAN ENABLED");  

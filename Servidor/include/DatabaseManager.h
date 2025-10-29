@@ -6,7 +6,6 @@
 #include <list>
 #include <optional>
 #include "User.h"
-#include "Connection.h"
 #include <sqlite3.h>
 
 namespace DatabaseManagerNamespace

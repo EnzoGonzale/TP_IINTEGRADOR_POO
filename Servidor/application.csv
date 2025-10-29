@@ -1,4 +1,42 @@
-2025-10-27 | 17:15:29, INFO, Logger inicializado., SYSTEM, N/A
-2025-10-27 | 17:15:29, INFO, Successful login attempt, enzo, 127.0.0.1
-2025-10-27 | 17:15:33, INFO, robot.connect, enzo, 127.0.0.1
-2025-10-27 | 17:56:19, INFO, Logger finalizado., SYSTEM, N/A
+2025-10-28 | 19:48:09, INFO, Logger inicializado., , 
+2025-10-28 | 19:48:09, INFO, [DB] Base de datos abierta en /server_database.db, , 
+2025-10-28 | 19:48:09, INFO, [DB] Tabla de usuarios lista., , 
+2025-10-28 | 19:48:09, INFO, [TaskManager] 3 tareas cargadas exitosamente desde ./tasks.json, , 
+2025-10-28 | 19:48:09, INFO, [Server] Tareas cargadas exitosamente desde tasks.json., , 
+2025-10-28 | 19:48:09, INFO, [Main] Iniciando Servidor RPC. Use Ctrl+C para detener., , 
+2025-10-28 | 19:48:09, INFO, [RPC Server] Servidor XML-RPC iniciado en el puerto 8080. Esperando peticiones..., , 
+2025-10-28 | 19:48:24, INFO, Successful login attempt, enzo, 127.0.0.1
+2025-10-28 | 19:48:34, INFO, RPC] RPC call from user 'enzo': robot.connect, enzo, 127.0.0.1
+2025-10-28 | 19:48:34, INFO, [Robot] Iniciando conexión..., , 
+2025-10-28 | 19:48:34, INFO, [Robot] Limpiando mensajes de arranque..., , 
+2025-10-28 | 19:48:36, INFO, [Robot] Conexión establecida., , 
+2025-10-28 | 19:49:02, INFO, RPC] RPC call from user 'enzo': robot.enableMotors, enzo, 127.0.0.1
+2025-10-28 | 19:49:04, INFO, [Robot] Respuesta de M17: INFO: MOTORS ENABLED. OK. , , 
+2025-10-28 | 19:49:04, INFO, [Robot] Motores activados., , 
+2025-10-28 | 19:49:27, INFO, RPC] RPC call from user 'enzo': robot.moveDefaultSpeed, enzo, 127.0.0.1
+2025-10-28 | 19:49:27, CRITICAL, Robot Logic Error: ERROR de Alcance: La distancia horizontal (200000.00mm) excede el alcance maximo (240.00mm)., , 
+2025-10-28 | 19:56:40, INFO, Logger finalizado., , 
+2025-10-29 | 09:21:23, INFO, Logger inicializado., , 
+2025-10-29 | 09:21:23, INFO, [DB] Base de datos abierta en /server_database.db, , 
+2025-10-29 | 09:21:23, INFO, [DB] Tabla de usuarios lista., , 
+2025-10-29 | 09:21:23, INFO, [TaskManager] 3 tareas cargadas exitosamente desde ./tasks.json, , 
+2025-10-29 | 09:21:23, INFO, [Server] Tareas cargadas exitosamente desde tasks.json., , 
+2025-10-29 | 09:21:23, INFO, [Main] Iniciando Servidor RPC. Use Ctrl+C para detener., , 
+2025-10-29 | 09:21:23, INFO, [RPC Server] Servidor XML-RPC iniciado en el puerto 8080. Esperando peticiones..., , 
+2025-10-29 | 09:21:37, INFO, Successful login attempt, enzo, 127.0.0.1
+2025-10-29 | 09:32:19, INFO, Successful login attempt, juan, 127.0.0.1
+2025-10-29 | 09:38:24, INFO, Successful login attempt, principalAdmin, 127.0.0.1
+2025-10-29 | 09:46:40, INFO, Logger finalizado., , 
+2025-10-29 | 09:55:50, INFO, Logger inicializado., , 
+2025-10-29 | 09:55:50, INFO, [DB] Base de datos abierta en /home/nenodios/Desktop/Codes_POO/TP_INTEGRADOR/Servidor/server_database.db, , 
+2025-10-29 | 09:55:50, WARNING, [DB] La tabla de usuarios está vacía. Creando Administrador Principal..., , 
+2025-10-29 | 09:55:50, INFO, [DB] Usuario 'principalAdmin' creado exitosamente., , 
+2025-10-29 | 09:55:50, INFO, [DB] Usuario 'principalAdmin' creado con clave por defecto., , 
+2025-10-29 | 09:55:50, INFO, [DB] Tabla de usuarios lista., , 
+2025-10-29 | 09:55:50, INFO, [TaskManager] 3 tareas cargadas exitosamente desde ./tasks.json, , 
+2025-10-29 | 09:55:50, INFO, [Server] Tareas cargadas exitosamente desde tasks.json., , 
+2025-10-29 | 09:55:50, INFO, [Main] Iniciando Servidor RPC. Use Ctrl+C para detener., , 
+2025-10-29 | 09:55:50, INFO, [RPC Server] Servidor XML-RPC iniciado en el puerto 8080. Esperando peticiones..., , 
+2025-10-29 | 09:56:07, CRITICAL, Authentication Error: Invalid username or password., , 
+2025-10-29 | 09:56:21, INFO, Successful login attempt, principalAdmin, 127.0.0.1
+2025-10-29 | 09:56:50, INFO, Logger finalizado., , 

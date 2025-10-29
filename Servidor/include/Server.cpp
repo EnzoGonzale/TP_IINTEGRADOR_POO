@@ -4,11 +4,12 @@
 #include <xmlrpc-c/server_abyss.hpp>
 #include <string>
 #include <filesystem> // Requerido para C++17
+#include "Logger.h"
 
 // Helper para obtener la ruta del directorio del proyecto
 std::string getProjectDirectory() {
     // __FILE__ es una macro que se expande a la ruta completa de este archivo de código fuente.
-    std::filesystem::path source_path = __FILE__;
+    std::filesystem::path source_path = std::filesystem::absolute(__FILE__);
     // Subimos dos niveles desde /include/Server.cpp para llegar a la raíz del proyecto.
     return source_path.parent_path().parent_path().string();
 }
@@ -26,9 +27,9 @@ Server::Server()
 { 
     // Cargamos las tareas al iniciar el servidor.
     if (taskManager.loadTasks()) {
-        std::cout << "[Server] Tareas cargadas exitosamente desde tasks.json." << std::endl;
+        Logger::getInstance().log(LogLevel::INFO, "[Server] Tareas cargadas exitosamente desde tasks.json.");
     } else {
-        std::cout << "[Server] Error al cargar las tareas desde tasks.json." << std::endl;
+        Logger::getInstance().log(LogLevel::ERROR, "[Server] Error al cargar las tareas desde tasks.json.");
     }
 }
 
@@ -46,18 +47,18 @@ void Server::startRpcServer() {
             .registryP(&myRegistry)
             .portNumber(8080));
         
-        std::cout << "[RPC Server] Servidor XML-RPC iniciado en el puerto 8080. Esperando peticiones..." << std::endl;
+        Logger::getInstance().log(LogLevel::INFO, "[RPC Server] Servidor XML-RPC iniciado en el puerto 8080. Esperando peticiones...");
         myAbyssServer.run(); // Esto bloquea este hilo y empieza a escuchar.
 
     } catch (std::exception const& e) {
-        std::cerr << "[RPC Server] Algo salió mal: " << e.what() << std::endl;
+        Logger::getInstance().log(LogLevel::CRITICAL, "[RPC Server] Excepción crítica: " + std::string(e.what()));
     }
 }
 
 void Server::run()
 {
     // El servidor ahora solo inicia el RPC Server y bloquea el hilo principal.
-    std::cout << "[Main] Iniciando Servidor RPC. Use Ctrl+C para detener." << std::endl;
+    Logger::getInstance().log(LogLevel::INFO, "[Main] Iniciando Servidor RPC. Use Ctrl+C para detener.");
     startRpcServer(); // Esta llamada es bloqueante.
     // Cuando startRpcServer() termina (por ejemplo, por Ctrl+C), el programa finaliza.
 }

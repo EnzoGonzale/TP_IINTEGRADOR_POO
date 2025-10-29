@@ -1,7 +1,6 @@
 
 #ifndef LOGGER_H
 #define LOGGER_H
-
 #include <string>
 #include <optional> // Para std::optional
 #include "FileManager.h"
@@ -51,7 +50,8 @@ private:
     Logger();
     ~Logger();
     std::string levelToString(LogLevel level);
-    FileNamespace::FileManager file_;
+
+    FileNamespace::FileManager fileManager_;
 };
 
 #endif // LOGGER_H

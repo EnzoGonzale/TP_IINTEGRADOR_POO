@@ -4,7 +4,6 @@
 #include <limits> // Para std::numeric_limits
 #include <sstream> // Para std::stringstream
 #include <iomanip> // Para std::setw y std::left
-#include "Logger.h" // Incluimos el Logger
 #include "GCode.h" // Incluimos el GCode
 #include <xmlrpc-c/base.hpp> // Para xmlrpc_c::value
 #include <xmlrpc-c/client.hpp> // Para xmlrpc_c::client_error
@@ -526,7 +525,6 @@ void CLIHandlerNamespace::CLIHandler::processCommand(const std::string& full_com
         }
     } catch (const girerr::error& e) {
         std::cerr << "[CLI] Error de conexión con el servidor: " << e.what() << std::endl;
-        std::cerr << "La conexión puede haberse perdido. Intente reiniciar el cliente." << std::endl;
     } catch (const xmlrpc_c::fault& f) {
         std::cerr << "[CLI] Error RPC al ejecutar comando: " << f.getDescription() << std::endl;
     }

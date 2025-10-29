@@ -3,6 +3,8 @@
 #include <iomanip>
 #include <iostream>
 #include <cmath>
+#include "Exceptions.h"
+#include "Utils.h"
 // Constructors/Destructors
 
 
@@ -51,8 +53,7 @@ bool GCodeNamespace::GCode::isReachable(double x, double y, double z) {
     // 2. Restricción Radial (Alcance Máximo)
     if (r > MAX_REACH) {
         // El punto está fuera del radio máximo de 240mm.
-        std::cerr << "ERROR de Alcance: La distancia horizontal (" << std::fixed << std::setprecision(2) << r 
-                  << "mm) excede el alcance maximo (" << MAX_REACH << "mm)." << std::endl;
+        throw RobotException("ERROR de Alcance: La distancia horizontal (" + double_a_string_con_precision(r, 2) + "mm) excede el alcance maximo (" + double_a_string_con_precision(MAX_REACH, 2) + "mm).");
         return false;
     }
 
@@ -60,8 +61,7 @@ bool GCodeNamespace::GCode::isReachable(double x, double y, double z) {
     // Se establece un radio mínimo para evitar singularidades o auto-colisión en la base.
     const double MIN_OPERATIONAL_RADIUS = 1.0; 
     if (r < MIN_OPERATIONAL_RADIUS) {
-        std::cerr << "ADVERTENCIA: Punto demasiado cerca del centro (" << std::fixed << std::setprecision(2) << r 
-                  << "mm). Puede causar singularidad. (Movimiento permitido, pero con precaucion)." << std::endl;
+        throw RobotException("ADVERTENCIA: Punto demasiado cerca del centro (" + double_a_string_con_precision(r, 2) + "mm). Puede causar singularidad. (Movimiento permitido, pero con precaucion).");
     }
 
     // 4. Restricción Vertical (Altura Z)
@@ -70,14 +70,12 @@ bool GCodeNamespace::GCode::isReachable(double x, double y, double z) {
     const double MAX_Z = MAX_REACH; 
 
     if (z < MIN_Z) {
-        std::cerr << "ERROR de Altura Z: La altura (" << std::fixed << std::setprecision(2) << z 
-                  << "mm) es demasiado baja (Min: " << MIN_Z << "mm)." << std::endl;
+        throw RobotException("ERROR de Altura Z: La altura (" + double_a_string_con_precision(z, 2) + "mm es demasiado baja (Min: " + double_a_string_con_precision(MIN_Z, 2) + "mm).");
         return false;
     }
     
     if (z > MAX_Z) {
-        std::cerr << "ERROR de Altura Z: La altura (" << std::fixed << std::setprecision(2) << z 
-                  << "mm) excede el maximo vertical (Max: " << MAX_Z << "mm)." << std::endl;
+        throw RobotException("ERROR de Altura Z: La altura (" + double_a_string_con_precision(z, 2) + "mm) excede el maximo vertical (Max: " + double_a_string_con_precision(MAX_Z, 2) + "mm).");
         return false;
     }
 

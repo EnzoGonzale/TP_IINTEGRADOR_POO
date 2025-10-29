@@ -15,6 +15,40 @@ FileNamespace::FileManager::~FileManager()
 }
 
 // Methods
+// --- Nuevos métodos para gestionar un archivo abierto ---
+bool FileNamespace::FileManager::open(const std::string& fileName, bool addMode) {
+    if (fileStream_.is_open()) {
+        close();
+    }
+    std::ios_base::openmode mode = addMode ? std::ios::app : std::ios::trunc;
+    fileStream_.open(fileName, mode);
+    return fileStream_.is_open();
+}
+
+void FileNamespace::FileManager::close() {
+    if (fileStream_.is_open()) {
+        fileStream_.close();
+    }
+}
+
+void FileNamespace::FileManager::write(const std::string& data) {
+    if (fileStream_.is_open()) {
+        fileStream_ << data;
+    }
+}
+
+void FileNamespace::FileManager::flush() {
+    if (fileStream_.is_open()) {
+        fileStream_.flush();
+    }
+}
+
+bool FileNamespace::FileManager::isOpen() const {
+    return fileStream_.is_open();
+}
+// --- Fin de métodos para gestionar un archivo abierto ---
+
+// --- Métodos existentes ---
 
 bool FileNamespace::FileManager::write(std::string fileName, std::string data, bool addMode)
 {
@@ -54,32 +88,32 @@ std::string FileNamespace::FileManager::read(std::string fileName) {
     return buffer.str();
 }
 
-std::string FileNamespace::FileManager::getCreationDate(std::string fileName) {
-#ifdef stat
-#undef stat
-#endif
-    struct stat result;
-    if (stat(fileName.c_str(), &result) == 0) {
-        return formatDate(result.st_ctime);
-    }
-    return "Fecha no disponible";
-}
+// std::string FileNamespace::FileManager::getCreationDate(std::string fileName) {
+// #ifdef stat
+// #undef stat
+// #endif
+//     struct stat result;
+//     if (stat(fileName.c_str(), &result) == 0) {
+//         return formatDate(result.st_ctime);
+//     }
+//     return "Fecha no disponible";
+// }
 
-std::string FileNamespace::FileManager::getModificationDate(std::string fileName) {
-#ifdef stat
-#undef stat
-#endif
-    struct stat result;
-    if (stat(fileName.c_str(), &result) == 0) {
-        return formatDate(result.st_mtime);
-    }
-    return "Fecha no disponible";
-}
+// std::string FileNamespace::FileManager::getModificationDate(std::string fileName) {
+// #ifdef stat
+// #undef stat
+// #endif
+//     struct stat result;
+//     if (stat(fileName.c_str(), &result) == 0) {
+//         return formatDate(result.st_mtime);
+//     }
+//     return "Fecha no disponible";
+// }
 
-std::string FileNamespace::FileManager::formatDate(time_t time)
-{
-    char buffer[80];
-    struct tm *timeinfo = localtime(&time);
-    strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", timeinfo);
-    return std::string(buffer);
-}
+// std::string FileNamespace::FileManager::formatDate(time_t time)
+// {
+//     char buffer[80];
+//     struct tm *timeinfo = localtime(&time);
+//     strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", timeinfo);
+//     return std::string(buffer);
+// }

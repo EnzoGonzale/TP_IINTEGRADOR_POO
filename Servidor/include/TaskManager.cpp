@@ -1,7 +1,7 @@
 #include "TaskManager.h"
-#include <iostream>
 #include <fstream>
 #include "FileManager.h"
+#include "Logger.h"
 
 TaskManager::TaskManager(const std::string& tasksFilePath)
     : tasksFilePath_(tasksFilePath) {}
@@ -11,7 +11,7 @@ bool TaskManager::loadTasks() {
     std::string fileContent = fileManager.read(tasksFilePath_);
 
     if (fileContent.empty()) {
-        std::cerr << "[TaskManager] Error: No se pudo leer el archivo de tareas o está vacío: " << tasksFilePath_ << std::endl;
+        Logger::getInstance().log(LogLevel::ERROR, "[TaskManager] No se pudo leer el archivo de tareas o está vacío: " + tasksFilePath_);
         return false;
     }
 
@@ -31,14 +31,14 @@ bool TaskManager::loadTasks() {
         }
         
         tasksLoaded_ = true;
-        std::cout << "[TaskManager] " << tasks_.size() << " tareas cargadas exitosamente desde " << tasksFilePath_ << std::endl;
+        Logger::getInstance().log(LogLevel::INFO, "[TaskManager] " + std::to_string(tasks_.size()) + " tareas cargadas exitosamente desde " + tasksFilePath_);
         return true;
 
     } catch (json::parse_error& e) {
-        std::cerr << "[TaskManager] Error al parsear JSON: " << e.what() << std::endl;
+        Logger::getInstance().log(LogLevel::ERROR, "[TaskManager] Error al parsear JSON en " + tasksFilePath_ + ": " + e.what());
         return false;
     } catch (json::out_of_range& e) {
-        std::cerr << "[TaskManager] Error: Atributo faltante en una tarea del JSON: " << e.what() << std::endl;
+        Logger::getInstance().log(LogLevel::ERROR, "[TaskManager] Error: Atributo faltante en una tarea del JSON: " + std::string(e.what()));
         return false;
     }
 }
@@ -63,7 +63,7 @@ bool TaskManager::addTask(const Task& newTask) {
     // Verificar si ya existe una tarea con el mismo ID
     for (const auto& task : tasks_) {
         if (task.id == newTask.id) {
-            std::cerr << "[TaskManager] Error: Ya existe una tarea con el ID '" << newTask.id << "'." << std::endl;
+            Logger::getInstance().log(LogLevel::ERROR, "[TaskManager] Ya existe una tarea con el ID '" + newTask.id + "'.");
             return false;
         }
     }

@@ -1,6 +1,7 @@
 #include "DatabaseManager.h"
-#include <iostream>
 #include <stdexcept>
+#include "Logger.h"
+#include "Exceptions.h"
 
 // Constructors/Destructors
 
@@ -11,9 +12,9 @@ DatabaseManagerNamespace::DatabaseManager::DatabaseManager(const std::string& db
     if (sqlite3_open_v2(dbPath.c_str(), &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, nullptr) != SQLITE_OK) {
         std::string errorMsg = "No se puede abrir la base de datos: ";
         errorMsg += sqlite3_errmsg(db);
-        throw std::runtime_error(errorMsg);
+        throw DatabaseException(errorMsg);
     } else {
-        std::cout << "[DB] Base de datos abierta en " << dbPath << std::endl;
+        Logger::getInstance().log(LogLevel::INFO, "[DB] Base de datos abierta en " + dbPath);
         createTable();
     }
 }
@@ -22,7 +23,7 @@ DatabaseManagerNamespace::DatabaseManager::~DatabaseManager()
 {
     if (db) {
         sqlite3_close(db);
-        std::cout << "[DB] Base de datos cerrada." << std::endl;
+        Logger::getInstance().log(LogLevel::INFO, "[DB] Base de datos cerrada.");
     }
 }
 
@@ -39,7 +40,7 @@ void DatabaseManagerNamespace::DatabaseManager::createTable() {
         std::string error = "Error al crear la tabla: ";
         error += errMsg;
         sqlite3_free(errMsg);
-        throw std::runtime_error(error);
+        throw DatabaseException(error);
     }
 
     // Comprobar si la tabla está vacía para crear el superusuario
@@ -55,16 +56,15 @@ void DatabaseManagerNamespace::DatabaseManager::createTable() {
     }
 
     if (userCount == 0) {
-        std::cout << "[DB] La tabla de usuarios está vacía. Creando Administrador Principal..." << std::endl;
+        Logger::getInstance().log(LogLevel::WARNING, "[DB] La tabla de usuarios está vacía. Creando Administrador Principal...");
         // Reutilizamos la función addUser para crear el usuario por defecto.
         if (addUser("principalAdmin", "1234", UserRole::ADMIN)) {
-            std::cout << "[DB] Usuario 'principalAdmin' con clave '1234' creado exitosamente." << std::endl;
+            Logger::getInstance().log(LogLevel::INFO, "[DB] Usuario 'principalAdmin' creado con clave por defecto.");
         } else {
-            std::cerr << "[DB] Error al insertar el Administrador Principal." << std::endl;
+            Logger::getInstance().log(LogLevel::ERROR, "[DB] No se pudo crear el Administrador Principal.");
         }
     }
-
-    std::cout << "[DB] Tabla de usuarios lista." << std::endl;    
+    Logger::getInstance().log(LogLevel::INFO, "[DB] Tabla de usuarios lista.");  
 }
 
 std::optional<UserNamespace::User> DatabaseManagerNamespace::DatabaseManager::findUser(const std::string& username) {
@@ -97,7 +97,7 @@ bool DatabaseManagerNamespace::DatabaseManager::addUser(const std::string& usern
     if (sqlite3_prepare_v2(db, sql, -1, &stmt, 0) != SQLITE_OK) {
         std::string error = "[DB] Error al preparar la inserción: ";
         error += sqlite3_errmsg(db);
-        throw std::runtime_error(error);
+        throw DatabaseException(error);
     }
 
     sqlite3_bind_text(stmt, 1, username.c_str(), -1, SQLITE_TRANSIENT);
@@ -108,7 +108,7 @@ bool DatabaseManagerNamespace::DatabaseManager::addUser(const std::string& usern
     
     sqlite3_finalize(stmt);
 
-    std::cout << "[DB] Usuario '" << username << "' " << (success ? "creado exitosamente." : "no pudo ser creado (o ya existe).") << std::endl;
+    Logger::getInstance().log(LogLevel::INFO, "[DB] Usuario '" + username + "' " + (success ? "creado exitosamente." : "no pudo ser creado (o ya existe)."));
     
     return success;
 }

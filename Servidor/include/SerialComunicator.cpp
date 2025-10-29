@@ -7,6 +7,7 @@
 #include <chrono>    // Para el manejo del tiempo
 #include <cerrno>    // Para errno
 #include <termios.h> // For tcflush()
+#include "Logger.h"
 // Constructors/Destructors
 
 
@@ -17,12 +18,18 @@ ComunicatorPort::SerialComunicator::SerialComunicator()
 
 ComunicatorPort::SerialComunicator::~SerialComunicator()
 {
-  close();
+  // La lógica de 'close()' se mueve aquí directamente para evitar
+  // llamar a un método virtual desde el destructor.
+  if (fileDescriptor_ != -1)
+  {
+    ::close(fileDescriptor_);
+    fileDescriptor_ = -1;
+  }
 }
 
 // Methods
 
-void ComunicatorPort::SerialComunicator::config(std::string port, int speed)
+void ComunicatorPort::SerialComunicator::config(const std::string& port, int speed)
 {
   // 1. Abrir el puerto. Esta es la única vez que se llama a open().
   fileDescriptor_ = open(port.c_str(), O_RDWR | O_NOCTTY);
@@ -34,12 +41,12 @@ void ComunicatorPort::SerialComunicator::config(std::string port, int speed)
   // 2. Aplicar la configuración al descriptor de archivo que acabamos de abrir.
   configurator_.applyConfig(fileDescriptor_, speed);
 
-  std::cout << "Puerto serie " << port << " abierto con éxito a " << speed << " baudios." << std::endl;
+  Logger::getInstance().log(LogLevel::INFO, "Puerto serie " + port + " abierto con éxito a " + std::to_string(speed) + " baudios.");
 
    isConfigured_ = true;
 }
 
-std::string ComunicatorPort::SerialComunicator::sendMessage(std::string message)
+std::string ComunicatorPort::SerialComunicator::sendMessage(const std::string& message)
 {
   if (fileDescriptor_ == -1)
   {

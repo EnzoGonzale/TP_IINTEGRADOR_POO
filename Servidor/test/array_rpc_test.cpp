@@ -37,9 +37,8 @@ TEST_SUITE("RPC Array Test") {
 
         // 4. Llamar al método RPC 'robot.addTask' usando la sobrecarga con paramList
         INFO("Llamando a robot.addTask para crear una nueva tarea...");
-        REQUIRE_NOTHROW(
-            rpcClient.call(serverUrl, "robot.addTask", params, &result)
-        );
+        rpcClient.call(serverUrl, "robot.addTask", params, &result);
+        
 
         // 5. Verificar que la llamada fue exitosa
         CHECK(xmlrpc_c::value_boolean(result) == true);
@@ -50,9 +49,7 @@ TEST_SUITE("RPC Array Test") {
         xmlrpc_c::paramList listParams;
         listParams.add(xmlrpc_c::value_string(username));
         listParams.add(xmlrpc_c::value_string(password));
-        REQUIRE_NOTHROW(
-            rpcClient.call(serverUrl, "robot.listTasks", listParams, &listResult)
-        );
+        rpcClient.call(serverUrl, "robot.listTasks", listParams, &listResult);
 
         xmlrpc_c::value_array const tasksList(listResult);
         std::vector<xmlrpc_c::value> const tasksVector(tasksList.vectorValueValue());
@@ -69,7 +66,6 @@ TEST_SUITE("RPC Array Test") {
                 break;
             }
         }
-
-        CHECK_MESSAGE(found, "La tarea recién creada no se encontró en la lista de tareas del servidor.");
+        CHECK(found == true);
     }
 }

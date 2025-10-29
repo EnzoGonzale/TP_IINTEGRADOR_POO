@@ -1,6 +1,6 @@
 # --- Variables ---
 CXX = g++
-CXXFLAGS = -std=c++17 -Iinclude -I$(LIBRARY_DIR)
+CXXFLAGS = -std=c++17 -Iinclude -Iclient/include -I$(LIBRARY_DIR)
 LDFLAGS_SERVER = -lxmlrpc_server_abyss++ -lxmlrpc_server++ -lxmlrpc_client++ -lxmlrpc++ -lxmlrpc_abyss -lxmlrpc_xmlparse -lxmlrpc_xmltok -lxmlrpc_util -lsqlite3
 LDFLAGS_CLIENT = -lxmlrpc_client++ -lxmlrpc++ -lxmlrpc_xmlparse -lxmlrpc_xmltok -lxmlrpc_util -lsqlite3
 
@@ -10,19 +10,23 @@ TEST_DIR = test
 INCLUDE_DIR = include
 OBJ_DIR = obj
 BIN_DIR = bin
+CLIENT_SRC_DIR = client/src
+CLIENT_INCLUDE_DIR = client/include
 
 # --- Archivos Fuente y Objeto ---
-# Fuentes compartidas por ambos ejecutables (excluyendo los 'main')
-SHARED_SOURCES = $(wildcard $(INCLUDE_DIR)/*.cpp)
-SHARED_OBJECTS = $(patsubst $(INCLUDE_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SHARED_SOURCES))
+# Fuentes del servidor (excluyendo main y lo que ahora es del cliente)
+SERVER_SOURCES = $(filter-out $(INCLUDE_DIR)/CLIHandler.cpp, $(wildcard $(INCLUDE_DIR)/*.cpp))
+SERVER_OBJECTS = $(patsubst $(INCLUDE_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SERVER_SOURCES))
 
 # Fuentes y objetos específicos para el servidor
 SERVER_MAIN_SRC = $(SRC_DIR)/mainServer.cpp
 SERVER_MAIN_OBJ = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SERVER_MAIN_SRC))
 
 # Fuentes y objetos específicos para el cliente
-CLIENT_MAIN_SRC = $(SRC_DIR)/cli_main.cpp
-CLIENT_MAIN_OBJ = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(CLIENT_MAIN_SRC))
+CLIENT_SOURCES = $(wildcard $(CLIENT_SRC_DIR)/*.cpp) $(wildcard $(CLIENT_INCLUDE_DIR)/*.cpp)
+CLIENT_OBJECTS = $(patsubst $(CLIENT_SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(filter $(CLIENT_SRC_DIR)/%.cpp, $(CLIENT_SOURCES))) \
+                 $(patsubst $(CLIENT_INCLUDE_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(filter $(CLIENT_INCLUDE_DIR)/%.cpp, $(CLIENT_SOURCES)))
+
 
 # Fuentes y objetos para los tests de CLI
 CLI_TEST_SRC = $(TEST_DIR)/cli_handler_test.cpp
@@ -47,22 +51,29 @@ all:
 	$(MAKE) $(BIN_DIR)/cli_main
 	$(MAKE) $(BIN_DIR)/mainServer
 	$(MAKE) $(BIN_DIR)/serial_tests
+#	$(MAKE) $(BIN_DIR)/cli_tests
 	$(MAKE) $(BIN_DIR)/array_rpc_test
 	$(MAKE) $(BIN_DIR)/status_arduino_test
 
-# Regla para enlazar el servidor
-$(BIN_DIR)/mainServer: $(SHARED_OBJECTS) $(SERVER_MAIN_OBJ)
+# Regla para enlazar el servidor (depende de todos los objetos del servidor)
+$(BIN_DIR)/mainServer: $(SERVER_OBJECTS) $(SERVER_MAIN_OBJ)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS_SERVER)
 
-# Regla para enlazar el cliente
-$(BIN_DIR)/cli_main: $(filter-out $(OBJ_DIR)/Server.o $(OBJ_DIR)/RpcServiceHandler.o, $(SHARED_OBJECTS)) $(CLIENT_MAIN_OBJ)
+# Regla para enlazar el cliente (depende de los objetos del cliente y algunos compartidos del servidor)
+$(BIN_DIR)/cli_main: $(CLIENT_OBJECTS) $(filter $(OBJ_DIR)/User.o $(OBJ_DIR)/GCode.o $(OBJ_DIR)/Logger.o $(OBJ_DIR)/FileManager.o, $(SERVER_OBJECTS))
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS_CLIENT)
 
 # Regla genérica para compilar archivos .cpp a .o
 $(OBJ_DIR)/%.o: $(INCLUDE_DIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp # Para mainServer.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(OBJ_DIR)/%.o: $(CLIENT_INCLUDE_DIR)/%.cpp # Para CLIHandler.cpp está en client/include
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(OBJ_DIR)/%.o: $(CLIENT_SRC_DIR)/%.cpp # Para cli_main.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 $(OBJ_DIR)/%.o: $(TEST_DIR)/%.cpp
@@ -72,20 +83,24 @@ $(OBJ_DIR)/%.o: $(TEST_DIR)/%.cpp
 $(BIN_DIR)/cli_tests: $(filter-out $(OBJ_DIR)/Server.o $(OBJ_DIR)/RpcServiceHandler.o, $(SHARED_OBJECTS)) $(CLI_TEST_OBJ)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS_CLIENT)
 
-$(BIN_DIR)/serial_tests: $(OBJ_DIR)/SerialComunicator.o $(OBJ_DIR)/SerialPortConfiguration.o $(SERIAL_TEST_OBJ)
-	$(CXX) $(CXXFLAGS) $^ -o $@
+$(BIN_DIR)/serial_tests: $(OBJ_DIR)/SerialComunicator.o $(OBJ_DIR)/SerialPortConfiguration.o $(OBJ_DIR)/Logger.o $(OBJ_DIR)/FileManager.o $(SERIAL_TEST_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS_CLIENT)
 
 # Regla para compilar y enlazar el test de array RPC
 $(BIN_DIR)/array_rpc_test: $(ARRAY_RPC_TEST_OBJ)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS_CLIENT)
 
 # Regla para compilar y enlazar el test de estado del Arduino
-$(BIN_DIR)/status_arduino_test: $(OBJ_DIR)/Robot.o $(OBJ_DIR)/GCode.o $(OBJ_DIR)/SerialComunicator.o $(OBJ_DIR)/SerialPortConfiguration.o $(STATUS_TEST_OBJ)
+$(BIN_DIR)/status_arduino_test: $(OBJ_DIR)/Robot.o $(OBJ_DIR)/GCode.o $(OBJ_DIR)/SerialComunicator.o $(OBJ_DIR)/SerialPortConfiguration.o $(OBJ_DIR)/Logger.o $(OBJ_DIR)/FileManager.o $(STATUS_TEST_OBJ)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS_CLIENT)
 
 # Inicia el servidor XML-RPC
 run:
 	sudo ./$(BIN_DIR)/mainServer
+
+# Visualiza el archivo de log generado por el Logger
+visualize:
+	tail -f application.csv
 
 # Ejecuta el modo interactivo
 # Ahora, 'interactive' ejecuta un cliente CLI separado que se conecta al servidor RPC.

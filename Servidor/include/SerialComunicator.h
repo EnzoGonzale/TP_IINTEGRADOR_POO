@@ -4,15 +4,16 @@
 
 #include <string>
 #include <any>
+#include "ISerialCommunicator.h" // Incluimos la nueva interfaz
 #include "SerialPortConfiguration.h"
 
 
 namespace ComunicatorPort{
 
 /// 
-/// class SerialComunicator
+/// class SerialCommunicator : public ISerialCommunicator
 
-class SerialComunicator
+class SerialComunicator : public ISerialCommunicator
 {
 public:
   // Constructors/Destructors  
@@ -32,29 +33,29 @@ public:
   /// 
   /// @param  port 
   /// @param  speed 
-  void config(std::string port, int speed);
+  void config(const std::string& port, int speed) override;
 
 
   /// 
   /// @return string
   /// @param  message 
-  std::string sendMessage(std::string message);
+  std::string sendMessage(const std::string& message) override;
 
 
   /// 
   /// @return string
   /// @param  message 
-  std::string reciveMessage(int time = 2);
+  std::string reciveMessage(int time = 2) override;
 
 
   /// 
-  void cleanBuffer();
+  void cleanBuffer() override;
 
 
   /// 
-  void close();
+  void close() override;
 
-  bool isConfigured() const {
+  bool isConfigured() const override {
     return isConfigured_;
   }
 

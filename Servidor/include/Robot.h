@@ -6,8 +6,6 @@
 #include <any>
 #include <list>
 #include "Position.h"
-#include "GCode.h"
-#include "SerialComunicator.h"
 
 // --- Definiciones de Platzhalter ---
 // Estas definiciones deben moverse a sus propios archivos .h a medida que las desarrolles.
@@ -19,6 +17,10 @@ struct RobotStatus {
   bool isAbsolute = true; // Por defecto, asumimos modo absoluto
   // ... otros campos de estado
 };
+
+#include "Position.h"
+#include "GCode.h"
+#include "Logger.h"
 
 /// @brief Representa una orden ejecutada por el robot.
 struct Order {
@@ -71,7 +73,7 @@ public:
 
   /// @param  position 
   void moveTo(const Position& position);
-  void executeMivement(Position& position, double speed = 2000.0);
+  void executeMoviment(const Position& position, double speed = 2000.0);
 
   /// @brief Envía un comando G-Code crudo al robot.
   /// @param gcode El comando G-Code a enviar (ej. "G1 X10").
@@ -90,8 +92,10 @@ public:
                    const std::string& details);
 
   
-  void coutExecuteState(std::string state);
+  void logAndExecuteState(LogLevel level, std::string state);
   
+  void isMoving();
+
   /// 
   /// @param  command 
   void learnTrajectoryStep(const GCodeNamespace::GCode& command)
@@ -124,7 +128,6 @@ private:
   std::string activityState;
   std::string executeState;
   std::list<Order> lastOrders; // Lista de las últimas órdenes ejecutadas
-  ComunicatorPort::SerialComunicator serialCommunicator;
 
 public:
   // --- Getters Públicos ---
