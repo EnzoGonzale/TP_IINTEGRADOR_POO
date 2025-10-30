@@ -56,8 +56,8 @@ void Logger::log(LogLevel level,
     // Formato CSV: timestamp, level, message, user, node
     ss << ", " << levelToString(level) 
        << ", " << message
-       << ", " << (user.has_value() ? *user : "") // Si no hay usuario, ponemos "SYSTEM"
-       << ", " << (node.has_value() ? *node : "");   // Si no hay nodo, ponemos "N/A"
+       << (user.has_value() ? ", "+*user : "") // Si no hay usuario, ponemos ""
+       << (node.has_value() ? ", "+*node : "");   // Si no hay nodo, ponemos ""
 
     std::string log_line = ss.str() + "\n";
 

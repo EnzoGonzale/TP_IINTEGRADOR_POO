@@ -1,6 +1,7 @@
 #include "AuthenticationService.h"
 #include "Exceptions.h" // Incluimos nuestras excepciones personalizadas
 #include "Logger.h"
+#include "bcrypt.h" // Incluimos la librería de hashing
 // Constructors/Destructors
 
 
@@ -28,9 +29,8 @@ std::optional<UserNamespace::User> AuthenticationServiceNamespace::Authenticatio
 }
 
 bool AuthenticationServiceNamespace::AuthenticationService::createUser(const std::string& username, const std::string& password, UserRole role) {
-    // En un sistema real, aquí se generaría un hash seguro de la contraseña.
-    // Por ahora, la guardamos en texto plano como si fuera un hash.
-    std::string passwordHash = password;
+    // Generamos un hash seguro de la contraseña usando bcrypt.
+    std::string passwordHash = bcrypt::generateHash(password);
     if (!dbManager.addUser(username, passwordHash, role)) {
         throw DatabaseException("No se pudo crear el usuario '" + username + "'. Es posible que ya exista.");
     }

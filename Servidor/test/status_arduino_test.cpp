@@ -23,7 +23,7 @@ public:
         (void)time;
         if (last_message_sent == "M114\r\n") {
             return "INFO: ABSOLUTE MODE\n"
-                   "INFO: CURRENT POSITION: [X:5.66 Y:85.14 Z:69.09 E:0.00]\n"
+                   "INFO: CURRENT POSITION: [X:30.00 Y:40.00 Z:100.00 E:0.00]\n"
                    "INFO: MOTORS DISABLED\n"
                    "OK\n";
         }
@@ -60,9 +60,9 @@ TEST_SUITE("Robot Status Parsing") {
         // Comprobamos que los valores parseados son los correctos.
         CHECK(status.isAbsolute == true);
         CHECK(status.areMotorsEnabled == false);
-        CHECK(status.currentPosition.x == doctest::Approx(5.66));
-        CHECK(status.currentPosition.y == doctest::Approx(85.14));
-        CHECK(status.currentPosition.z == doctest::Approx(69.09));
+        CHECK(status.currentPosition.x == doctest::Approx(30));
+        CHECK(status.currentPosition.y == doctest::Approx(40));
+        CHECK(status.currentPosition.z == doctest::Approx(100));
 
         // --- Impresión por consola para inspección visual ---
         std::cout << "\n--- Contenido de la estructura RobotStatus ---\n";

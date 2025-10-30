@@ -68,7 +68,7 @@ protected:
             auto userOpt = authService.authenticate(username, password); // Ahora puede lanzar excepciones
             // Log de la llamada
             std::string logMessage = "RPC call from user '" + username + "': " + this->_name;
-            Logger::getInstance().log(LogLevel::INFO, "RPC] " + logMessage, username, clientIp);
+            Logger::getInstance().log(LogLevel::INFO, "[RPC] " + logMessage, username, clientIp);
 
             // Llama a la lógica específica del método hijo.
             // Los métodos que no necesitan parámetros adicionales ignoran el paramList.
@@ -81,6 +81,7 @@ protected:
             throw xmlrpc_c::fault(e.what(), xmlrpc_c::fault::CODE_INTERNAL);
         } catch (const std::exception& e) {
             // Captura errores de autenticación o de ejecución y los devuelve como un "fault" RPC.
+            robot.recordOrder(username, "ERROR", e.what());
             throw xmlrpc_c::fault(e.what(), xmlrpc_c::fault::CODE_INTERNAL);
         }
     }
@@ -448,6 +449,8 @@ public:
             helpMap["conectar"] = xmlrpc_c::value_string("Establece la conexión con el hardware del robot.");
             helpMap["desconectar"] = xmlrpc_c::value_string("Cierra la conexión con el hardware del robot.");
             helpMap["user_add <user> <pass> <role>"] = xmlrpc_c::value_string("Añade un nuevo usuario (role: 0=ADMIN, 1=OPERATOR).");
+            helpMap["report_admin [filtro] [val]"] = xmlrpc_c::value_string("Muestra reporte admin con filtros [usuario ó resultado] [valor].");
+            helpMap["report_log [filtro] [val]"] = xmlrpc_c::value_string("Muestra reporte de log con filtros [usuario ó nivel] [valor].");
         }
 
         *retvalP = xmlrpc_c::value_struct(helpMap);

@@ -31,7 +31,6 @@ struct Order {
   std::string success;
 };
 
-
 namespace RobotNamespace {
 
 /// 
@@ -93,7 +92,8 @@ public:
 
   
   void logAndExecuteState(LogLevel level, std::string state);
-  
+  void exceptionAndExecute(std::string e);
+
   void isMoving();
 
   /// 
@@ -118,58 +118,14 @@ public:
 
 private:
   // Private attributes  
-
-
-  bool isConnected;
-  bool areMotorsEnabled;
-  bool isAbsolute_ = true; // Nuevo miembro para el modo de coordenadas
-  Position currentPosition;
+  RobotStatus robotStatus;
   std::string connectionStartTime; // New attribute
-  std::string activityState;
   std::string executeState;
   std::list<Order> lastOrders; // Lista de las últimas órdenes ejecutadas
 
 public:
   // --- Getters Públicos ---
 
-  /// 
-  /// Get the value of isConnected
-  /// @return the value of isConnected
-  bool getIsConnected() const
-  {
-    return isConnected;
-  }
-
-  /// 
-  /// Get the value of areMotorsEnabled
-  /// @return the value of areMotorsEnabled
-  bool getAreMotorsEnabled() const
-  {
-    return areMotorsEnabled;
-  }
-
-  /// 
-  /// Get the value of currentPosition
-  /// @return the value of currentPosition
-  const Position& getCurrentPosition() const
-  {
-    return currentPosition;
-  }
-
-  /// 
-  /// Get the value of activityState
-  /// @return the value of activityState
-  std::string getActivityState() const
-  {
-    return activityState;
-  }
-
-  /// 
-  /// Get the value of isAbsolute_
-  /// @return the value of isAbsolute_
-  bool getIsAbsolute() const {
-      return isAbsolute_;
-  }
 
   /// 
   /// Get the value of connectionStartTime
@@ -199,6 +155,14 @@ public:
     executeState = state;
   }
   
+
+  RobotStatus getRobotStatus() const {
+    return robotStatus;
+  }
+
+  void setRobotStatus(const RobotStatus& status) {
+    robotStatus = status;
+  }
 };
 
 } // namespace RobotNamespace

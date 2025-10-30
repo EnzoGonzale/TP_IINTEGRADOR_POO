@@ -1,4 +1,5 @@
 #include "User.h"
+#include "bcrypt.h"
 
 // Constructors/Destructors
 
@@ -20,8 +21,8 @@ const std::string& UserNamespace::User::getUsername() const {
 }
 
 bool UserNamespace::User::checkPassword(const std::string& password) const {
-    // Por ahora, una simple comparación. En un sistema real, aquí se compararía el hash.
-    return password == passwordHash;
+    // Compara la contraseña en texto plano con el hash guardado en la BD.
+    return bcrypt::validatePassword(password, this->passwordHash);
 }
 
 UserRole UserNamespace::User::getRole() const {

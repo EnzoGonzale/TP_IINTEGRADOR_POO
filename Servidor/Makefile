@@ -1,6 +1,12 @@
 # --- Variables ---
 CXX = g++
 CXXFLAGS = -std=c++17 -Iinclude -Iclient/include -I$(LIBRARY_DIR)
+
+# Bcrypt library dir (no cambiar la estructura del proyecto)
+Bcrypt_DIR = $(LIBRARY_DIR)/Bcrypt
+
+# Incluir headers de bcrypt
+CXXFLAGS += -I$(Bcrypt_DIR)/include
 LDFLAGS_SERVER = -lxmlrpc_server_abyss++ -lxmlrpc_server++ -lxmlrpc_client++ -lxmlrpc++ -lxmlrpc_abyss -lxmlrpc_xmlparse -lxmlrpc_xmltok -lxmlrpc_util -lsqlite3
 LDFLAGS_CLIENT = -lxmlrpc_client++ -lxmlrpc++ -lxmlrpc_xmlparse -lxmlrpc_xmltok -lxmlrpc_util -lsqlite3
 
@@ -12,6 +18,10 @@ OBJ_DIR = obj
 BIN_DIR = bin
 CLIENT_SRC_DIR = client/src
 CLIENT_INCLUDE_DIR = client/include
+
+# --- Bcrypt sources / objects ---
+Bcrypt_SOURCES = $(wildcard $(Bcrypt_DIR)/src/*.cpp)
+Bcrypt_OBJECTS = $(patsubst $(Bcrypt_DIR)/src/%.cpp, $(OBJ_DIR)/%.o, $(Bcrypt_SOURCES))
 
 # --- Archivos Fuente y Objeto ---
 # Fuentes del servidor (excluyendo main y lo que ahora es del cliente)
@@ -56,11 +66,11 @@ all:
 	$(MAKE) $(BIN_DIR)/status_arduino_test
 
 # Regla para enlazar el servidor (depende de todos los objetos del servidor)
-$(BIN_DIR)/mainServer: $(SERVER_OBJECTS) $(SERVER_MAIN_OBJ)
+$(BIN_DIR)/mainServer: $(SERVER_OBJECTS) $(SERVER_MAIN_OBJ) $(Bcrypt_OBJECTS)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS_SERVER)
 
 # Regla para enlazar el cliente (depende de los objetos del cliente y algunos compartidos del servidor)
-$(BIN_DIR)/cli_main: $(CLIENT_OBJECTS) $(filter $(OBJ_DIR)/User.o $(OBJ_DIR)/GCode.o $(OBJ_DIR)/Logger.o $(OBJ_DIR)/FileManager.o, $(SERVER_OBJECTS))
+$(BIN_DIR)/cli_main: $(CLIENT_OBJECTS) $(filter $(OBJ_DIR)/User.o $(OBJ_DIR)/GCode.o $(OBJ_DIR)/Logger.o $(OBJ_DIR)/FileManager.o, $(SERVER_OBJECTS)) $(Bcrypt_OBJECTS)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS_CLIENT)
 
 # Regla genérica para compilar archivos .cpp a .o
@@ -80,19 +90,27 @@ $(OBJ_DIR)/%.o: $(TEST_DIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 # Regla para compilar y enlazar los tests de CLI
-$(BIN_DIR)/cli_tests: $(filter-out $(OBJ_DIR)/Server.o $(OBJ_DIR)/RpcServiceHandler.o, $(SHARED_OBJECTS)) $(CLI_TEST_OBJ)
+$(BIN_DIR)/cli_tests: $(filter-out $(OBJ_DIR)/Server.o $(OBJ_DIR)/RpcServiceHandler.o, $(SHARED_OBJECTS)) $(CLI_TEST_OBJ) $(Bcrypt_OBJECTS)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS_CLIENT)
 
-$(BIN_DIR)/serial_tests: $(OBJ_DIR)/SerialComunicator.o $(OBJ_DIR)/SerialPortConfiguration.o $(OBJ_DIR)/Logger.o $(OBJ_DIR)/FileManager.o $(SERIAL_TEST_OBJ)
+$(BIN_DIR)/serial_tests: $(OBJ_DIR)/SerialComunicator.o $(OBJ_DIR)/SerialPortConfiguration.o $(OBJ_DIR)/Logger.o $(OBJ_DIR)/FileManager.o $(SERIAL_TEST_OBJ) $(Bcrypt_OBJECTS)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS_CLIENT)
 
 # Regla para compilar y enlazar el test de array RPC
-$(BIN_DIR)/array_rpc_test: $(ARRAY_RPC_TEST_OBJ)
+$(BIN_DIR)/array_rpc_test: $(ARRAY_RPC_TEST_OBJ) $(Bcrypt_OBJECTS)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS_CLIENT)
 
 # Regla para compilar y enlazar el test de estado del Arduino
-$(BIN_DIR)/status_arduino_test: $(OBJ_DIR)/Robot.o $(OBJ_DIR)/GCode.o $(OBJ_DIR)/SerialComunicator.o $(OBJ_DIR)/SerialPortConfiguration.o $(OBJ_DIR)/Logger.o $(OBJ_DIR)/FileManager.o $(STATUS_TEST_OBJ)
+$(BIN_DIR)/status_arduino_test: $(OBJ_DIR)/Robot.o $(OBJ_DIR)/GCode.o $(OBJ_DIR)/SerialComunicator.o $(OBJ_DIR)/SerialPortConfiguration.o $(OBJ_DIR)/Logger.o $(OBJ_DIR)/FileManager.o $(STATUS_TEST_OBJ) $(Bcrypt_OBJECTS)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS_CLIENT)
+
+# Regla para compilar fuentes de bcrypt a objetos
+$(OBJ_DIR)/%.o: $(Bcrypt_DIR)/src/%.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+# sudo ./$(BIN_DIR)/serial_tests
+# ./$(BIN_DIR)/array_rpc_test
+# ./$(BIN_DIR)/status_arduino_test
 
 # Inicia el servidor XML-RPC
 run:

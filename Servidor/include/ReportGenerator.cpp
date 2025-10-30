@@ -22,16 +22,16 @@ xmlrpc_c::value ReportGenerator::generateOperatorReport(const RobotNamespace::Ro
     std::map<std::string, xmlrpc_c::value> reportMap;
 
     // 1. Información general del robot
-    reportMap["isConnected"] = xmlrpc_c::value_boolean(robot.getIsConnected());
-    reportMap["areMotorsEnabled"] = xmlrpc_c::value_boolean(robot.getAreMotorsEnabled());
-    reportMap["activityState"] = xmlrpc_c::value_string(robot.getActivityState());
+    reportMap["isConnected"] = xmlrpc_c::value_boolean(robot.getRobotStatus().isConnected);
+    reportMap["areMotorsEnabled"] = xmlrpc_c::value_boolean(robot.getRobotStatus().areMotorsEnabled);
+    reportMap["activityState"] = xmlrpc_c::value_string(robot.getRobotStatus().activityState);
     // reportMap["connectionStartTime"] = xmlrpc_c::value_string(robot.getConnectionStartTime());
 
     // 2. Posición actual
     std::map<std::string, xmlrpc_c::value> positionMap;
-    positionMap["x"] = xmlrpc_c::value_double(robot.getCurrentPosition().x);
-    positionMap["y"] = xmlrpc_c::value_double(robot.getCurrentPosition().y);
-    positionMap["z"] = xmlrpc_c::value_double(robot.getCurrentPosition().z);
+    positionMap["x"] = xmlrpc_c::value_double(robot.getRobotStatus().currentPosition.x);
+    positionMap["y"] = xmlrpc_c::value_double(robot.getRobotStatus().currentPosition.y);
+    positionMap["z"] = xmlrpc_c::value_double(robot.getRobotStatus().currentPosition.z);
     reportMap["position"] = xmlrpc_c::value_struct(positionMap);
 
     // 3. Listado de órdenes filtradas por usuario y conteo de errores

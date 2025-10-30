@@ -63,7 +63,7 @@ private:
     static constexpr double MAX_REACH = L1 + L2; // 240.0 mm
 
     // Velocidad por defecto para movimientos si no se especifica una.
-    static constexpr double DEFAULT_SPEED = 2000.0; // 2000 mm/min
+    static constexpr double DEFAULT_SPEED = 0.0; // 2000 mm/min
 
 };
 

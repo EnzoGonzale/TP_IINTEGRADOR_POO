@@ -2,6 +2,8 @@
 #include <stdexcept>
 #include "Logger.h"
 #include "Exceptions.h"
+#include "bcrypt.h"
+
 
 // Constructors/Destructors
 
@@ -58,7 +60,7 @@ void DatabaseManagerNamespace::DatabaseManager::createTable() {
     if (userCount == 0) {
         Logger::getInstance().log(LogLevel::WARNING, "[DB] La tabla de usuarios está vacía. Creando Administrador Principal...");
         // Reutilizamos la función addUser para crear el usuario por defecto.
-        if (addUser("principalAdmin", "1234", UserRole::ADMIN)) {
+        if (addUser("principalAdmin", bcrypt::generateHash("1234"), UserRole::ADMIN)) {
             Logger::getInstance().log(LogLevel::INFO, "[DB] Usuario 'principalAdmin' creado con clave por defecto.");
         } else {
             Logger::getInstance().log(LogLevel::ERROR, "[DB] No se pudo crear el Administrador Principal.");

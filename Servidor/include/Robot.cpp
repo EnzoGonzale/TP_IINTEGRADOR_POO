@@ -8,15 +8,13 @@
 #include "ServiceLocator.h" // Incluimos el Service Locator
 #include "GCode.h"          // Incluimos la clase GCode para usar su funcionalidad
 #include "Exceptions.h"
+#include "Utils.h"
 
 // --- Declaración de la nueva función privada ---
 static std::string sendAndReceive(ComunicatorPort::ISerialCommunicator& serial, const std::string& command, int time = 2);
 
 
-RobotNamespace::Robot::Robot() : isConnected(false),
-                 areMotorsEnabled(false),
-                 activityState("IDLE"),
-                 isAbsolute_(true) // Inicializamos el nuevo miembro
+RobotNamespace::Robot::Robot()
 {
 }
 
@@ -26,52 +24,43 @@ RobotNamespace::Robot::~Robot()
 
 /// @brief Parsea la respuesta del comando M114 y actualiza el estado del robot.
 void RobotNamespace::Robot::parseM114Response(const std::string& response) {
-    std::stringstream ss(response);
-    std::string line;
+    // La respuesta puede no tener saltos de línea, así que buscamos en toda la cadena.
+    if (response.find("ABSOLUTE MODE") != std::string::npos) {
+        robotStatus.isAbsolute = true;
+    } else if (response.find("RELATIVE MODE") != std::string::npos) {
+        robotStatus.isAbsolute = false;
+    }
+    if (response.find("MOTORS ENABLED") != std::string::npos) {
+        robotStatus.areMotorsEnabled = true;
+    } else if (response.find("MOTORS DISABLED") != std::string::npos) {
+        robotStatus.areMotorsEnabled = false;
+    }
 
-    while (std::getline(ss, line)) {
-        if (line.find("ABSOLUTE MODE") != std::string::npos) {
-            isAbsolute_ = true;
-        } else if (line.find("RELATIVE MODE") != std::string::npos) {
-            isAbsolute_ = false;
-        } else if (line.find("MOTORS ENABLED") != std::string::npos) {
-            areMotorsEnabled = true;
-        } else if (line.find("MOTORS DISABLED") != std::string::npos) {
-            areMotorsEnabled = false;
-        } else if (line.find("CURRENT POSITION:") != std::string::npos) {
-            // Expresión regular para extraer los valores de X, Y, Z
-            std::regex re(R"(X:([-\d.]+) Y:([-\d.]+) Z:([-\d.]+))");
-            std::smatch match;
-            if (std::regex_search(line, match, re) && match.size() == 4) {
-                try {
-                    currentPosition.x = std::stod(match[1].str());
-                    currentPosition.y = std::stod(match[2].str());
-                    currentPosition.z = std::stod(match[3].str());
-                } catch (const std::invalid_argument& e) {
-                    throw RobotException("[Robot] Error al convertir posición desde M114: " + std::string(e.what()));
-                }
-            }
+    // Expresión regular para extraer los valores de X, Y, Z
+    std::regex re(R"(X:([-\d.]+) Y:([-\d.]+) Z:([-\d.]+))");
+    std::smatch match;
+    if (std::regex_search(response, match, re) && match.size() == 4) {
+        try {
+            robotStatus.currentPosition.x = std::stod(match[1].str());
+            robotStatus.currentPosition.y = std::stod(match[2].str());
+            robotStatus.currentPosition.z = std::stod(match[3].str());
+        } catch (const std::invalid_argument& e) {
+            exceptionAndExecute("[Robot] Error al convertir posición desde M114: " + std::string(e.what()));
         }
     }
 }
 
 RobotStatus RobotNamespace::Robot::getStatus() {
-    if (isConnected) {
-        std::string response = sendAndReceive(ServiceLocator::getCommunicator(), "M114\r\n");
+    std::string response;
+    if (robotStatus.isConnected) {
+        response = sendAndReceive(ServiceLocator::getCommunicator(), "M114\r\n");
         parseM114Response(response);
     }
-
-    RobotStatus status;
-    status.isConnected = isConnected;
-    status.activityState = activityState;
-    status.areMotorsEnabled = areMotorsEnabled;
-    status.currentPosition = currentPosition;
-    status.isAbsolute = isAbsolute_;
-    return status;
+    return robotStatus;
 }
 
 void RobotNamespace::Robot::connect() {
-    if (!isConnected) {
+    if (!robotStatus.isConnected) {
         try{
             Logger::getInstance().log(LogLevel::INFO, "[Robot] Iniciando conexión...");
             ServiceLocator::getCommunicator().config("/dev/ttyUSB0", 115200);
@@ -83,73 +72,73 @@ void RobotNamespace::Robot::connect() {
             std::this_thread::sleep_for(std::chrono::seconds(2));
 
             ServiceLocator::getCommunicator().cleanBuffer(); // Ahora limpiamos cualquier mensaje de arranque.
-            isConnected = true;
+            robotStatus.isConnected = true;
             lastOrders.clear(); // Limpiamos el historial de órdenes al conectar.
-            activityState = "CONECTADO";
+            robotStatus.activityState = "CONECTADO";
             logAndExecuteState(LogLevel::INFO, "[Robot] Conexión establecida.");
         } catch (const SerialCommunicationException& e){
             logAndExecuteState(LogLevel::CRITICAL, "[Robot] Fallo crítico al conectar: " + std::string(e.what()));
             throw; // Relanzamos la excepción para que RpcServiceHandler la capture.
         }
     } else {
-        throw RobotException("El robot ya está conectado.");
+        exceptionAndExecute("El robot ya está conectado.");
     }
 }
 
 void RobotNamespace::Robot::disconnect() {
-    if (isConnected) {
+    if (robotStatus.isConnected) {
         try{
             Logger::getInstance().log(LogLevel::INFO, "[Robot] Cerrando conexión...");
             ServiceLocator::getCommunicator().close();
-            isConnected = false;
-            areMotorsEnabled = false; // Al desconectar, los motores se apagan
-            activityState = "DESCONECTADO";
+            robotStatus.isConnected = false;
+            robotStatus.areMotorsEnabled = false; // Al desconectar, los motores se apagan
+            robotStatus.activityState = "DESCONECTADO";
             logAndExecuteState(LogLevel::INFO, "[Robot] Desconexión completada.");
         } catch (const SerialCommunicationException& e){
             logAndExecuteState(LogLevel::ERROR, "[Robot] Error al desconectar: " + std::string(e.what()));
             throw; // Relanzamos la excepción para que RpcServiceHandler la capture.
         }
     } else {
-        throw RobotException("El robot ya está desconectado.");
+        exceptionAndExecute("El robot ya está desconectado.");
     }
 }
 
 void RobotNamespace::Robot::enableMotors() {
     isMoving();
-    if (isConnected && !areMotorsEnabled) {
+    if (robotStatus.isConnected && !robotStatus.areMotorsEnabled) {
         try {
             std::string response = sendAndReceive(ServiceLocator::getCommunicator(), "M17\r\n");
             Logger::getInstance().log(LogLevel::INFO, "[Robot] Respuesta de M17: " + (response.empty() ? "[ninguna]" : response));
             logAndExecuteState(LogLevel::INFO, "[Robot] Motores activados.");
-            areMotorsEnabled = true;
+            robotStatus.areMotorsEnabled = true;
         } catch (const SerialCommunicationException& e) {
-            areMotorsEnabled = false; // Revertimos el estado si falla la comunicación
+            robotStatus.areMotorsEnabled = false; // Revertimos el estado si falla la comunicación
             logAndExecuteState(LogLevel::ERROR, "[Robot] Error al activar motores: " + std::string(e.what()));
             throw;
         }
-    } else if (!isConnected) {
-        throw RobotException("No se pueden activar los motores. El robot no está conectado.");
+    } else if (!robotStatus.isConnected) {
+        exceptionAndExecute("No se pueden activar los motores. El robot no está conectado.");
     } else {
-        throw RobotException("Los motores ya están activados.");
+        exceptionAndExecute("Los motores ya están activados.");
     }
 }
 
 void RobotNamespace::Robot::disableMotors() {
     isMoving();
-    if (areMotorsEnabled) {
+    if (robotStatus.areMotorsEnabled) {
         try {
             std::string response = sendAndReceive(ServiceLocator::getCommunicator(), "M18\r\n");
             Logger::getInstance().log(LogLevel::INFO, "[Robot] Respuesta de M18: " + (response.empty() ? "[ninguna]" : response));
             logAndExecuteState(LogLevel::INFO, "[Robot] Motores desactivados.");
-            areMotorsEnabled = false;
+            robotStatus.areMotorsEnabled = false;
         } catch (const SerialCommunicationException& e) {
-            areMotorsEnabled = true; // Revertimos el estado
+            robotStatus.areMotorsEnabled = true; // Revertimos el estado
             logAndExecuteState(LogLevel::ERROR, "[Robot] Error al desactivar motores: " + std::string(e.what()));
             throw;
         }
     } else {
         // Si los motores ya están desactivados, notificamos con una excepción.
-        throw RobotException("Los motores ya están desactivados.");
+        exceptionAndExecute("Los motores ya están desactivados.");
     }
 }
 
@@ -163,7 +152,7 @@ void RobotNamespace::Robot::moveTo(const Position& position) {
 
 void RobotNamespace::Robot::sendRawGCode(const std::string& gcode) {
     isMoving();
-    if (isConnected) {
+    if (robotStatus.isConnected) {
         try {
             Logger::getInstance().log(LogLevel::INFO, "[Robot] Enviando G-Code crudo: \"" + gcode + "\"");
             std::string response = sendAndReceive(ServiceLocator::getCommunicator(), gcode + "\r\n");
@@ -173,14 +162,14 @@ void RobotNamespace::Robot::sendRawGCode(const std::string& gcode) {
             throw;
         }
     } else {
-        throw RobotException("No se puede enviar G-Code. El robot no está conectado.");
+        exceptionAndExecute("No se puede enviar G-Code. El robot no está conectado.");
     }
 }
 
 
 void RobotNamespace::Robot::setEffector(bool active) {
     isMoving();
-    if (isConnected) {
+    if (robotStatus.isConnected) {
         try {
             if (active) {
                 std::string response = sendAndReceive(ServiceLocator::getCommunicator(), "M3\r\n");
@@ -196,15 +185,15 @@ void RobotNamespace::Robot::setEffector(bool active) {
             throw;
         }
     } else {
-        throw RobotException("No se puede modificar el efector final. El robot no está conectado.");
+        exceptionAndExecute("No se puede modificar el efector final. El robot no está conectado.");
     }
 }
 
 void RobotNamespace::Robot::setCoordinateMode(bool isAbsolute) {
-    if (isConnected) {
+    if (robotStatus.isConnected) {
         try{
             std::string command = isAbsolute ? "G90\r\n" : "G91\r\n";
-            isAbsolute_ = isAbsolute; // Actualizamos el estado interno inmediatamente
+            robotStatus.isAbsolute = isAbsolute; // Actualizamos el estado interno inmediatamente
             std::string response = sendAndReceive(ServiceLocator::getCommunicator(), command);
             response = response.empty() ? "[ninguna]" : response;
             
@@ -218,7 +207,7 @@ void RobotNamespace::Robot::setCoordinateMode(bool isAbsolute) {
             throw;
         }
     } else {
-        throw RobotException("No se puede cambiar el modo de coordenadas. El robot no está conectado.");
+        exceptionAndExecute("No se puede cambiar el modo de coordenadas. El robot no está conectado.");
     }
 }
 
@@ -258,8 +247,8 @@ void RobotNamespace::Robot::logAndExecuteState(LogLevel level, std::string state
 
 void RobotNamespace::Robot::isMoving()
 {
-    if (activityState == "MOVIENDO") {
-        throw RobotException("El robot está en movimiento. Operación no permitida en este estado.");
+    if (robotStatus.activityState == "MOVIENDO") {
+        exceptionAndExecute("El robot está en movimiento. Operación no permitida en este estado.");
         return;
     }
 }
@@ -270,7 +259,21 @@ static std::string sendAndReceive(ComunicatorPort::ISerialCommunicator& serial, 
     
     std::string full_response;
     // Intentamos leer varias veces, ya que la respuesta puede llegar en fragmentos.
-    full_response = serial.reciveMessage(time);
+    while (true)
+    {
+        full_response = serial.reciveMessage(time);
+        if (full_response.find("OK") != std::string::npos) {
+            std::this_thread::sleep_for(std::chrono::seconds(2));
+            break;
+        }
+    }
+    size_t error_pos = 0;
+    if ((error_pos = full_response.find("ERROR")) != std::string::npos){
+        // Si encontramos "ERROR", lanzamos la excepción solo con el mensaje a partir de ese punto.
+        full_response.erase(std::remove(full_response.begin(), full_response.end(), '\n'), full_response.end());
+        full_response.erase(std::remove(full_response.begin(), full_response.end(), '\r'), full_response.end());
+        throw RobotException(full_response.substr(error_pos-4));
+    }
 
     // 1. Reemplazamos la respuesta "OK" para que sea más legible.
     // Usamos un bucle por si aparece varias veces.
@@ -290,13 +293,13 @@ static std::string sendAndReceive(ComunicatorPort::ISerialCommunicator& serial, 
 
 void RobotNamespace::Robot::executeMoviment(const Position& position, double speed){
     isMoving();
-    if (isConnected && areMotorsEnabled) {
+    if (robotStatus.isConnected && robotStatus.areMotorsEnabled) {
         // 1. Generar el comando G-Code a partir de la posición y velocidad.
         std::string gcodeCommand;
         if(position.x == 0 && position.y == 0 && position.z == 0) {
             logAndExecuteState(LogLevel::INFO, "[Robot] Moviendo al origen (0,0,0).");
-            activityState = "ORIGEN";
-            gcodeCommand = "G24\r\n";
+            robotStatus.activityState = "ORIGEN";
+            gcodeCommand = "G28\r\n";
         } else {
             if (speed != 2000.0){
                 gcodeCommand = GCodeNamespace::GCode::generateMoveCommand(position.x, position.y, position.z, speed);
@@ -309,26 +312,34 @@ void RobotNamespace::Robot::executeMoviment(const Position& position, double spe
         try {
             // 2. Enviar el comando a través del comunicador serie.
             Logger::getInstance().log(LogLevel::INFO, "[Robot] Enviando comando al puerto serie...");
-            currentPosition = position;
-            activityState = "MOVIENDO"; // Cambiar estado ANTES de enviar
             std::string response = sendAndReceive(ServiceLocator::getCommunicator(), gcodeCommand + "\r\n", 3); // Mayor timeout para movimientos
-            Logger::getInstance().log(LogLevel::INFO, "[Robot] Comando de movimiento aceptado por el robot. Respuesta: " + response);
-            // NOTA: El robot ahora está físicamente en movimiento.
-            // El estado se quedará en "MOVIENDO". Se necesita un mecanismo (hilo, sondeo) para detectar el fin del movimiento.
-            // Por ahora, lo cambiaremos a EN_POSICION para que no se bloquee.
-            activityState = "EN_POSICION";
-            logAndExecuteState(LogLevel::INFO, "[Robot] Movimiento completado.");
+
+            if (!(response.find("ERROR") != std::string::npos)){
+                robotStatus.activityState = "MOVIENDO"; // Cambiar estado ANTES de enviar
+                Logger::getInstance().log(LogLevel::INFO, "[Robot] Comando de movimiento aceptado por el robot. Respuesta: " + response);
+                // NOTA: El robot ahora está físicamente en movimiento.
+                // El estado se quedará en "MOVIENDO". Se necesita un mecanismo (hilo, sondeo) para detectar el fin del movimiento.
+                // Por ahora, lo cambiaremos a EN_POSICION para que no se bloquee.
+                robotStatus.activityState = "EN_POSICION";
+                logAndExecuteState(LogLevel::INFO, "[Robot] Movimiento completado.");
+            } else {
+                exceptionAndExecute(response);
+            }
         } catch (const SerialCommunicationException& e) {
             logAndExecuteState(LogLevel::ERROR, "[Robot] Error al enviar comando de movimiento." + std::string(e.what()));
-            activityState = "ERROR";
+            robotStatus.activityState = "ERROR";
             return; // Salimos si hubo un error al enviar.
         }
 
     } else {
-        throw RobotException("No se puede mover. Asegúrese de que el robot esté conectado y los motores estén habilitados.");
+        exceptionAndExecute("No se puede mover. Asegúrese de que el robot esté conectado y los motores estén habilitados.");
     }
 }
 
+void RobotNamespace::Robot::exceptionAndExecute(std::string e){
+    setExecuteState(e);
+    throw RobotException(e);
+}
 
 void RobotNamespace::Robot::initAttributes()
 {
