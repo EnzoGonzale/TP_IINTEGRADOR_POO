@@ -8,6 +8,7 @@
 #include <cerrno>    // Para errno
 #include <termios.h> // For tcflush()
 #include "Logger.h"
+#include "Exceptions.h"
 // Constructors/Destructors
 
 
@@ -35,7 +36,7 @@ void ComunicatorPort::SerialComunicator::config(const std::string& port, int spe
   fileDescriptor_ = open(port.c_str(), O_RDWR | O_NOCTTY);
   if (fileDescriptor_ == -1)
   {
-      throw std::runtime_error("No se pudo abrir el puerto serie: " + port);
+      throw SerialCommunicationException("No se pudo abrir el puerto serie: " + port);
   }
 
   // 2. Aplicar la configuración al descriptor de archivo que acabamos de abrir.
@@ -50,13 +51,13 @@ std::string ComunicatorPort::SerialComunicator::sendMessage(const std::string& m
 {
   if (fileDescriptor_ == -1)
   {
-      throw std::runtime_error("Puerto serie no configurado.");
+      throw SerialCommunicationException("Puerto serie no configurado.");
   }
 
   ssize_t bytesWritten = write(fileDescriptor_, message.c_str(), message.size());
   if (bytesWritten == -1)
   {
-      throw std::runtime_error("Error al enviar el mensaje.");
+      throw SerialCommunicationException("Error al enviar el mensaje.");
   }
 
   return "Mensaje enviado."; // El método ahora retorna inmediatamente.
@@ -66,7 +67,7 @@ std::string ComunicatorPort::SerialComunicator::reciveMessage(int time)
 {
   if (fileDescriptor_ == -1)
   {
-      throw std::runtime_error("No se puede recibir datos, el puerto no está configurado.");
+      throw SerialCommunicationException("No se puede recibir datos, el puerto no está configurado.");
   }
 
     std::string full_response;
@@ -82,7 +83,7 @@ std::string ComunicatorPort::SerialComunicator::reciveMessage(int time)
             // En modo no bloqueante, EAGAIN o EWOULDBLOCK no son errores,
             // simplemente significan que no hay datos ahora.
             if (errno != EAGAIN && errno != EWOULDBLOCK) {
-                throw std::runtime_error("Error al leer desde el puerto serie.");
+                throw SerialCommunicationException("Error al leer desde el puerto serie.");
             }
         }
         // Si bytesRead es 0 o -1 (con EAGAIN), simplemente continuamos el bucle

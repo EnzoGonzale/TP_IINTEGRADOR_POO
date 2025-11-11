@@ -4,7 +4,6 @@
 #include <limits> // Para std::numeric_limits
 #include <sstream> // Para std::stringstream
 #include <iomanip> // Para std::setw y std::left
-#include "GCode.h" // Incluimos el GCode
 #include <xmlrpc-c/base.hpp> // Para xmlrpc_c::value
 #include <xmlrpc-c/client.hpp> // Para xmlrpc_c::client_error
 
@@ -21,6 +20,11 @@ CLIHandlerNamespace::CLIHandler::CLIHandler(
 CLIHandlerNamespace::CLIHandler::~CLIHandler()
 {
 }
+
+std::string generateGCode(double x, double y, double z, double speed = 0.0);
+
+
+// Methods
 
 void CLIHandlerNamespace::CLIHandler::start() {
     std::cout << "=== Cliente de Control del Robot ===" << std::endl;
@@ -52,11 +56,10 @@ bool CLIHandlerNamespace::CLIHandler::login() {
 
         if (isAuthenticated) {
             int roleInt = xmlrpc_c::value_int(resultMap.at("role"));
-            UserRole role = static_cast<UserRole>(roleInt);
-            std::string roleStr = (role == UserRole::ADMIN) ? "Administrador" : "Operador";
+            std::string roleStr = (roleInt == 0) ? "Administrador" : "Operador";
             std::cout << "¡Inicio de sesión exitoso! Bienvenido, " << username << " (" << roleStr << ")." << std::endl;
             // Guardamos las credenciales y el rol para usarlas en futuras llamadas.
-            currentUserInfo = std::make_tuple(username, password, role);
+            currentUserInfo = std::make_tuple(username, password, roleInt);
             return true;
         } else {
             std::cout << "Error: Usuario o clave incorrectos." << std::endl;
@@ -78,7 +81,7 @@ void CLIHandlerNamespace::CLIHandler::mainLoop() {
     
     while (true) {
         // Llamamos al menú correcto según el rol del usuario
-        if (currentUserInfo && std::get<2>(*currentUserInfo) == UserRole::ADMIN) {
+        if (currentUserInfo && std::get<2>(*currentUserInfo) == 0) {
             displayMenuAdmin();
         } else {
             displayMenuOperator();
@@ -170,7 +173,7 @@ void CLIHandlerNamespace::CLIHandler::processCommand(const std::string& full_com
 
     // Obtenemos las credenciales para cada llamada
     const auto& [username, password, role] = *currentUserInfo;
-    bool isAdmin = (role == UserRole::ADMIN);
+    bool isAdmin = (role == 0);
 
     try {
         xmlrpc_c::value result;
@@ -214,26 +217,28 @@ void CLIHandlerNamespace::CLIHandler::processCommand(const std::string& full_com
             std::cout << "[CLI] Comando 'efector_off' enviado." << std::endl;
         } else if (command == "mover") {
             double x, y, z;
+            std::string gcode;
             if (!(ss >> x >> y >> z)) {
                 std::cout << "[CLI] Error: Sintaxis incorrecta. Uso: mover <x> <y> <z> [velocidad]" << std::endl;
                 return;
             }
 
-            if (learningModeActive) {
-                std::string gcode = GCodeNamespace::GCode::generateMoveCommand(x, y, z);
-                learnedGCodeCommands.push_back(gcode);
-                std::cout << "[APRENDIZAJE] Comando '" << gcode << "' grabado." << std::endl;
-            }
-
             double speed;
             if (ss >> speed) {
+                gcode = generateGCode(x, y, z, speed);
                 // Si hay un cuarto parámetro (velocidad), llamamos al método original.
                 rpcClient.call(serverUrl, "robot.move", "ssdddd", &result, username.c_str(), password.c_str(), x, y, z, speed);
                 std::cout << "[CLI] Comando 'mover' con velocidad específica enviado." << std::endl;
             } else {
+                gcode = generateGCode(x, y, z);
                 // Si no hay cuarto parámetro, llamamos al nuevo método sin velocidad.
                 rpcClient.call(serverUrl, "robot.moveDefaultSpeed", "ssddd", &result, username.c_str(), password.c_str(), x, y, z);
                 std::cout << "[CLI] Comando 'mover' con velocidad por defecto enviado." << std::endl;
+            }
+
+            if (learningModeActive){
+                learnedGCodeCommands.push_back(gcode);
+                std::cout << "[APRENDIZAJE] Comando '" << gcode << "' grabado." << std::endl;
             }
 
         } else if (command == "modo_absoluto") {
@@ -528,4 +533,15 @@ void CLIHandlerNamespace::CLIHandler::processCommand(const std::string& full_com
     } catch (const xmlrpc_c::fault& f) {
         std::cerr << "[CLI] Error RPC al ejecutar comando: " << f.getDescription() << std::endl;
     }
+}
+
+std::string generateGCode(double x, double y, double z, double speed) {
+    std::stringstream ss;
+    // G1 es el comando para movimiento lineal. F es para la velocidad (Feed rate).
+    ss << "G1 "
+       << "X" << std::fixed << std::setprecision(3) << x << " "
+       << "Y" << std::fixed << std::setprecision(3) << y << " "
+       << "Z" << std::fixed << std::setprecision(3) << z << " "
+       << "E" << std::fixed << std::setprecision(1) << speed;
+    return ss.str();
 }

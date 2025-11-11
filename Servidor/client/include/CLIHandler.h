@@ -3,7 +3,6 @@
 #define CLIHANDLER_H
 
 #include <string>
-#include "User.h"
 #include <optional>
 #include <vector>
 // Incluimos las cabeceras del cliente XML-RPC
@@ -55,7 +54,7 @@ private:
 private:
   // Usamos std::optional para representar que puede haber o no un usuario logueado.
   // Ahora almacenamos las credenciales para enviarlas en cada llamada.
-  std::optional<std::tuple<std::string, std::string, UserRole>> currentUserInfo;
+  std::optional<std::tuple<std::string, std::string, int>> currentUserInfo;
 
   xmlrpc_c::clientSimple& rpcClient;
   std::string serverUrl;

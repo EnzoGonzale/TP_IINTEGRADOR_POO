@@ -1,4 +1,7 @@
 #include "Server.h"
+#include <arpa/inet.h>
+#include <netinet/in.h>
+#include <string.h>  // para memset
 #include <iostream>
 #include <chrono> // Para std::this_thread::sleep_for
 #include <xmlrpc-c/server_abyss.hpp>
@@ -42,10 +45,17 @@ void Server::startRpcServer() {
         xmlrpc_c::registry myRegistry;
         rpcHandler.registerMethods(myRegistry);
 
+        struct sockaddr_in addr;
+        memset(&addr, 0, sizeof(addr));
+        addr.sin_family = AF_INET;
+        addr.sin_addr.s_addr = INADDR_ANY;  // 0.0.0.0 - escucha en todas las interfaces
+        addr.sin_port = htons(8080);
+
         xmlrpc_c::serverAbyss myAbyssServer(
             xmlrpc_c::serverAbyss::constrOpt()
             .registryP(&myRegistry)
-            .portNumber(8080));
+            .sockAddrP((struct sockaddr*)&addr)
+            .sockAddrLen(sizeof(addr)));
         
         Logger::getInstance().log(LogLevel::INFO, "[RPC Server] Servidor XML-RPC iniciado en el puerto 8080. Esperando peticiones...");
         myAbyssServer.run(); // Esto bloquea este hilo y empieza a escuchar.

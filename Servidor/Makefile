@@ -1,120 +1,130 @@
 # --- Variables ---
 CXX = g++
-CXXFLAGS = -std=c++17 -Iinclude -Iclient/include -I$(LIBRARY_DIR)
 
-# Bcrypt library dir (no cambiar la estructura del proyecto)
-Bcrypt_DIR = $(LIBRARY_DIR)/Bcrypt
-
-# Incluir headers de bcrypt
-CXXFLAGS += -I$(Bcrypt_DIR)/include
-LDFLAGS_SERVER = -lxmlrpc_server_abyss++ -lxmlrpc_server++ -lxmlrpc_client++ -lxmlrpc++ -lxmlrpc_abyss -lxmlrpc_xmlparse -lxmlrpc_xmltok -lxmlrpc_util -lsqlite3
-LDFLAGS_CLIENT = -lxmlrpc_client++ -lxmlrpc++ -lxmlrpc_xmlparse -lxmlrpc_xmltok -lxmlrpc_util -lsqlite3
-
-SRC_DIR = src
+# --- Directorios del Proyecto ---
+SERVER_DIR = server
+CLIENT_DIR = client
 LIBRARY_DIR = library
 TEST_DIR = test
-INCLUDE_DIR = include
 OBJ_DIR = obj
 BIN_DIR = bin
-CLIENT_SRC_DIR = client/src
-CLIENT_INCLUDE_DIR = client/include
+
+# --- Library specific directories ---
+Bcrypt_DIR = $(LIBRARY_DIR)/Bcrypt
+Json_DIR = $(LIBRARY_DIR)/Json
+DocTest_DIR = $(LIBRARY_DIR)/DocTest
+SQLITE_DIR = $(LIBRARY_DIR)/sqlite3
+XMLRPC_DIR = $(LIBRARY_DIR)/xmlrpc-c
+
+# --- Flags de Compilación y Enlazado ---
+CXXFLAGS = -std=c++17 \
+           -I$(SERVER_DIR)/include \
+           -I$(CLIENT_DIR)/include \
+           -I$(Bcrypt_DIR)/include \
+           -I$(Json_DIR) \
+           -I$(DocTest_DIR) \
+           -I$(SQLITE_DIR)/include \
+           -I$(XMLRPC_DIR)/include
+
+# --- Bibliotecas Estáticas de XML-RPC ---
+# El orden es crucial: de más alto nivel (más dependiente) a más bajo nivel (menos dependiente).
+# Las bibliotecas C++ dependen de las bibliotecas C.
+
+# Bibliotecas C++
+XMLRPC_LIBS_SERVER_CPP = \
+    $(XMLRPC_DIR)/lib/libxmlrpc_server_abyss++.a \
+    $(XMLRPC_DIR)/lib/libxmlrpc_server++.a \
+    $(XMLRPC_DIR)/lib/libxmlrpc_client++.a \
+    $(XMLRPC_DIR)/lib/libxmlrpc++.a
+
+XMLRPC_LIBS_CLIENT_CPP = \
+    $(XMLRPC_DIR)/lib/libxmlrpc_client++.a \
+    $(XMLRPC_DIR)/lib/libxmlrpc++.a
+
+# Bibliotecas C (dependencias de las de C++)
+XMLRPC_LIBS_C = \
+    $(XMLRPC_DIR)/lib/libxmlrpc_server_abyss.a \
+    $(XMLRPC_DIR)/lib/libxmlrpc_server.a \
+    $(XMLRPC_DIR)/lib/libxmlrpc_client.a \
+    $(XMLRPC_DIR)/lib/libxmlrpc.a \
+    $(XMLRPC_DIR)/lib/libxmlrpc_xmlparse.a \
+    $(XMLRPC_DIR)/lib/libxmlrpc_xmltok.a \
+    $(XMLRPC_DIR)/lib/libxmlrpc_util.a \
+    $(XMLRPC_DIR)/lib/libxmlrpc_abyss.a \
+    $(XMLRPC_DIR)/lib/libxmlrpc_util.a
+
+XMLRPC_LIBS_CLIENT_SPECIFIC = \
+    $(XMLRPC_DIR)/lib/libxmlrpc_client++.a
+
+# SQLite3 static library
+SQLite3_LIB_STATIC = $(SQLITE_DIR)/lib/libsqlite3.a
+
+# Dependencias de sistema comunes para XML-RPC (y otras librerías si las hubiera)
+SYSTEM_DEPS = -lpthread -lcurl
+
+LDFLAGS_SERVER = $(XMLRPC_LIBS_SERVER_CPP) $(XMLRPC_LIBS_C) $(SQLite3_LIB_STATIC) $(SYSTEM_DEPS)
+LDFLAGS_CLIENT = $(XMLRPC_LIBS_CLIENT_CPP) $(XMLRPC_LIBS_C) $(SQLite3_LIB_STATIC) $(SYSTEM_DEPS)
 
 # --- Bcrypt sources / objects ---
 Bcrypt_SOURCES = $(wildcard $(Bcrypt_DIR)/src/*.cpp)
 Bcrypt_OBJECTS = $(patsubst $(Bcrypt_DIR)/src/%.cpp, $(OBJ_DIR)/%.o, $(Bcrypt_SOURCES))
 
-# --- Archivos Fuente y Objeto ---
-# Fuentes del servidor (excluyendo main y lo que ahora es del cliente)
-SERVER_SOURCES = $(filter-out $(INCLUDE_DIR)/CLIHandler.cpp, $(wildcard $(INCLUDE_DIR)/*.cpp))
-SERVER_OBJECTS = $(patsubst $(INCLUDE_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SERVER_SOURCES))
+# --- Archivos Fuente y Objeto (Nueva Estructura) ---
+# Fuentes y objetos del Servidor
+# Fuentes y objetos del Cliente
+CLIENT_SOURCES = $(wildcard $(CLIENT_DIR)/src/*.cpp)
+CLIENT_OBJECTS = $(patsubst $(CLIENT_DIR)/src/%.cpp, $(OBJ_DIR)/%.o, $(CLIENT_SOURCES))
 
-# Fuentes y objetos específicos para el servidor
-SERVER_MAIN_SRC = $(SRC_DIR)/mainServer.cpp
-SERVER_MAIN_OBJ = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SERVER_MAIN_SRC))
+# Fuentes y objetos del Servidor (excluyendo mainServer.cpp para tests)
+SERVER_SOURCES = $(wildcard $(SERVER_DIR)/src/*.cpp)
+SERVER_OBJECTS = $(patsubst $(SERVER_DIR)/src/%.cpp, $(OBJ_DIR)/%.o, $(SERVER_SOURCES))
 
-# Fuentes y objetos específicos para el cliente
-CLIENT_SOURCES = $(wildcard $(CLIENT_SRC_DIR)/*.cpp) $(wildcard $(CLIENT_INCLUDE_DIR)/*.cpp)
-CLIENT_OBJECTS = $(patsubst $(CLIENT_SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(filter $(CLIENT_SRC_DIR)/%.cpp, $(CLIENT_SOURCES))) \
-                 $(patsubst $(CLIENT_INCLUDE_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(filter $(CLIENT_INCLUDE_DIR)/%.cpp, $(CLIENT_SOURCES)))
-
-
-# Fuentes y objetos para los tests de CLI
-CLI_TEST_SRC = $(TEST_DIR)/cli_handler_test.cpp
-CLI_TEST_OBJ = $(patsubst $(TEST_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(CLI_TEST_SRC))
-
-# Fuentes y objetos para los tests de Serial
-SERIAL_TEST_SRC = $(TEST_DIR)/serial_comunicator_test.cpp
-SERIAL_TEST_OBJ = $(patsubst $(TEST_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SERIAL_TEST_SRC))
-
-# Fuentes y objetos para el test de array RPC
-ARRAY_RPC_TEST_SRC = $(TEST_DIR)/array_rpc_test.cpp
-ARRAY_RPC_TEST_OBJ = $(patsubst $(TEST_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(ARRAY_RPC_TEST_SRC))
-
-# Fuentes y objetos para el test de estado del Arduino
-STATUS_TEST_SRC = $(TEST_DIR)/status_arduino_test.cpp
-STATUS_TEST_OBJ = $(patsubst $(TEST_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(STATUS_TEST_SRC))
-
+# Fuentes y objetos para los Tests
+TEST_SOURCES = $(wildcard $(TEST_DIR)/*.cpp)
+TEST_OBJECTS = $(patsubst $(TEST_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(TEST_SOURCES))
 
 # --- Reglas de Compilación ---
 all:
 	mkdir -p $(BIN_DIR) $(OBJ_DIR)
-	$(MAKE) $(BIN_DIR)/cli_main
 	$(MAKE) $(BIN_DIR)/mainServer
-	$(MAKE) $(BIN_DIR)/serial_tests
-#	$(MAKE) $(BIN_DIR)/cli_tests
+	$(MAKE) $(BIN_DIR)/cli_main
+	$(MAKE) $(BIN_DIR)/serial_comunicator_test
 	$(MAKE) $(BIN_DIR)/array_rpc_test
 	$(MAKE) $(BIN_DIR)/status_arduino_test
 
 # Regla para enlazar el servidor (depende de todos los objetos del servidor)
-$(BIN_DIR)/mainServer: $(SERVER_OBJECTS) $(SERVER_MAIN_OBJ) $(Bcrypt_OBJECTS)
+$(BIN_DIR)/mainServer: $(SERVER_OBJECTS) $(Bcrypt_OBJECTS)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS_SERVER)
 
 # Regla para enlazar el cliente (depende de los objetos del cliente y algunos compartidos del servidor)
-$(BIN_DIR)/cli_main: $(CLIENT_OBJECTS) $(filter $(OBJ_DIR)/User.o $(OBJ_DIR)/GCode.o $(OBJ_DIR)/Logger.o $(OBJ_DIR)/FileManager.o, $(SERVER_OBJECTS)) $(Bcrypt_OBJECTS)
+$(BIN_DIR)/cli_main: $(CLIENT_OBJECTS)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS_CLIENT)
 
+# Regla para enlazar el test de SerialComunicator
+$(BIN_DIR)/serial_comunicator_test: $(OBJ_DIR)/serial_comunicator_test.o $(OBJ_DIR)/SerialComunicator.o $(OBJ_DIR)/SerialPortConfiguration.o $(OBJ_DIR)/Logger.o $(OBJ_DIR)/FileManager.o $(OBJ_DIR)/GCode.o $(OBJ_DIR)/User.o $(Bcrypt_OBJECTS)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS_SERVER)
+
+# Regla para enlazar el test de ArrayRPC
+$(BIN_DIR)/array_rpc_test: $(OBJ_DIR)/array_rpc_test.o $(filter-out $(OBJ_DIR)/mainServer.o, $(SERVER_OBJECTS)) $(Bcrypt_OBJECTS) $(OBJ_DIR)/Logger.o $(OBJ_DIR)/FileManager.o
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS_SERVER)
+
+# Regla para enlazar el test de StatusArduino
+$(BIN_DIR)/status_arduino_test: $(OBJ_DIR)/status_arduino_test.o $(OBJ_DIR)/Robot.o $(OBJ_DIR)/SerialComunicator.o $(OBJ_DIR)/SerialPortConfiguration.o $(OBJ_DIR)/GCode.o $(OBJ_DIR)/User.o $(Bcrypt_OBJECTS) $(OBJ_DIR)/Logger.o $(OBJ_DIR)/FileManager.o
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS_SERVER)
+
 # Regla genérica para compilar archivos .cpp a .o
-$(OBJ_DIR)/%.o: $(INCLUDE_DIR)/%.cpp
+$(OBJ_DIR)/%.o: $(SERVER_DIR)/src/%.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp # Para mainServer.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-$(OBJ_DIR)/%.o: $(CLIENT_INCLUDE_DIR)/%.cpp # Para CLIHandler.cpp está en client/include
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-$(OBJ_DIR)/%.o: $(CLIENT_SRC_DIR)/%.cpp # Para cli_main.cpp
+$(OBJ_DIR)/%.o: $(CLIENT_DIR)/src/%.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 $(OBJ_DIR)/%.o: $(TEST_DIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-# Regla para compilar y enlazar los tests de CLI
-$(BIN_DIR)/cli_tests: $(filter-out $(OBJ_DIR)/Server.o $(OBJ_DIR)/RpcServiceHandler.o, $(SHARED_OBJECTS)) $(CLI_TEST_OBJ) $(Bcrypt_OBJECTS)
-	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS_CLIENT)
-
-$(BIN_DIR)/serial_tests: $(OBJ_DIR)/SerialComunicator.o $(OBJ_DIR)/SerialPortConfiguration.o $(OBJ_DIR)/Logger.o $(OBJ_DIR)/FileManager.o $(SERIAL_TEST_OBJ) $(Bcrypt_OBJECTS)
-	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS_CLIENT)
-
-# Regla para compilar y enlazar el test de array RPC
-$(BIN_DIR)/array_rpc_test: $(ARRAY_RPC_TEST_OBJ) $(Bcrypt_OBJECTS)
-	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS_CLIENT)
-
-# Regla para compilar y enlazar el test de estado del Arduino
-$(BIN_DIR)/status_arduino_test: $(OBJ_DIR)/Robot.o $(OBJ_DIR)/GCode.o $(OBJ_DIR)/SerialComunicator.o $(OBJ_DIR)/SerialPortConfiguration.o $(OBJ_DIR)/Logger.o $(OBJ_DIR)/FileManager.o $(STATUS_TEST_OBJ) $(Bcrypt_OBJECTS)
-	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS_CLIENT)
-
 # Regla para compilar fuentes de bcrypt a objetos
 $(OBJ_DIR)/%.o: $(Bcrypt_DIR)/src/%.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-# sudo ./$(BIN_DIR)/serial_tests
-# ./$(BIN_DIR)/array_rpc_test
-# ./$(BIN_DIR)/status_arduino_test
-
-# Inicia el servidor XML-RPC
-run:
-	sudo ./$(BIN_DIR)/mainServer
 
 # Visualiza el archivo de log generado por el Logger
 visualize:
@@ -122,25 +132,26 @@ visualize:
 
 # Ejecuta el modo interactivo
 # Ahora, 'interactive' ejecuta un cliente CLI separado que se conecta al servidor RPC.
-interactive:
+run_client:
 	sudo ./$(BIN_DIR)/cli_main
 
-# Ejecuta los tests de CLI
-test: $(BIN_DIR)/cli_tests
-	./$(BIN_DIR)/cli_tests
+# Inicia el servidor XML-RPC
+run_server:
+	sudo ./$(BIN_DIR)/mainServer
 
-# Ejecuta los tests de comunicación serial (requiere hardware y sudo)
-serial_test: $(BIN_DIR)/serial_tests
-	sudo ./$(BIN_DIR)/serial_tests
+# Evaluacion de tests
+test_comunicator:
+	sudo ./$(BIN_DIR)/serial_comunicator_test
 
-# Ejecuta el test de array RPC (requiere que el servidor esté corriendo)
-array_rpc_test: $(BIN_DIR)/array_rpc_test
-	./$(BIN_DIR)/array_rpc_test
+test_array_rpc:
+	sudo ./$(BIN_DIR)/array_rpc_test
 
-# Ejecuta el test de parseo de estado del Arduino
-status_test: $(BIN_DIR)/status_arduino_test
-	./$(BIN_DIR)/status_arduino_test
+test_status_arduino:
+	sudo ./$(BIN_DIR)/status_arduino_test
 
+# Limpia los archivos binarios y objetos generados
 clean:
 	rm -rf $(BIN_DIR) $(OBJ_DIR)
 	rm -f application.csv # Limpiamos el archivo de log generado por el Logger en los tests
+
+.PHONY: all clean run_server run_client visualize

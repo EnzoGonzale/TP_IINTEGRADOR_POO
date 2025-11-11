@@ -1,3 +1,4 @@
+#include <cstdint> // Para definir uint16_t, uint32_t, etc.
 extern "C" {
     // Incluimos abyss.h explícitamente para tener acceso a las funciones de C de Abyss.
     // DEBE estar antes que cualquier otro include de xmlrpc-c para que funcione.
