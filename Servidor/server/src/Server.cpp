@@ -14,7 +14,7 @@ std::string getProjectDirectory() {
     // __FILE__ es una macro que se expande a la ruta completa de este archivo de código fuente.
     std::filesystem::path source_path = std::filesystem::absolute(__FILE__);
     // Subimos dos niveles desde /include/Server.cpp para llegar a la raíz del proyecto.
-    return source_path.parent_path().parent_path().string();
+    return source_path.parent_path().parent_path().parent_path().string();
 }
 
 // Constructors/Destructors
@@ -22,11 +22,12 @@ std::string getProjectDirectory() {
 Server::Server() 
     : running(false),
       dbManager(getProjectDirectory() + "/server_database.db"),
-      authService(dbManager),
+      sessionManager(), // Se inicializa aquí
+      authService(dbManager, sessionManager), // Pasamos el sessionManager
       robot(),
       reportGenerator(), // Se mantiene por si los métodos RPC la necesitan
       taskManager("./tasks.json"),
-      rpcHandler(authService, robot, taskManager)
+      rpcHandler(authService, robot, taskManager) // rpcHandler también necesitará el authService modificado
 { 
     // Cargamos las tareas al iniciar el servidor.
     if (taskManager.loadTasks()) {

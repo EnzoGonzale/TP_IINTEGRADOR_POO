@@ -11,8 +11,9 @@ extern "C" {
 #include "RpcServiceHandler.h"
 #include <xmlrpc-c/base.hpp>
 #include <xmlrpc-c/server_abyss.hpp> // Necesario para callInfo_serverAbyss
-// #include "Logger.h" // Incluimos el Logger
+#include <optional>
 #include "TaskManager.h"
+#include "User.h"
 #include "Utils.h" // Incluimos nuestro nuevo archivo de utilidades
 #include "Exceptions.h"
 
@@ -29,7 +30,92 @@ RpcServiceHandlerNamespace::RpcServiceHandler::RpcServiceHandler(
 RpcServiceHandlerNamespace::RpcServiceHandler::~RpcServiceHandler()
 {
 }
- 
+
+// --- Método especial para el login ---
+// No hereda de AuthenticatedMethod porque este es el punto de entrada.
+class UserLoginMethod : public xmlrpc_c::method2 {
+private:
+    std::string _name;
+    AuthenticationServiceNamespace::AuthenticationService& authService;
+public:
+    UserLoginMethod(AuthenticationServiceNamespace::AuthenticationService& auth)
+        : authService(auth) {
+        this->_signature = "S:ss"; // struct user.login(string user, string pass)
+        this->_name = "user.login";
+        this->_help = "Authenticates a user and returns a session token and user info.";
+    }
+
+    void execute(xmlrpc_c::paramList const& paramList,
+                 const xmlrpc_c::callInfo * const callInfoP,
+                 xmlrpc_c::value*       const retvalP) override {
+        std::string const username(paramList.getString(0));
+        std::string const password(paramList.getString(1));
+        paramList.verifyEnd(2);
+
+        std::string clientIp = "unknown";
+        auto const * const abyssCallInfoP = dynamic_cast<const xmlrpc_c::callInfo_serverAbyss*>(callInfoP);
+        if (abyssCallInfoP) {
+            struct abyss_unix_chaninfo *channelInfo;
+            SessionGetChannelInfo(abyssCallInfoP->abyssSessionP, (void**)&channelInfo);
+            if (channelInfo)
+                clientIp = inet_ntoa(((struct sockaddr_in*)&channelInfo->peerAddr)->sin_addr);
+        }
+
+        try {
+            std::string token = authService.login(username, password, clientIp);
+            auto userOpt = authService.validateToken(token); // Obtenemos el usuario para devolver su rol
+
+            Logger::getInstance().log(LogLevel::INFO, "Successful login attempt", username, clientIp);
+
+            std::map<std::string, xmlrpc_c::value> result_map;
+            result_map["token"] = xmlrpc_c::value_string(token);
+            result_map["role"] = xmlrpc_c::value_int(static_cast<int>(userOpt->getRole()));
+            *retvalP = xmlrpc_c::value_struct(result_map);
+
+        } catch (const InvalidCredentialsException& e) {
+            Logger::getInstance().log(LogLevel::WARNING, "Failed login attempt", username, clientIp);
+            throw xmlrpc_c::fault(e.what(), xmlrpc_c::fault::CODE_INTERNAL);
+        }
+    }
+};
+
+// --- Método para cerrar sesión ---
+class UserLogoutMethod : public xmlrpc_c::method2 {
+protected:
+    AuthenticationServiceNamespace::AuthenticationService& authService;
+    std::string _name;
+public:
+    UserLogoutMethod(AuthenticationServiceNamespace::AuthenticationService& auth)
+        : authService(auth) {
+        this->_signature = "b:s"; // bool user.logout(string token)
+        this->_name = "user.logout";
+        this->_help = "Logs out the user by invalidating the session token.";
+    }
+
+    void execute(xmlrpc_c::paramList const& paramList,
+                 const xmlrpc_c::callInfo * const callInfoP,
+                 xmlrpc_c::value*       const retvalP) override {
+        std::string const token(paramList.getString(0));
+        paramList.verifyEnd(1);
+        auto userOpt = authService.validateToken(token);
+
+        // Obtenemos la IP del cliente de forma segura.
+        std::string clientIp = "unknown";
+        auto const * const abyssCallInfoP = dynamic_cast<const xmlrpc_c::callInfo_serverAbyss*>(callInfoP);
+        if (abyssCallInfoP) {
+            // Usamos SessionGetChannelInfo para obtener la IP.
+            struct abyss_unix_chaninfo *channelInfo;
+            SessionGetChannelInfo(abyssCallInfoP->abyssSessionP, (void**)&channelInfo);
+            if (channelInfo)
+                clientIp = inet_ntoa(((struct sockaddr_in*)&channelInfo->peerAddr)->sin_addr);
+        }
+
+        Logger::getInstance().log(LogLevel::INFO, "Successful logout attempt", userOpt->getUsername(), clientIp);
+        authService.logout(token);
+        *retvalP = xmlrpc_c::value_boolean(true);
+    }
+};
+
 // --- Clase Base para Métodos RPC con Autenticación ---
 // Centraliza la lógica de autenticación para no repetirla en cada método.
 class AuthenticatedMethod : public xmlrpc_c::method2 {
@@ -37,7 +123,7 @@ protected:
     AuthenticationServiceNamespace::AuthenticationService& authService;
     RobotNamespace::Robot& robot;
     TaskManager& taskManager;
-    std::string _name; // Añadimos el miembro _name que faltaba.
+    std::string _name; // Añadimos el miembro _name
 
     AuthenticatedMethod(AuthenticationServiceNamespace::AuthenticationService& auth, RobotNamespace::Robot& r, TaskManager& tm)
         : authService(auth), robot(r), taskManager(tm) {}
@@ -49,40 +135,37 @@ protected:
                  const xmlrpc_c::callInfo * const callInfoP,
                  xmlrpc_c::value*       const retvalP) override {
         
-            std::string const username(paramList.getString(0));
-            std::string const password(paramList.getString(1));
-           
-            // Obtenemos la IP del cliente de forma segura.
-            std::string clientIp = "unknown";
-            auto const * const abyssCallInfoP =
-                dynamic_cast<const xmlrpc_c::callInfo_serverAbyss*>(callInfoP);
-            
-            if (abyssCallInfoP) {
-                // Usamos SessionGetChannelInfo para obtener la IP, como lo investigaste.
-                struct abyss_unix_chaninfo *channelInfo;
-                SessionGetChannelInfo(abyssCallInfoP->abyssSessionP, (void**)&channelInfo);
-                if (channelInfo)
-                    clientIp = inet_ntoa(((struct sockaddr_in*)&channelInfo->peerAddr)->sin_addr);
+        std::string const token(paramList.getString(0));
+        
+        // Obtenemos la IP del cliente de forma segura.
+        std::string clientIp = "unknown";
+        auto const * const abyssCallInfoP = dynamic_cast<const xmlrpc_c::callInfo_serverAbyss*>(callInfoP);
+        
+        if (abyssCallInfoP) {
+            // Usamos SessionGetChannelInfo para obtener la IP.
+            struct abyss_unix_chaninfo *channelInfo;
+            SessionGetChannelInfo(abyssCallInfoP->abyssSessionP, (void**)&channelInfo);
+            if (channelInfo)
+                clientIp = inet_ntoa(((struct sockaddr_in*)&channelInfo->peerAddr)->sin_addr);
+        }
+        
+        auto userOpt = authService.validateToken(token);
+        try {
+            if (!userOpt) {
+                throw InvalidCredentialsException("Token inválido o sesión expirada.");
             }
-            
-        try { 
-            auto userOpt = authService.authenticate(username, password); // Ahora puede lanzar excepciones
             // Log de la llamada
-            std::string logMessage = "RPC call from user '" + username + "': " + this->_name;
-            Logger::getInstance().log(LogLevel::INFO, "[RPC] " + logMessage, username, clientIp);
+            std::string logMessage = "RPC call from user '" + userOpt->getUsername() + "': " + this->_name;
+            Logger::getInstance().log(LogLevel::INFO, "[RPC] " + logMessage, userOpt->getUsername(), clientIp);
 
             // Llama a la lógica específica del método hijo.
-            // Los métodos que no necesitan parámetros adicionales ignoran el paramList.
-            // Por ejemplo, connect, disconnect, getStatus, etc.
+            // El primer parámetro (token) ya fue consumido. Los métodos hijos leen a partir del índice 1.
             executeAuthenticated(paramList, retvalP, *userOpt, clientIp);
 
-        } catch (const AuthenticationException& e) {
-            // Capturamos específicamente las excepciones de autenticación
-            Logger::getInstance().log(LogLevel::WARNING, "Failed RPC call: " + std::string(e.what()), username, clientIp);
-            throw xmlrpc_c::fault(e.what(), xmlrpc_c::fault::CODE_INTERNAL);
-        } catch (const std::exception& e) {
-            // Captura errores de autenticación o de ejecución y los devuelve como un "fault" RPC.
-            robot.recordOrder(username, "ERROR", e.what());
+        } catch (const std::exception& e) { // Captura cualquier excepción (de validación o de ejecución)
+            std::string userForLog = userOpt ? userOpt->getUsername() : "unknown_token";
+            Logger::getInstance().log(LogLevel::WARNING, "Failed RPC call for user '" + userForLog + "': " + std::string(e.what()), userForLog, clientIp);
+            robot.recordOrder(userForLog, "ERROR", e.what());
             throw xmlrpc_c::fault(e.what(), xmlrpc_c::fault::CODE_INTERNAL);
         }
     }
@@ -94,13 +177,47 @@ protected:
                                       const std::string& clientIp) = 0;
 };
 
+// --- Método para listar usuarios conectados (solo para administradores) ---
+class UserListMethod : public AuthenticatedMethod {
+public:
+    UserListMethod(AuthenticationServiceNamespace::AuthenticationService& auth, RobotNamespace::Robot& r, TaskManager& tm)
+        : AuthenticatedMethod(auth, r, tm) {
+        this->_signature = "A:s"; // Devuelve un array de structs
+        this->_name = "user.list";
+        this->_help = "Lists all currently authenticated users. Requires administrator privileges.";
+    }
+
+    void executeAuthenticated(xmlrpc_c::paramList const& paramList,
+                              xmlrpc_c::value* const retvalP,
+                              UserNamespace::User& adminUser,
+                              const std::string& clientIp) override {
+        if (adminUser.getRole() != UserRole::ADMIN) {
+            throw PermissionDeniedException("Solo los administradores pueden listar usuarios.");
+        }
+        paramList.verifyEnd(1);
+
+        auto activeUsers = authService.getActiveUsersWithIPs();
+        std::vector<xmlrpc_c::value> userList;
+
+        for (const auto& pair : activeUsers) {
+            std::map<std::string, xmlrpc_c::value> userMap;
+            userMap["username"] = xmlrpc_c::value_string(pair.second.first.getUsername());
+            userMap["role"] = xmlrpc_c::value_int(static_cast<int>(pair.second.first.getRole()));
+            userMap["ip_address"] = xmlrpc_c::value_string(pair.second.second);
+            userList.push_back(xmlrpc_c::value_struct(userMap));
+        }
+
+        *retvalP = xmlrpc_c::value_array(userList);
+    }
+};
+
 // --- Implementación de los Métodos RPC Reales ---
 
 class RobotConnectMethod : public AuthenticatedMethod {
 public:
     RobotConnectMethod(AuthenticationServiceNamespace::AuthenticationService& auth, RobotNamespace::Robot& r, TaskManager& tm)
         : AuthenticatedMethod(auth, r, tm) {
-        this->_signature = "b:ss"; // boolean robot.connect(string user, string pass)
+        this->_signature = "b:s"; // boolean robot.connect(string token)
         this->_name = "robot.connect";
         this->_help = "Connects to the robot after authenticating the user.";
     }
@@ -109,7 +226,7 @@ public:
                               UserNamespace::User& user,
                               const std::string& clientIp) override {
         robot.connect();
-        paramList.verifyEnd(2);
+        paramList.verifyEnd(1);
         robot.recordOrder(user.getUsername(), "connect", "CONECTADO");
         *retvalP = xmlrpc_c::value_boolean(true);
     }
@@ -119,7 +236,7 @@ class RobotDisconnectMethod : public AuthenticatedMethod {
 public:
     RobotDisconnectMethod(AuthenticationServiceNamespace::AuthenticationService& auth, RobotNamespace::Robot& r, TaskManager& tm)
         : AuthenticatedMethod(auth, r, tm) {
-        this->_signature = "b:ss"; // boolean robot.disconnect(string user, string pass)
+        this->_signature = "b:s"; // boolean robot.disconnect(string token)
         this->_name = "robot.disconnect";
         this->_help = "Disconnects from the robot after authenticating the user.";
     }
@@ -128,7 +245,7 @@ public:
                               UserNamespace::User& user,
                               const std::string& clientIp) override {
         robot.disconnect();
-        paramList.verifyEnd(2);
+        paramList.verifyEnd(1);
         robot.recordOrder(user.getUsername(), "disconnect", "DESCONECTADO");
         *retvalP = xmlrpc_c::value_boolean(true);
     }
@@ -138,7 +255,7 @@ class RobotGetStatusMethod : public AuthenticatedMethod {
 public:
     RobotGetStatusMethod(AuthenticationServiceNamespace::AuthenticationService& auth, RobotNamespace::Robot& r, TaskManager& tm)
         : AuthenticatedMethod(auth, r, tm) {
-        this->_signature = "S:ss"; // struct robot.getStatus(string user, string pass)
+        this->_signature = "S:s"; // struct robot.getStatus(string token)
         this->_name = "robot.getStatus";
         this->_help = "Gets the robot's current status after authenticating the user.";
     }
@@ -147,7 +264,7 @@ public:
                               UserNamespace::User& user,
                               const std::string& clientIp) override {
         RobotStatus status = robot.getStatus();
-        paramList.verifyEnd(2);
+        paramList.verifyEnd(1);
 
         std::map<std::string, xmlrpc_c::value> statusMap;
         statusMap["isConnected"] = xmlrpc_c::value_boolean(status.isConnected);
@@ -170,7 +287,7 @@ class RobotMoveMethod : public AuthenticatedMethod {
 public:
     RobotMoveMethod(AuthenticationServiceNamespace::AuthenticationService& auth, RobotNamespace::Robot& r, TaskManager& tm)
         : AuthenticatedMethod(auth, r, tm) {
-        this->_signature = "b:ssdddd"; // boolean robot.move(string user, string pass, double x, double y, double z, double speed)
+        this->_signature = "b:sdddd"; // boolean robot.move(string token, double x, double y, double z, double speed)
         this->_name = "robot.move";
         this->_help = "Moves the robot to a specific position.";
     }
@@ -180,13 +297,11 @@ public:
                               xmlrpc_c::value* const retvalP, 
                               UserNamespace::User& user,
                               const std::string& clientIp) override {
-        // Los parámetros 0 y 1 (user, pass) ya fueron consumidos por la clase base.
-        // Aquí leemos los parámetros específicos de este método.
-        double const x(paramList.getDouble(2));
-        double const y(paramList.getDouble(3));
-        double const z(paramList.getDouble(4));
-        double const speed(paramList.getDouble(5));
-        paramList.verifyEnd(6);
+        double const x(paramList.getDouble(1));
+        double const y(paramList.getDouble(2));
+        double const z(paramList.getDouble(3));
+        double const speed(paramList.getDouble(4));
+        paramList.verifyEnd(5);
 
         // Lógica específica del método
         robot.moveTo(Position(x, y, z), speed);
@@ -205,7 +320,7 @@ class RobotMoveDefaultSpeedMethod : public AuthenticatedMethod {
 public:
     RobotMoveDefaultSpeedMethod(AuthenticationServiceNamespace::AuthenticationService& auth, RobotNamespace::Robot& r, TaskManager& tm)
         : AuthenticatedMethod(auth, r, tm) {
-        this->_signature = "b:ssddd"; // boolean robot.moveDefaultSpeed(string user, string pass, double x, double y, double z)
+        this->_signature = "b:sddd"; // boolean robot.moveDefaultSpeed(string token, double x, double y, double z)
         this->_name = "robot.moveDefaultSpeed";
         this->_help = "Moves the robot to a specific position using default speed.";
     }
@@ -214,10 +329,10 @@ public:
                               xmlrpc_c::value* const retvalP, 
                               UserNamespace::User& user,
                               const std::string& clientIp) override {
-        double const x(paramList.getDouble(2));
-        double const y(paramList.getDouble(3));
-        double const z(paramList.getDouble(4));
-        paramList.verifyEnd(5);
+        double const x(paramList.getDouble(1));
+        double const y(paramList.getDouble(2));
+        double const z(paramList.getDouble(3));
+        paramList.verifyEnd(4);
 
         // Llama a la sobrecarga de moveTo que usa la velocidad por defecto
         robot.moveTo(Position(x, y, z)); 
@@ -235,7 +350,7 @@ class RobotEnableMotorsMethod : public AuthenticatedMethod {
 public:
     RobotEnableMotorsMethod(AuthenticationServiceNamespace::AuthenticationService& auth, RobotNamespace::Robot& r, TaskManager& tm)
         : AuthenticatedMethod(auth, r, tm) {
-        this->_signature = "b:ss"; // boolean robot.enableMotors(string user, string pass)
+        this->_signature = "b:s"; // boolean robot.enableMotors(string token)
         this->_name = "robot.enableMotors";
         this->_help = "Enables the robot motors.";
     }
@@ -244,7 +359,7 @@ public:
                               UserNamespace::User& user,
                               const std::string& clientIp) override {
         robot.enableMotors();
-        paramList.verifyEnd(2);
+        paramList.verifyEnd(1);
         robot.recordOrder(user.getUsername(), "enableMotors", "MOTORES ACTIVADOS");
         *retvalP = xmlrpc_c::value_boolean(true);
     }
@@ -255,7 +370,7 @@ class RobotDisableMotorsMethod : public AuthenticatedMethod {
 public:
     RobotDisableMotorsMethod(AuthenticationServiceNamespace::AuthenticationService& auth, RobotNamespace::Robot& r, TaskManager& tm)
         : AuthenticatedMethod(auth, r, tm) {
-        this->_signature = "b:ss"; // boolean robot.disableMotors(string user, string pass)
+        this->_signature = "b:s"; // boolean robot.disableMotors(string token)
         this->_name = "robot.disableMotors";
         this->_help = "Disables the robot motors.";
     }
@@ -264,7 +379,7 @@ public:
                               UserNamespace::User& user,
                               const std::string& clientIp) override {
         robot.disableMotors();
-        paramList.verifyEnd(2);
+        paramList.verifyEnd(1);
         robot.recordOrder(user.getUsername(), "disableMotors", "MOTORES DESACTIVADOS");
         *retvalP = xmlrpc_c::value_boolean(true);
     }
@@ -275,7 +390,7 @@ class RobotSetEffectorMethod : public AuthenticatedMethod {
 public:
     RobotSetEffectorMethod(AuthenticationServiceNamespace::AuthenticationService& auth, RobotNamespace::Robot& r, TaskManager& tm)
         : AuthenticatedMethod(auth, r, tm) {
-        this->_signature = "b:ssb"; // boolean robot.setEffector(string user, string pass, boolean active)
+        this->_signature = "b:sb"; // boolean robot.setEffector(string token, boolean active)
         this->_name = "robot.setEffector";
         this->_help = "Sets the state of the robot's end effector.";
     }
@@ -286,8 +401,8 @@ public:
                               UserNamespace::User& user,
                               const std::string& clientIp) override {
         // Leemos el parámetro booleano específico de este método.
-        bool const active(paramList.getBoolean(2));
-        paramList.verifyEnd(3);
+        bool const active(paramList.getBoolean(1));
+        paramList.verifyEnd(2);
 
         // Lógica específica del método.
         robot.setEffector(active);
@@ -302,7 +417,7 @@ class SetCoordinateModeMethod : public AuthenticatedMethod {
 public:
     SetCoordinateModeMethod(AuthenticationServiceNamespace::AuthenticationService& auth, RobotNamespace::Robot& r, TaskManager& tm)
         : AuthenticatedMethod(auth, r, tm) {
-        this->_signature = "b:ssb"; // boolean robot.setCoordinateMode(string user, string pass, boolean isAbsolute)
+        this->_signature = "b:sb"; // boolean robot.setCoordinateMode(string token, boolean isAbsolute)
         this->_name = "robot.setCoordinateMode";
         this->_help = "Sets the robot's coordinate mode (G90 for absolute, G91 for relative).";
     }
@@ -312,8 +427,8 @@ public:
                               UserNamespace::User& user,
                               const std::string& clientIp) override {
         // Leemos el parámetro booleano específico de este método.
-        bool const isAbsolute(paramList.getBoolean(2));
-        paramList.verifyEnd(3);
+        bool const isAbsolute(paramList.getBoolean(1));
+        paramList.verifyEnd(2);
 
         // Llama a un método en Robot que envíe el comando G-Code apropiado.
         robot.setCoordinateMode(isAbsolute);
@@ -323,64 +438,14 @@ public:
     }
 };
 
-// --- Método especial para la autenticación ---
-// No hereda de AuthenticatedMethod porque este es el punto de entrada.
-class RobotAuthenticateMethod : public xmlrpc_c::method2 {
-private:
-    std::string _name;
-    AuthenticationServiceNamespace::AuthenticationService& authService;
-public:
-    RobotAuthenticateMethod(AuthenticationServiceNamespace::AuthenticationService& auth)
-        : authService(auth) {
-        this->_signature = "S:ss"; // struct robot.authenticate(string user, string pass)
-        this->_name = "robot.authenticate";
-        this->_help = "Authenticates a user and returns {authenticated:bool, role:int}.";
-    }
-
-    void execute(xmlrpc_c::paramList const& paramList,
-                 const xmlrpc_c::callInfo * const callInfoP,
-                 xmlrpc_c::value*       const retvalP) override {
-        std::string const username(paramList.getString(0));
-        std::string const password(paramList.getString(1));
-        paramList.verifyEnd(2);
-
-        // También podemos loguear el intento de login
-        std::string clientIp = "unknown";
-        auto const * const abyssCallInfoP =
-            dynamic_cast<const xmlrpc_c::callInfo_serverAbyss*>(callInfoP);
-        
-        if (abyssCallInfoP) {
-            // Usamos SessionGetChannelInfo para obtener la IP.
-            struct abyss_unix_chaninfo *channelInfo;
-            SessionGetChannelInfo(abyssCallInfoP->abyssSessionP, (void**)&channelInfo);
-            if (channelInfo)
-                clientIp = inet_ntoa(((struct sockaddr_in*)&channelInfo->peerAddr)->sin_addr);
-        }
-
-        auto userOpt = authService.authenticate(username, password);
-        
-        std::map<std::string, xmlrpc_c::value> result_map;
-        if (userOpt) {
-            result_map["authenticated"] = xmlrpc_c::value_boolean(true);
-            result_map["role"] = xmlrpc_c::value_int(static_cast<int>(userOpt->getRole()));
-            Logger::getInstance().log(LogLevel::INFO, "Successful login attempt", username, clientIp);
-        } else {
-            result_map["authenticated"] = xmlrpc_c::value_boolean(false);
-            result_map["role"] = xmlrpc_c::value_int(-1); // Rol inválido para indicar fallo
-            Logger::getInstance().log(LogLevel::WARNING, "Failed login attempt", username, clientIp);
-        }
-        *retvalP = xmlrpc_c::value_struct(result_map);
-    }
-};
-
 // --- Método para añadir usuarios (solo para administradores) ---
 class RobotUserAddMethod : public AuthenticatedMethod {
 public:
     RobotUserAddMethod(AuthenticationServiceNamespace::AuthenticationService& auth, RobotNamespace::Robot& r, TaskManager& tm)
         : AuthenticatedMethod(auth, r, tm) {
-        // Firma: bool user_add(string adminUser, string adminPass, string newUser, string newPass, int newRole)
-        this->_signature = "b:ssssi";
-        this->_name = "robot.user_add";
+        // Firma: bool user.add(string token, string newUser, string newPass, int newRole)
+        this->_signature = "b:sssi";
+        this->_name = "user.add";
         this->_help = "Adds a new user. Requires administrator privileges.";
     }
 
@@ -395,11 +460,10 @@ public:
         }
 
         // 2. Extraer los parámetros del nuevo usuario. Lanza xmlrpc_c::fault si los params son incorrectos
-        // Los parámetros del admin (0 y 1) ya fueron usados para la autenticación.
-        std::string const newUsername(paramList.getString(2));
-        std::string const newPassword(paramList.getString(3));
-        int         const newRoleInt(paramList.getInt(4));
-        paramList.verifyEnd(5);
+        std::string const newUsername(paramList.getString(1));
+        std::string const newPassword(paramList.getString(2));
+        int         const newRoleInt(paramList.getInt(3));
+        paramList.verifyEnd(4);
 
         UserRole newRole = static_cast<UserRole>(newRoleInt);
 
@@ -407,18 +471,17 @@ public:
         bool success = authService.createUser(newUsername, newPassword, newRole); // Lanza DatabaseException en caso de fallo
 
         // 4. Devolver el resultado.
-        robot.recordOrder(adminUser.getUsername(), "user_add", "Added user: " + newUsername);
+        robot.recordOrder(adminUser.getUsername(), "user.add", "Added user: " + newUsername);
         *retvalP = xmlrpc_c::value_boolean(success);
     }
 };
-
 
 // --- Método para obtener ayuda contextual ---
 class HelpMethod : public AuthenticatedMethod {
 public:
     HelpMethod(AuthenticationServiceNamespace::AuthenticationService& auth, RobotNamespace::Robot& r, TaskManager& tm)
         : AuthenticatedMethod(auth, r, tm) {
-        this->_signature = "S:ss"; // Devuelve un struct: {command: help_string, ...}
+        this->_signature = "S:s"; // Devuelve un struct: {command: help_string, ...}
         this->_name = "robot.help";
         this->_help = "Lists available commands and their syntax based on user role.";
     }
@@ -428,7 +491,7 @@ public:
                               UserNamespace::User& user,
                               const std::string& clientIp) override {
         
-        paramList.verifyEnd(2);
+        paramList.verifyEnd(1);
         std::map<std::string, xmlrpc_c::value> helpMap;
 
         // --- Comandos para Operadores (y Admins) ---
@@ -449,7 +512,7 @@ public:
         if (user.getRole() == UserRole::ADMIN) {
             helpMap["conectar"] = xmlrpc_c::value_string("Establece la conexión con el hardware del robot.");
             helpMap["desconectar"] = xmlrpc_c::value_string("Cierra la conexión con el hardware del robot.");
-            helpMap["user_add <user> <pass> <role>"] = xmlrpc_c::value_string("Añade un nuevo usuario (role: 0=ADMIN, 1=OPERATOR).");
+            helpMap["user.add <user> <pass> <role>"] = xmlrpc_c::value_string("Añade un nuevo usuario (role: 0=ADMIN, 1=OPERATOR).");
             helpMap["report_admin [filtro] [val]"] = xmlrpc_c::value_string("Muestra reporte admin con filtros [usuario ó resultado] [valor].");
             helpMap["report_log [filtro] [val]"] = xmlrpc_c::value_string("Muestra reporte de log con filtros [usuario ó nivel] [valor].");
         }
@@ -464,7 +527,7 @@ class GetReportMethod : public AuthenticatedMethod {
 public:
     GetReportMethod(AuthenticationServiceNamespace::AuthenticationService& auth, RobotNamespace::Robot& r, TaskManager& tm)
         : AuthenticatedMethod(auth, r, tm) {
-        this->_signature = "S:ss"; // Devuelve un struct
+        this->_signature = "S:s"; // Devuelve un struct
         this->_name = "robot.getReport";
         this->_help = "Generates a report for the current user.";
     }
@@ -474,7 +537,7 @@ public:
                               UserNamespace::User& user,
                               const std::string& clientIp) override {
         ReportGenerator reportGenerator; // Create an instance of ReportGenerator
-        paramList.verifyEnd(2);
+        paramList.verifyEnd(1);
         *retvalP = reportGenerator.generateOperatorReport(robot, user);
     }
 };
@@ -485,7 +548,7 @@ class GetAdminReportMethod : public AuthenticatedMethod {
 public:
     GetAdminReportMethod(AuthenticationServiceNamespace::AuthenticationService& auth, RobotNamespace::Robot& r, TaskManager& tm)
         : AuthenticatedMethod(auth, r, tm) {
-        this->_signature = "S:ssss"; // struct getAdminReport(string user, string pass, string filterKey, string filterValue)
+        this->_signature = "S:sss"; // struct getAdminReport(string token, string filterKey, string filterValue)
         this->_name = "robot.getAdminReport";
         this->_help = "Generates a report for the administrator, with optional filtering.";
     }
@@ -498,9 +561,9 @@ public:
             throw xmlrpc_c::fault("Permission denied: Only administrators can access this report.", xmlrpc_c::fault::CODE_INTERNAL);
         }
 
-        std::string const filterKey(paramList.getString(2));
-        std::string const filterValue(paramList.getString(3));
-        paramList.verifyEnd(4);
+        std::string const filterKey(paramList.getString(1));
+        std::string const filterValue(paramList.getString(2));
+        paramList.verifyEnd(3);
 
         std::map<std::string, std::string> filters;
         if (!filterKey.empty()) {
@@ -518,7 +581,7 @@ class GetLogReportMethod : public AuthenticatedMethod {
 public:
     GetLogReportMethod(AuthenticationServiceNamespace::AuthenticationService& auth, RobotNamespace::Robot& r, TaskManager& tm)
         : AuthenticatedMethod(auth, r, tm) {
-        this->_signature = "S:ssss"; // struct getLogReport(string user, string pass, string filterKey, string filterValue)
+        this->_signature = "S:sss"; // struct getLogReport(string token, string filterKey, string filterValue)
         this->_name = "robot.getLogReport";
         this->_help = "Generates a server log report, with optional filtering by 'username' or 'level'.";
     }
@@ -531,9 +594,9 @@ public:
             throw xmlrpc_c::fault("Permission denied: Only administrators can access this report.", xmlrpc_c::fault::CODE_INTERNAL);
         }
 
-        std::string const filterKey(paramList.getString(2));
-        std::string const filterValue(paramList.getString(3));
-        paramList.verifyEnd(4);
+        std::string const filterKey(paramList.getString(1));
+        std::string const filterValue(paramList.getString(2));
+        paramList.verifyEnd(3);
 
         std::map<std::string, std::string> filters;
         if (!filterKey.empty()) {
@@ -551,7 +614,7 @@ class ListTasksMethod : public AuthenticatedMethod {
 public:
     ListTasksMethod(AuthenticationServiceNamespace::AuthenticationService& auth, RobotNamespace::Robot& r, TaskManager& tm)
         : AuthenticatedMethod(auth, r, tm) {
-        this->_signature = "A:ss"; // Devuelve un array
+        this->_signature = "A:s"; // Devuelve un array
         this->_name = "robot.listTasks";
         this->_help = "Lists all available pre-defined tasks.";
     }
@@ -560,7 +623,7 @@ public:
                               xmlrpc_c::value* const retvalP,
                               UserNamespace::User& user,
                               const std::string& clientIp) override {
-        paramList.verifyEnd(2);
+        paramList.verifyEnd(1);
         
         std::vector<xmlrpc_c::value> tasksVector;
         const auto& availableTasks = taskManager.getAvailableTasks();
@@ -582,7 +645,7 @@ class ExecuteTaskMethod : public AuthenticatedMethod {
 public:
     ExecuteTaskMethod(AuthenticationServiceNamespace::AuthenticationService& auth, RobotNamespace::Robot& r, TaskManager& tm)
         : AuthenticatedMethod(auth, r, tm) {
-        this->_signature = "b:sss"; // boolean executeTask(user, pass, taskId)
+        this->_signature = "b:ss"; // boolean executeTask(token, taskId)
         this->_name = "robot.executeTask";
         this->_help = "Executes a pre-defined task by its ID.";
     }
@@ -591,8 +654,8 @@ public:
                               xmlrpc_c::value* const retvalP,
                               UserNamespace::User& user,
                               const std::string& clientIp) override {
-        std::string const taskId(paramList.getString(2));
-        paramList.verifyEnd(3);
+        std::string const taskId(paramList.getString(1));
+        paramList.verifyEnd(2);
 
         auto taskOpt = taskManager.getTaskById(taskId);
         if (!taskOpt) {
@@ -618,7 +681,7 @@ class AddTaskMethod : public AuthenticatedMethod {
 public:
     AddTaskMethod(AuthenticationServiceNamespace::AuthenticationService& auth, RobotNamespace::Robot& r, TaskManager& tm)
         : AuthenticatedMethod(auth, r, tm) {
-        this->_signature = "b:ssssA"; // bool addTask(user, pass, id, name, gcode_array)
+        this->_signature = "b:sssA"; // bool addTask(token, id, name, gcode_array)
         this->_name = "robot.addTask";
         this->_help = "Adds a new learned task to the system.";
     }
@@ -627,10 +690,10 @@ public:
                               xmlrpc_c::value* const retvalP,
                               UserNamespace::User& user,
                               const std::string& clientIp) override {
-        std::string const taskId(paramList.getString(2));
-        std::string const taskName(paramList.getString(3));
-        xmlrpc_c::value_array const gcodeArray(paramList.getArray(4));
-        paramList.verifyEnd(5);
+        std::string const taskId(paramList.getString(1));
+        std::string const taskName(paramList.getString(2));
+        xmlrpc_c::value_array const gcodeArray(paramList.getArray(3));
+        paramList.verifyEnd(4);
 
         std::vector<xmlrpc_c::value> const gcodeVector(gcodeArray.vectorValueValue());
 
@@ -655,12 +718,15 @@ public:
 
 
 void RpcServiceHandlerNamespace::RpcServiceHandler::registerMethods(xmlrpc_c::registry &registry) {
-    // Registramos el método de autenticación.
-    registry.addMethod("robot.authenticate", new RobotAuthenticateMethod(authService));
+    // --- Métodos de Sesión (no requieren token) ---
+    registry.addMethod("user.login", new UserLoginMethod(authService));
+    registry.addMethod("user.logout", new UserLogoutMethod(authService)); // Logout sí necesita el token para saber qué sesión cerrar
+    registry.addMethod("user.list", new UserListMethod(authService, robot, taskManager));
+
     // Registramos los demás métodos protegidos.
     registry.addMethod("robot.connect", new RobotConnectMethod(authService, robot, taskManager));
     registry.addMethod("robot.disconnect", new RobotDisconnectMethod(authService, robot, taskManager));
-    registry.addMethod("robot.user_add", new RobotUserAddMethod(authService, robot, taskManager));
+    registry.addMethod("user.add", new RobotUserAddMethod(authService, robot, taskManager));
     registry.addMethod("robot.getStatus", new RobotGetStatusMethod(authService, robot, taskManager));
     registry.addMethod("robot.move", new RobotMoveMethod(authService, robot, taskManager));
     registry.addMethod("robot.moveDefaultSpeed", new RobotMoveDefaultSpeedMethod(authService, robot, taskManager));

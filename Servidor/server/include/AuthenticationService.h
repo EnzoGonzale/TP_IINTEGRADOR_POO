@@ -8,6 +8,7 @@
 #include <optional>
 
 #include "User.h"
+#include "SessionManager.h"
 
 
 namespace AuthenticationServiceNamespace
@@ -25,19 +26,11 @@ public:
 
   /// 
   /// @brief Constructor que recibe sus dependencias.
-  AuthenticationService(DatabaseManagerNamespace::DatabaseManager& dbManager);
+  AuthenticationService(DatabaseManagerNamespace::DatabaseManager& dbManager, SessionManager& sessionManager);
 
   /// 
   /// Empty Destructor
   virtual ~AuthenticationService();
-
-
-
-  /// 
-  /// @return Un objeto User si la autenticación es exitosa, o std::nullopt si falla.
-  /// @param  username 
-  /// @param  password 
-  std::optional<UserNamespace::User> authenticate(const std::string& username, const std::string& password);
 
   /// @brief Crea un nuevo usuario.
   /// @param username El nombre del nuevo usuario.
@@ -46,8 +39,17 @@ public:
   /// @return True si se creó correctamente.
   bool createUser(const std::string& username, const std::string& password, UserRole role);
 
+
+  std::string login(const std::string& username, const std::string& password, const std::string& clientIp);
+  void logout(const std::string& token);
+  std::optional<UserNamespace::User> validateToken(const std::string& token) const;
+
+
+  std::map<std::string, std::pair<UserNamespace::User, std::string>> getActiveUsersWithIPs();
+
 private:
-  DatabaseManagerNamespace::DatabaseManager& dbManager;
+  DatabaseManagerNamespace::DatabaseManager& dbManager_;
+  SessionManager& sessionManager_;
 
 };
 

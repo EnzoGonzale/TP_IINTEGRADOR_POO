@@ -10,6 +10,7 @@
 #include "DatabaseManager.h"
 #include "ReportGenerator.h"
 #include "TaskManager.h"
+#include "SessionManager.h"
 
 /// 
 /// class Server
@@ -47,6 +48,8 @@ private:
 
 
   bool running;
+  // --- Gestión de Sesiones ---
+  SessionManager sessionManager; 
 
   // --- Capa de Dominio/Núcleo (El servidor es dueño de estos objetos) ---
   DatabaseManagerNamespace::DatabaseManager dbManager;

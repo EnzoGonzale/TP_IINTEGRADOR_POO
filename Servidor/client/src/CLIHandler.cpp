@@ -44,32 +44,27 @@ bool CLIHandlerNamespace::CLIHandler::login() {
     // Limpiamos el buffer de entrada para evitar problemas con getline más adelante.
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     
+    xmlrpc_c::value result;
     try {
-        xmlrpc_c::value result;
         // Usamos el método 'robot.authenticate' que ya existe en el servidor.
-        rpcClient.call(serverUrl, "robot.authenticate", "ss", &result, username.c_str(), password.c_str());
+        rpcClient.call(serverUrl, "user.login", "ss", &result, username.c_str(), password.c_str());
         
         // Parseamos la respuesta del struct
         // Usamos inicialización con {} para evitar el "Most Vexing Parse"
         std::map<std::string, xmlrpc_c::value> const resultMap{xmlrpc_c::value_struct(result)};
-        bool isAuthenticated = xmlrpc_c::value_boolean(resultMap.at("authenticated"));
+        std::string token = xmlrpc_c::value_string(resultMap.at("token"));
+        int roleInt = xmlrpc_c::value_int(resultMap.at("role"));
+        std::string roleStr = (roleInt == 0) ? "Administrador" : "Operador";
+        std::cout << "¡Inicio de sesión exitoso! Bienvenido, " << username << " (" << roleStr << ")." << std::endl;
+        // Guardamos las credenciales y el rol para usarlas en futuras llamadas.
+        currentUserInfo = std::make_tuple(token, roleInt);
+        return true;
 
-        if (isAuthenticated) {
-            int roleInt = xmlrpc_c::value_int(resultMap.at("role"));
-            std::string roleStr = (roleInt == 0) ? "Administrador" : "Operador";
-            std::cout << "¡Inicio de sesión exitoso! Bienvenido, " << username << " (" << roleStr << ")." << std::endl;
-            // Guardamos las credenciales y el rol para usarlas en futuras llamadas.
-            currentUserInfo = std::make_tuple(username, password, roleInt);
-            return true;
-        } else {
-            std::cout << "Error: Usuario o clave incorrectos." << std::endl;
-            currentUserInfo.reset();
-            return false;
-        }
     } catch (const girerr::error& e) {
         std::cerr << "[CLI] Error de conexión con el servidor: " << e.what() << std::endl;
         std::cerr << "Asegúrese de que el servidor esté corriendo ('make run')." << std::endl;
         return false;
+        
     } catch (const xmlrpc_c::fault& f) {
         std::cerr << "[CLI] Error de autenticación RPC: " << f.getDescription() << std::endl;
         return false;
@@ -81,7 +76,7 @@ void CLIHandlerNamespace::CLIHandler::mainLoop() {
     
     while (true) {
         // Llamamos al menú correcto según el rol del usuario
-        if (currentUserInfo && std::get<2>(*currentUserInfo) == 0) {
+        if (currentUserInfo && std::get<1>(*currentUserInfo) == 0) {
             displayMenuAdmin();
         } else {
             displayMenuOperator();
@@ -92,7 +87,11 @@ void CLIHandlerNamespace::CLIHandler::mainLoop() {
 
         if (std::cin.eof() || command.empty()) continue;
         if (command == "salir") {
-            break;
+            xmlrpc_c::value result;
+            rpcClient.call(serverUrl, "user.logout", "s", &result, std::get<0>(*currentUserInfo).c_str());
+            if (xmlrpc_c::value_boolean(result) == true) {
+                break;
+            }
         }
         processCommand(command);
     }
@@ -108,6 +107,7 @@ void CLIHandlerNamespace::CLIHandler::displayMenuAdmin() {
     std::cout << "+-----------------------------------------------------------------------------------------+" << std::endl;
     std::cout << "| Comandos de Usuario:                                                                    |" << std::endl;
     std::cout << "|   user_add <user> <pass> <role> - Añade un usuario (role: 0=ADMIN, 1=OPERATOR)          |" << std::endl;
+    std::cout << "|   users_conectados              - Muestra los usuarios actualmente conectados.          |" << std::endl;
     std::cout << "+-----------------------------------------------------------------------------------------+" << std::endl;
     std::cout << "| Comandos de Control:                                                                    |" << std::endl;
     std::cout << "|   motores_on                    - Activa los motores.                                   |" << std::endl;
@@ -172,44 +172,44 @@ void CLIHandlerNamespace::CLIHandler::processCommand(const std::string& full_com
     }
 
     // Obtenemos las credenciales para cada llamada
-    const auto& [username, password, role] = *currentUserInfo;
+    const auto& [token, role] = *currentUserInfo;
     bool isAdmin = (role == 0);
 
+    xmlrpc_c::value result;
     try {
-        xmlrpc_c::value result;
         if (command == "conectar") {
             if (!isAdmin) {
                 std::cout << "[CLI] Error: Permiso denegado. Solo los administradores pueden conectar." << std::endl;
                 return;
             }
-            rpcClient.call(serverUrl, "robot.connect", "ss", &result, username.c_str(), password.c_str());
+            rpcClient.call(serverUrl, "robot.connect", "s", &result, token.c_str());
             std::cout << "[CLI] Comando 'conectar' enviado." << std::endl;
         } else if (command == "desconectar") {
             if (!isAdmin) {
                 std::cout << "[CLI] Error: Permiso denegado. Solo los administradores pueden desconectar." << std::endl;
                 return;
             }
-            rpcClient.call(serverUrl, "robot.disconnect", "ss", &result, username.c_str(), password.c_str());
+            rpcClient.call(serverUrl, "robot.disconnect", "s", &result, token.c_str());
             std::cout << "[CLI] Comando 'desconectar' enviado." << std::endl;
         } else if (command == "motores_on") {
-            rpcClient.call(serverUrl, "robot.enableMotors", "ss", &result, username.c_str(), password.c_str());
+            rpcClient.call(serverUrl, "robot.enableMotors", "s", &result, token.c_str());
             std::cout << "[CLI] Comando 'motores_on' enviado." << std::endl;
         } else if (command == "motores_off") {
-            rpcClient.call(serverUrl, "robot.disableMotors", "ss", &result, username.c_str(), password.c_str());
+            rpcClient.call(serverUrl, "robot.disableMotors", "s", &result, token.c_str());
             if (learningModeActive) {
                 learnedGCodeCommands.push_back("M18");
                 std::cout << "[APRENDIZAJE] Comando 'M18' grabado." << std::endl;
             }
             std::cout << "[CLI] Comando 'motores_off' enviado." << std::endl;
         } else if (command == "efector_on") {
-            rpcClient.call(serverUrl, "robot.setEffector", "ssb", &result, username.c_str(), password.c_str(), true);
+            rpcClient.call(serverUrl, "robot.setEffector", "sb", &result, token.c_str(), true);
             if (learningModeActive) {
                 learnedGCodeCommands.push_back("M3");
                 std::cout << "[APRENDIZAJE] Comando 'M3' grabado." << std::endl;
             }
             std::cout << "[CLI] Comando 'efector_on' enviado." << std::endl;
         } else if (command == "efector_off") {
-            rpcClient.call(serverUrl, "robot.setEffector", "ssb", &result, username.c_str(), password.c_str(), false);
+            rpcClient.call(serverUrl, "robot.setEffector", "sb", &result, token.c_str(), false);
             if (learningModeActive) {
                 learnedGCodeCommands.push_back("M5");
                 std::cout << "[APRENDIZAJE] Comando 'M5' grabado." << std::endl;
@@ -227,12 +227,12 @@ void CLIHandlerNamespace::CLIHandler::processCommand(const std::string& full_com
             if (ss >> speed) {
                 gcode = generateGCode(x, y, z, speed);
                 // Si hay un cuarto parámetro (velocidad), llamamos al método original.
-                rpcClient.call(serverUrl, "robot.move", "ssdddd", &result, username.c_str(), password.c_str(), x, y, z, speed);
+                rpcClient.call(serverUrl, "robot.move", "sdddd", &result, token.c_str(), x, y, z, speed);
                 std::cout << "[CLI] Comando 'mover' con velocidad específica enviado." << std::endl;
             } else {
                 gcode = generateGCode(x, y, z);
                 // Si no hay cuarto parámetro, llamamos al nuevo método sin velocidad.
-                rpcClient.call(serverUrl, "robot.moveDefaultSpeed", "ssddd", &result, username.c_str(), password.c_str(), x, y, z);
+                rpcClient.call(serverUrl, "robot.moveDefaultSpeed", "sddd", &result, token.c_str(), x, y, z);
                 std::cout << "[CLI] Comando 'mover' con velocidad por defecto enviado." << std::endl;
             }
 
@@ -242,14 +242,14 @@ void CLIHandlerNamespace::CLIHandler::processCommand(const std::string& full_com
             }
 
         } else if (command == "modo_absoluto") {
-            rpcClient.call(serverUrl, "robot.setCoordinateMode", "ssb", &result, username.c_str(), password.c_str(), true);
+            rpcClient.call(serverUrl, "robot.setCoordinateMode", "sb", &result, token.c_str(), true);
             if (learningModeActive) {
                 learnedGCodeCommands.push_back("G90");
                 std::cout << "[APRENDIZAJE] Comando 'G90' grabado." << std::endl;
             }
             std::cout << "[CLI] Modo de coordenadas fijado a ABSOLUTO (G90)." << std::endl;
         } else if (command == "modo_relativo") {
-            rpcClient.call(serverUrl, "robot.setCoordinateMode", "ssb", &result, username.c_str(), password.c_str(), false);
+            rpcClient.call(serverUrl, "robot.setCoordinateMode", "sb", &result, token.c_str(), false);
             if (learningModeActive) {
                 learnedGCodeCommands.push_back("G91");
                 std::cout << "[APRENDIZAJE] Comando 'G91' grabado." << std::endl;
@@ -269,13 +269,13 @@ void CLIHandlerNamespace::CLIHandler::processCommand(const std::string& full_com
                     return;
                 }
                 // Llamamos al método RPC con las credenciales del admin y los datos del nuevo usuario.
-                rpcClient.call(serverUrl, "robot.user_add", "ssssi", &result, username.c_str(), password.c_str(), newUsername.c_str(), newPassword.c_str(), roleInt);
+                rpcClient.call(serverUrl, "user.add", "sssi", &result, token.c_str(), newUsername.c_str(), newPassword.c_str(), roleInt);
                 std::cout << "[CLI] Solicitud para crear usuario '" << newUsername << "' enviada." << std::endl;
             } else {
                 std::cout << "[CLI] Error: Sintaxis incorrecta. Uso: user_add <user> <pass> <role>" << std::endl;
             }
         } else if (command == "estado") { // Los otros clientes deberian llamar a M114.
-            rpcClient.call(serverUrl, "robot.getStatus", "ss", &result, username.c_str(), password.c_str());
+            rpcClient.call(serverUrl, "robot.getStatus", "s", &result, token.c_str());
             
             // Parseamos la estructura de la respuesta
             // 1. Convertimos el resultado RPC a un objeto 'value_struct'.
@@ -302,7 +302,7 @@ void CLIHandlerNamespace::CLIHandler::processCommand(const std::string& full_com
             std::cout << "---------------------------------" << std::endl;
 
         } else if (command == "ayuda") {
-            rpcClient.call(serverUrl, "robot.help", "ss", &result, username.c_str(), password.c_str());
+            rpcClient.call(serverUrl, "robot.help", "s", &result, token.c_str());
             
             xmlrpc_c::value_struct const helpStructValue(result);
             std::map<std::string, xmlrpc_c::value> const helpMap(helpStructValue);
@@ -316,7 +316,7 @@ void CLIHandlerNamespace::CLIHandler::processCommand(const std::string& full_com
             }
             std::cout << "----------------------------" << std::endl;
         } else if (command == "reporte") {
-            rpcClient.call(serverUrl, "robot.getReport", "ss", &result, username.c_str(), password.c_str());
+            rpcClient.call(serverUrl, "robot.getReport", "s", &result, token.c_str());
 
             std::map<std::string, xmlrpc_c::value> const reportMap{xmlrpc_c::value_struct(result)};
 
@@ -341,14 +341,14 @@ void CLIHandlerNamespace::CLIHandler::processCommand(const std::string& full_com
             } else {
                 std::cout << std::left << std::setw(10) << "Hora"
                           << std::setw(15) << "Comando"
-                          << std::setw(50) << "Detalles"
+                          << std::setw(60) << "Detalles"
                           << std::setw(10) << "Resultado" << std::endl;
                 std::cout << std::string(100, '-') << std::endl;
                 for (const auto& orderValue : ordersVector) {
                     std::map<std::string, xmlrpc_c::value> const orderMap{xmlrpc_c::value_struct(orderValue)};
                     std::cout << std::left << std::setw(10) << xmlrpc_c::value_string(orderMap.at("timestamp")).cvalue()
                               << std::setw(15) << xmlrpc_c::value_string(orderMap.at("command")).cvalue()
-                              << std::setw(50) << xmlrpc_c::value_string(orderMap.at("details")).cvalue()
+                              << std::setw(55) << xmlrpc_c::value_string(orderMap.at("details")).cvalue()
                               << std::setw(15) << (xmlrpc_c::value_string(orderMap.at("success")).cvalue()) << std::endl;
                 }
             }
@@ -368,7 +368,7 @@ void CLIHandlerNamespace::CLIHandler::processCommand(const std::string& full_com
             }
             if (filterKey == "usuario") filterKey = "username"; // Mapeamos al nombre interno
 
-            rpcClient.call(serverUrl, "robot.getAdminReport", "ssss", &result, username.c_str(), password.c_str(), filterKey.c_str(), filterValue.c_str());
+            rpcClient.call(serverUrl, "robot.getAdminReport", "sss", &result, token.c_str(), filterKey.c_str(), filterValue.c_str());
             
             std::map<std::string, xmlrpc_c::value> const reportMap{xmlrpc_c::value_struct(result)};
             xmlrpc_c::value_array const ordersArray(reportMap.at("orders"));
@@ -385,7 +385,7 @@ void CLIHandlerNamespace::CLIHandler::processCommand(const std::string& full_com
                 std::cout << std::left << std::setw(10) << "Hora"
                           << std::setw(10) << "Usuario"
                           << std::setw(17) << "Comando"
-                          << std::setw(46) << "Detalles"
+                          << std::setw(55) << "Detalles"
                           << std::setw(20) << "Resultado" << std::endl;
                 std::cout << std::string(105, '-') << std::endl;
                 for (const auto& orderValue : ordersVector) {
@@ -394,7 +394,7 @@ void CLIHandlerNamespace::CLIHandler::processCommand(const std::string& full_com
                               << std::setw(10) << xmlrpc_c::value_string(orderMap.at("timestamp")).cvalue()
                               << std::setw(10) << xmlrpc_c::value_string(orderMap.at("username")).cvalue()
                               << std::setw(17) << xmlrpc_c::value_string(orderMap.at("command")).cvalue()
-                              << std::setw(46) << xmlrpc_c::value_string(orderMap.at("details")).cvalue()
+                              << std::setw(55) << xmlrpc_c::value_string(orderMap.at("details")).cvalue()
                               << std::setw(20) << xmlrpc_c::value_string(orderMap.at("success")).cvalue() << std::endl;
                 }
             }
@@ -416,7 +416,7 @@ void CLIHandlerNamespace::CLIHandler::processCommand(const std::string& full_com
             if (filterKey == "usuario") filterKey = "username"; // Mapeamos al nombre interno
             if (filterKey == "nivel") filterKey = "level"; // Mapeamos al nombre interno
 
-            rpcClient.call(serverUrl, "robot.getLogReport", "ssss", &result, username.c_str(), password.c_str(), filterKey.c_str(), filterValue.c_str());
+            rpcClient.call(serverUrl, "robot.getLogReport", "sss", &result, token.c_str(), filterKey.c_str(), filterValue.c_str());
 
             std::map<std::string, xmlrpc_c::value> const reportMap{xmlrpc_c::value_struct(result)};
             xmlrpc_c::value_array const logsArray(reportMap.at("logs"));
@@ -448,7 +448,7 @@ void CLIHandlerNamespace::CLIHandler::processCommand(const std::string& full_com
             }
             std::cout << std::string(107, '-') << std::endl;
         } else if (command == "lista_tareas") {
-            rpcClient.call(serverUrl, "robot.listTasks", "ss", &result, username.c_str(), password.c_str());
+            rpcClient.call(serverUrl, "robot.listTasks", "s", &result, token.c_str());
 
             xmlrpc_c::value_array const tasksArray(result);
             std::vector<xmlrpc_c::value> const tasksVector(tasksArray.vectorValueValue());
@@ -472,7 +472,7 @@ void CLIHandlerNamespace::CLIHandler::processCommand(const std::string& full_com
         } else if (command == "ejecutar_tarea") {
             std::string taskId;
             if (ss >> taskId) {
-                rpcClient.call(serverUrl, "robot.executeTask", "sss", &result, username.c_str(), password.c_str(), taskId.c_str());
+                rpcClient.call(serverUrl, "robot.executeTask", "ss", &result, token.c_str(), taskId.c_str());
                 std::cout << "[CLI] Solicitud para ejecutar la tarea '" << taskId << "' enviada." << std::endl;
             } else {
                 std::cout << "[CLI] Error: Sintaxis incorrecta. Uso: ejecutar_tarea <id_tarea>" << std::endl;
@@ -515,8 +515,7 @@ void CLIHandlerNamespace::CLIHandler::processCommand(const std::string& full_com
 
                 // Crear un paramList y añadir todos los argumentos
                 xmlrpc_c::paramList params;
-                params.add(xmlrpc_c::value_string(username));
-                params.add(xmlrpc_c::value_string(password));
+                params.add(xmlrpc_c::value_string(token));
                 params.add(xmlrpc_c::value_string(learningTaskId));
                 params.add(xmlrpc_c::value_string(learningTaskName));
                 params.add(gcodeArray); // Añadir el xmlrpc_c::value_array directamente
@@ -525,6 +524,29 @@ void CLIHandlerNamespace::CLIHandler::processCommand(const std::string& full_com
                 rpcClient.call(serverUrl, "robot.addTask", params, &result);
                 std::cout << "[APRENDIZAJE] Tarea '" << learningTaskId << "' guardada en el servidor con " << learnedGCodeCommands.size() << " comandos." << std::endl;
             }
+        }else if (command == "users_conectados")
+        {
+            if (!isAdmin) {
+                std::cout << "[CLI] Error: Permiso denegado." << std::endl;
+                return;
+            }
+            rpcClient.call(serverUrl, "user.list", "s", &result, token.c_str());
+            
+            xmlrpc_c::value_array const usersArray(result);
+            std::vector<xmlrpc_c::value> const usersVector(usersArray.vectorValueValue());
+
+            std::cout << "\n--- Usuarios Conectados ---" << std::endl;
+            std::cout << std::left << std::setw(20) << "Usuario" << std::setw(15) << "Rol" << "IP" << std::endl;
+            std::cout << std::string(50, '-') << std::endl;
+
+            for (const auto& userValue : usersVector) {
+                std::map<std::string, xmlrpc_c::value> const userMap{xmlrpc_c::value_struct(userValue)};
+                std::string roleStr = (xmlrpc_c::value_int(userMap.at("role")) == 0) ? "Admin" : "Operador";
+                std::cout << std::left << std::setw(20) << xmlrpc_c::value_string(userMap.at("username")).cvalue()
+                          << std::setw(15) << roleStr
+                          << xmlrpc_c::value_string(userMap.at("ip_address")).cvalue() << std::endl;
+            }
+            std::cout << std::string(50, '-') << std::endl;
         } else {
             std::cout << "[CLI] Comando '" << command << "' no reconocido." << std::endl;
         }
