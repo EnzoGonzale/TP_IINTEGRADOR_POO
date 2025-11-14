@@ -23,7 +23,7 @@ class RobotGUI(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("Robot Client GUI")
-        self.geometry("1500x700")
+        self.geometry("1500x800")
         self.client = RobotRpcClient()
         self.user = None
         self.password = None
@@ -138,7 +138,7 @@ class RobotGUI(tk.Tk):
         ttk.Button(movebox, text="Mover", command=self.ui_move).pack(side=tk.LEFT, padx=6)
 
         # log area
-        self.log = tk.Text(self, height=10)
+        self.log = tk.Text(self, height=25)
         self.log.pack(side=tk.BOTTOM, fill=tk.X)
 
     def logout(self):
