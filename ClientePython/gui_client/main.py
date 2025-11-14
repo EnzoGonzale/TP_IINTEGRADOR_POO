@@ -3,10 +3,13 @@
 Tkinter GUI client for robot RPC.
 Provides a login screen and role-based panels with buttons mapping to the CLI commands.
 """
-import os
 import threading
 import tkinter as tk
 from tkinter import ttk, messagebox, simpledialog
+# Hide pygame welcome message
+import os
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "1"
+import pygame as sa
 
 import sys
 import os
@@ -33,20 +36,27 @@ class RobotGUI(tk.Tk):
         self.learning_commands = []
         self.create_login()
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
+        sa.mixer.init()
 
     def create_login(self):
         for w in self.winfo_children():
             w.destroy()
-        frm = ttk.Frame(self, padding=20)
-        frm.pack(fill=tk.BOTH, expand=True)
 
-        ttk.Label(frm, text="Usuario:").grid(row=0, column=0, sticky=tk.W)
-        self.user_entry = ttk.Entry(frm)
-        self.user_entry.grid(row=0, column=1)
+        # Marco principal que se expande para centrar el contenido
+        main_frame = ttk.Frame(self)
+        main_frame.pack(fill=tk.BOTH, expand=True)
 
-        ttk.Label(frm, text="Clave:").grid(row=1, column=0, sticky=tk.W)
-        self.pass_entry = ttk.Entry(frm, show="*")
-        self.pass_entry.grid(row=1, column=1)
+        # Marco para el formulario de login, centrado
+        login_frame = ttk.Frame(main_frame, padding=30, style='Card.TFrame')
+        login_frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+
+        ttk.Label(login_frame, text="Usuario:").grid(row=0, column=0, sticky=tk.W, pady=5)
+        self.user_entry = ttk.Entry(login_frame, width=30)
+        self.user_entry.grid(row=0, column=1, padx=10, pady=5)
+
+        ttk.Label(login_frame, text="Clave:").grid(row=1, column=0, sticky=tk.W, pady=5)
+        self.pass_entry = ttk.Entry(login_frame, show="*", width=30)
+        self.pass_entry.grid(row=1, column=1, padx=10, pady=5)
 
         # prefill from env
         env_user = os.environ.get("ROBOT_USER")
@@ -56,8 +66,8 @@ class RobotGUI(tk.Tk):
         if env_pass:
             self.pass_entry.insert(0, env_pass)
 
-        login_btn = ttk.Button(frm, text="Login", command=self.do_login)
-        login_btn.grid(row=2, column=0, columnspan=2, pady=10)
+        login_btn = ttk.Button(login_frame, text="Login", command=self.do_login, style='Accent.TButton')
+        login_btn.grid(row=2, column=0, columnspan=2, pady=20, sticky="ew")
 
     def do_login(self):
         user = self.user_entry.get().strip()
@@ -344,21 +354,29 @@ class RobotGUI(tk.Tk):
             res = fn(self.token, *args)
             # --- Controles ---
             if method == 'enableMotors':
-                self.append_log('Los Motores fueron Activados')
+                if res is True:
+                    self.append_log('Los Motores fueron Activados')
+
             elif method == 'disableMotors':
-                self.append_log('Los Motores fueron Desactivados')
+                if res is True:
+                    self.append_log('Los Motores fueron Desactivados')
+
             elif method == 'setEffector':
-                state = args[0] if args else None
-                if state:
-                    self.append_log('El Efector fue Activado')
-                else:
-                    self.append_log('El Efector fue Desactivado')
+                if res is True:
+                    if args[0] is True:
+                        self.append_log('El Efector fue Activado')
+                        reproduce_sound(os.path.join(os.path.dirname(__file__), 'sounds', 'effector.wav'))
+                    else:
+                        self.append_log('El Efector fue Desactivado')
+                        reproduce_sound(os.path.join(os.path.dirname(__file__), 'sounds', 'effector.wav'))
+
             elif method == 'setCoordinateMode':
-                absolute = args[0] if args else None
-                if absolute:
-                    self.append_log('Modo de Coordenadas Absoluto activado')
-                else:
-                    self.append_log('Modo de Coordenadas Relativo activado')
+                if res is True:
+                    if args[0] is True:
+                        self.append_log('Modo de Coordenadas Absoluto activado')
+                    else:
+                        self.append_log('Modo de Coordenadas Relativo activado')
+
             elif method == 'getStatus':
                 if isinstance(res, dict):
                     self.append_log("\n--- Estado del Robot ---")
@@ -376,6 +394,7 @@ class RobotGUI(tk.Tk):
                     self.append_log("------------------------\n")
                 else:
                     self.append_log("Respuesta inválida al obtener el estado.")
+
             elif method == 'help':
                 if isinstance(res, dict):
                     self.append_log("\n--- Comandos Disponibles ---")
@@ -384,13 +403,20 @@ class RobotGUI(tk.Tk):
                         self.append_log(f"  {cmd:<30} - {desc}")
                     self.append_log("---------------------------\n")
                 else:
-                    self.append_log("Respuesta inválida al obtener la ayuda.")
+                    self.append_log(f"Respuesta inválida al obtener la ayuda: {res}")
+
             elif method in ('move', 'moveDefaultSpeed'):
-                self.append_log('Movimiento enviado al robot')
+                if res is True:
+                    self.append_log('Movimiento enviado al robot')
+                    reproduce_sound(os.path.join(os.path.dirname(__file__), 'sounds', 'moviment.wav'))
+
             elif method == 'connect':
-                self.append_log('Conectado al robot')
+                if res is True:
+                    self.append_log('Conectado al robot')
+
             elif method == 'disconnect':
-                self.append_log('Desconectado del robot')
+                if res is True:
+                    self.append_log('Desconectado del robot')
 
             # --- Reportes y Usuarios ---
             elif method == 'getReport':
@@ -484,9 +510,13 @@ class RobotGUI(tk.Tk):
 
             # --- Tareas ---
             elif method == 'addTask':
-                self.append_log('La tarea fue guardada en el robot')
+                if res is True:
+                    self.append_log('La tarea fue guardada en el robot')
+
             elif method == 'executeTask':
-                self.append_log('La tarea fue ejecutada')
+                if res is True:
+                    self.append_log('La tarea fue ejecutada')
+
             elif method == 'listTasks':
                 if isinstance(res, list) and res:
                     self.append_log("\n--- Tareas Disponibles ---")
@@ -498,11 +528,33 @@ class RobotGUI(tk.Tk):
                         self.append_log(f"  -> {task_desc}\n")
                     self.append_log("-------------------------\n")
                 else:
-                    self.append_log("No hay tareas disponibles o la respuesta es inválida.")
+                    self.append_log(f"No hay tareas disponibles o la respuesta es inválida: {res}")
+
             else:
                 self.append_log(f"[{method}] -> {res}")
+
         except Exception as e:
             self.append_log(f"Error RPC {method}: {e}")
+            reproduce_sound(os.path.join(os.path.dirname(__file__), 'sounds', 'error.wav'))
+
+
+
+def reproduce_sound(sound_file: str):
+    """
+    Reproduce un sonido en un hilo separado para no bloquear la ejecución.
+    Usa simpleaudio para evitar problemas de dependencias.
+    """
+    def play():
+        if os.path.exists(sound_file):
+            try:
+                sa.mixer.music.load(sound_file)
+                sa.mixer.music.play()
+            except sa.error as e:
+                print(f"Error al reproducir con pygame: {e}")
+        else:
+            print(f"Error: No se encontró el archivo '{sound_file}'")
+    threading.Thread(target=play, daemon=True).start()
+
 
 def checksHelps(cmd: str):
     if cmd == "estado":
