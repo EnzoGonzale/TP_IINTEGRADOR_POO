@@ -1,0 +1,152 @@
+const express = require('express');
+const axios = require('axios');
+const cors = require('cors');
+const path = require('path');
+
+const app = express();
+const PORT = 3000;
+
+// Configuración del servidor RPC
+const RPC_HOST = '192.168.1.125';
+const RPC_PORT = 8080;
+const RPC_URL = `http://${RPC_HOST}:${RPC_PORT}`;
+
+// Middleware
+app.use(cors());
+app.use(express.json());
+app.use(express.static(__dirname)); // Servir archivos estáticos
+
+// Ruta principal - servir index.html
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// Endpoint proxy para RPC - evita problemas CORS
+app.post('/rpc', async (req, res) => {
+  try {
+    console.log('📨 Petición RPC recibida:', JSON.stringify(req.body, null, 2));
+    
+    const response = await axios.post(RPC_URL, req.body, {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      timeout: 10000 // 10 segundos de timeout
+    });
+
+    console.log('✅ Respuesta RPC:', JSON.stringify(response.data, null, 2));
+    res.json(response.data);
+    
+  } catch (error) {
+    console.error('❌ Error en RPC:', error.message);
+    
+    if (error.code === 'ECONNREFUSED') {
+      res.status(503).json({
+        jsonrpc: '2.0',
+        error: {
+          code: -32001,
+          message: `No se puede conectar al servidor RPC en ${RPC_HOST}:${RPC_PORT}`,
+          data: 'Verifica que el servidor RPC esté funcionando'
+        },
+        id: req.body.id || null
+      });
+    } else if (error.code === 'ETIMEDOUT') {
+      res.status(504).json({
+        jsonrpc: '2.0',
+        error: {
+          code: -32002,
+          message: 'Timeout al conectar con el servidor RPC',
+          data: error.message
+        },
+        id: req.body.id || null
+      });
+    } else if (error.response) {
+      res.status(error.response.status).json(error.response.data);
+    } else {
+      res.status(500).json({
+        jsonrpc: '2.0',
+        error: {
+          code: -32000,
+          message: error.message
+        },
+        id: req.body.id || null
+      });
+    }
+  }
+});
+
+// Endpoint de salud
+app.get('/health', async (req, res) => {
+  try {
+    // Intentar una llamada RPC simple para verificar conectividad
+    const response = await axios.post(RPC_URL, {
+      jsonrpc: '2.0',
+      method: 'system.listMethods',
+      params: [],
+      id: 1
+    }, {
+      timeout: 5000,
+      validateStatus: function (status) {
+        // Aceptar cualquier código de respuesta para verificar que el servidor responde
+        return status >= 200 && status < 600;
+      }
+    });
+    
+    // Si el servidor responde (incluso con error), está alcanzable
+    res.json({
+      status: 'ok',
+      rpcServer: `${RPC_HOST}:${RPC_PORT}`,
+      message: 'Servidor RPC alcanzable',
+      responseCode: response.status,
+      methods: response.data.result || 'El servidor no soporta system.listMethods',
+      note: response.status === 404 ? 'El servidor RPC responde pero puede no usar JSON-RPC estándar' : undefined
+    });
+  } catch (error) {
+    let errorMessage = '';
+    let errorDetails = {};
+    
+    if (error.code === 'ECONNREFUSED') {
+      errorMessage = 'No se puede conectar con el servidor RPC';
+      errorDetails = {
+        hint: 'Verifica que el servidor esté corriendo en 192.168.1.125:8080'
+      };
+    } else if (error.code === 'ETIMEDOUT' || error.code === 'ECONNABORTED') {
+      errorMessage = 'Timeout al conectar con el servidor RPC';
+      errorDetails = {
+        hint: 'El servidor no responde a tiempo'
+      };
+    } else if (error.code === 'EHOSTUNREACH' || error.code === 'ENETUNREACH') {
+      errorMessage = 'No se puede alcanzar el host';
+      errorDetails = {
+        hint: 'Verifica la conectividad de red y que ambos equipos estén en la misma red'
+      };
+    } else {
+      errorMessage = error.message;
+    }
+    
+    res.status(503).json({
+      status: 'error',
+      rpcServer: `${RPC_HOST}:${RPC_PORT}`,
+      message: errorMessage,
+      code: error.code,
+      ...errorDetails
+    });
+  }
+});
+
+// Iniciar servidor
+app.listen(PORT, () => {
+  console.log('╔════════════════════════════════════════════════════════╗');
+  console.log('║  🚀 SERVIDOR PROXY RPC INICIADO                       ║');
+  console.log('╚════════════════════════════════════════════════════════╝');
+  console.log('');
+  console.log(`  � Servidor local:     http://localhost:${PORT}`);
+  console.log(`  � Servidor RPC:       ${RPC_URL}`);
+  console.log('');
+  console.log('  Endpoints:');
+  console.log('  ├─ GET  /           - Interfaz web');
+  console.log('  ├─ POST /rpc        - Proxy RPC');
+  console.log('  └─ GET  /health     - Verificar conexión');
+  console.log('');
+  console.log('  👉 Abre http://localhost:3000 en tu navegador');
+  console.log('');
+});

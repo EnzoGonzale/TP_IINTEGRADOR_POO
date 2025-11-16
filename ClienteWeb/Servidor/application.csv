@@ -1,0 +1,10 @@
+2025-10-27 | 17:15:29, INFO, Logger inicializado., SYSTEM, N/A
+2025-10-27 | 17:15:29, INFO, Successful login attempt, enzo, 127.0.0.1
+2025-10-27 | 17:15:33, INFO, robot.connect, enzo, 127.0.0.1
+2025-10-27 | 17:56:19, INFO, Logger finalizado., SYSTEM, N/A
+2025-10-28 | 21:16:24, INFO, Logger inicializado., SYSTEM, N/A
+2025-10-28 | 21:16:24, WARNING, Failed login attempt, admin, 127.0.0.1
+2025-10-28 | 21:18:55, INFO, Logger finalizado., SYSTEM, N/A
+2025-10-28 | 21:20:51, INFO, Logger inicializado., SYSTEM, N/A
+2025-10-28 | 21:20:51, WARNING, Failed login attempt, admin, 127.0.0.1
+2025-10-28 | 21:21:45, INFO, Logger finalizado., SYSTEM, N/A

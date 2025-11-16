@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Robot - XML-RPC</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            height: calc(100vh - 40px);
+        }
+        
+        .panel {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.15);
+            padding: 30px;
+            overflow-y: auto;
+        }
+        
+        .panel h2 {
+            color: #333;
+            margin-bottom: 25px;
+            font-size: 28px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .status-bar {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            border-left: 4px solid #667eea;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .connection-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+        }
+        
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #dc3545;
+            animation: pulse 2s infinite;
+        }
+        
+        .status-dot.connected {
+            background: #28a745;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        .auth-section {
+            background: #e8f4f8;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .auth-section.authenticated {
+            background: #d4edda;
+            border: 2px solid #c3e6cb;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e1e8ed;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-width: 120px;
+        }
+        
+        .btn:hover:not(:disabled) {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn.small {
+            padding: 8px 16px;
+            font-size: 14px;
+            min-width: 80px;
+        }
+        
+        .btn.success {
+            background: #28a745;
+        }
+        
+        .btn.success:hover {
+            background: #218838;
+            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+        }
+        
+        .btn.danger {
+            background: #dc3545;
+        }
+        
+        .btn.danger:hover {
+            background: #c82333;
+            box-shadow: 0 8px 25px rgba(220, 53, 69, 0.3);
+        }
+        
+        .btn.secondary {
+            background: #6c757d;
+        }
+        
+        .btn.secondary:hover {
+            background: #5a6268;
+            box-shadow: 0 8px 25px rgba(108, 117, 125, 0.3);
+        }
+        
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .action-card {
+            background: #f8f9fa;
+            border: 2px solid #e1e8ed;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .action-card:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+            transform: translateY(-2px);
+        }
+        
+        .action-card.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            /* Botones deshabilitados pueden hacer clic para mostrar mensajes informativos */
+        }
+        
+        .action-card h3 {
+            color: #333;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+        
+        .action-card p {
+            color: #666;
+            font-size: 12px;
+        }
+        
+        .movement-controls {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+            max-width: 300px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .movement-controls .btn {
+            min-width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        .coordinate-inputs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        .coordinate-inputs input {
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .results-panel {
+            background: #2d3748;
+            color: #e2e8f0;
+            border-radius: 15px;
+            padding: 20px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            max-height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .results-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .results-header h3 {
+            color: #fff;
+            font-size: 18px;
+        }
+        
+        .clear-btn {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+        
+        .log-entry {
+            margin-bottom: 10px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .log-entry.success {
+            border-left: 3px solid #28a745;
+        }
+        
+        .log-entry.error {
+            border-left: 3px solid #dc3545;
+        }
+        
+        .log-entry.info {
+            border-left: 3px solid #17a2b8;
+        }
+        
+        .timestamp {
+            color: #a0aec0;
+            font-size: 11px;
+            margin-bottom: 4px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .token-display {
+            background: #28a745;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 12px;
+            word-break: break-all;
+            margin: 10px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                height: auto;
+            }
+            
+            .actions-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .movement-controls {
+                max-width: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Panel de Control -->
+        <div class="panel">
+            <h2>🤖 Control de Robot</h2>
+            
+            <!-- Barra de Estado -->
+            <div class="status-bar">
+                <div class="connection-status">
+                    <div class="status-dot" id="statusDot"></div>
+                    <span id="statusText">Desconectado</span>
+                </div>
+                <div class="connection-status">
+                    <div class="status-dot" id="robotStatusDot"></div>
+                    <span id="robotStatusText">Robot: Desconectado</span>
+                </div>
+                <button class="btn small secondary" onclick="checkConnection()">
+                    🔄 Verificar
+                </button>
+            </div>
+            
+            <!-- Sección de Autenticación -->
+            <div class="auth-section" id="authSection">
+                <h3>🔐 Autenticación</h3>
+                <div class="form-group">
+                    <label for="username">Usuario:</label>
+                    <input type="text" id="username" value="principalAdmin" placeholder="Ingresa tu usuario">
+                </div>
+                <div class="form-group">
+                    <label for="password">Contraseña:</label>
+                    <input type="password" id="password" value="1234" placeholder="Ingresa tu contraseña">
+                </div>
+                <button class="btn success" onclick="authenticate()" id="loginBtn">
+                    🔑 Iniciar Sesión
+                </button>
+                <button class="btn danger hidden" onclick="logout()" id="logoutBtn">
+                    🚪 Cerrar Sesión
+                </button>
+                
+                <div id="tokenDisplay" class="token-display hidden">
+                    <strong>Token:</strong> <span id="tokenValue"></span>
+                </div>
+            </div>
+            
+            <!-- Acciones Rápidas -->
+            <div class="actions-grid">
+                <div class="action-card disabled" id="connectCard" onclick="connectRobot()">
+                    <h3>🔌 Conectar</h3>
+                    <p>Conectar al robot</p>
+                </div>
+                
+                <div class="action-card disabled" id="statusCard" onclick="getRobotStatus()">
+                    <h3>📊 Estado</h3>
+                    <p>Ver estado actual</p>
+                </div>
+                
+                <div class="action-card disabled" id="helpCard" onclick="getHelp()">
+                    <h3>❓ Ayuda</h3>
+                    <p>Ver comandos disponibles</p>
+                </div>
+                
+                <div class="action-card disabled" id="motorsCard" onclick="toggleMotors()">
+                    <h3>⚡ Motores</h3>
+                    <p id="motorsText">Habilitar motores</p>
+                </div>
+            </div>
+            
+            <!-- Control de Movimiento -->
+            <div id="movementSection" class="hidden">
+                <h3>🎮 Control de Movimiento</h3>
+                
+                <div class="coordinate-inputs">
+                    <div>
+                        <label>X:</label>
+                        <input type="number" id="moveX" value="0.0" step="0.1">
+                    </div>
+                    <div>
+                        <label>Y:</label>
+                        <input type="number" id="moveY" value="0.0" step="0.1">
+                    </div>
+                    <div>
+                        <label>Z:</label>
+                        <input type="number" id="moveZ" value="0.0" step="0.1">
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin: 15px 0;">
+                    <button class="btn" onclick="moveRobot()">
+                        🎯 Mover a Posición
+                    </button>
+                    <button class="btn secondary" onclick="moveRobotWithSpeed()">
+                        🚀 Movimiento con Velocidad
+                    </button>
+                </div>
+                
+                <!-- Movimientos Predefinidos -->
+                <div style="text-align: center; margin: 20px 0;">
+                    <h4>Movimientos Rápidos:</h4>
+                    <div class="movement-controls">
+                        <button class="btn small" onclick="quickMove(-10, 0, 0)">← X</button>
+                        <button class="btn small" onclick="quickMove(0, 10, 0)">↑ Y</button>
+                        <button class="btn small" onclick="quickMove(10, 0, 0)">X →</button>
+                        
+                        <button class="btn small" onclick="quickMove(0, -10, 0)">↓ Y</button>
+                        <button class="btn small" onclick="quickMove(0, 0, 10)">↑ Z</button>
+                        <button class="btn small" onclick="quickMove(0, 0, -10)">↓ Z</button>
+                        
+                        <button class="btn small secondary" onclick="quickMove(0, 0, 0)">🏠 Home</button>
+                        <button class="btn small danger" onclick="disconnectRobot()">🔌 Desconectar</button>
+                        <button class="btn small secondary" onclick="showTasks()">📋 Tareas</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Panel de Resultados -->
+        <div class="panel">
+            <div class="results-header">
+                <h2>📋 Resultados</h2>
+                <button class="btn small danger clear-btn" onclick="clearResults()">
+                    🗑️ Limpiar
+                </button>
+            </div>
+            <div class="results-panel" id="resultsPanel">
+                <div class="log-entry info">
+                    <div class="timestamp">Sistema iniciado</div>
+                    Cliente XML-RPC listo para conectar al robot en 127.0.0.1:8080/RPC2
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentToken = null;
+        let motorsEnabled = false;
+        
+        function addLog(message, type = 'info') {
+            const panel = document.getElementById('resultsPanel');
+            const timestamp = new Date().toLocaleTimeString();
+            
+            const logEntry = document.createElement('div');
+            logEntry.className = `log-entry ${type}`;
+            logEntry.innerHTML = `
+                <div class="timestamp">${timestamp}</div>
+                ${message}
+            `;
+            
+            panel.appendChild(logEntry);
+            panel.scrollTop = panel.scrollHeight;
+        }
+        
+        function clearResults() {
+            document.getElementById('resultsPanel').innerHTML = '';
+            addLog('Resultados limpiados', 'info');
+        }
+        
+        function updateConnectionStatus(connected) {
+            const statusDot = document.getElementById('statusDot');
+            const statusText = document.getElementById('statusText');
+            
+            if (connected) {
+                statusDot.classList.add('connected');
+                statusText.textContent = 'Conectado al servidor';
+            } else {
+                statusDot.classList.remove('connected');
+                statusText.textContent = 'Desconectado';
+            }
+        }
+        
+        function updateRobotStatus(connected, motorsEnabled = false) {
+            const robotStatusDot = document.getElementById('robotStatusDot');
+            const robotStatusText = document.getElementById('robotStatusText');
+            
+            if (connected) {
+                robotStatusDot.classList.add('connected');
+                robotStatusText.textContent = `Robot: Conectado${motorsEnabled ? ' (Motores ON)' : ' (Motores OFF)'}`;
+            } else {
+                robotStatusDot.classList.remove('connected');
+                robotStatusText.textContent = 'Robot: Desconectado';
+            }
+        }
+        
+        function enableActions(enabled) {
+            // Esta función ya no se usa, manejamos los botones individualmente
+        }
+        
+        async function makeRPCCall(method, params = []) {
+            try {
+                // Procesar parámetros para asegurar tipos correctos para XML-RPC
+                const cleanParams = params.map(param => {
+                    if (typeof param === 'string') return String(param);
+                    if (typeof param === 'number') return Number(param); // Asegurar que sea un número válido
+                    return param;
+                });
+                
+                addLog(`📡 Ejecutando: ${method}(${cleanParams.map(p => {
+                    if (typeof p === 'string') return `"${p}"`;
+                    if (typeof p === 'number') return p.toString();
+                    return p;
+                }).join(', ')})`, 'info');
+                
+                const response = await fetch('/rpc', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ method, params: cleanParams })
+                });
+                
+                const data = await response.json();
+                
+                if (data.error) {
+                    if (data.error.faultString) {
+                        addLog(`❌ Error RPC: ${data.error.faultString}`, 'error');
+                        
+                        // Detectar errores de autenticación específicos
+                        if (data.error.faultString.includes('Authentication failed') || 
+                            data.error.faultString.includes('Invalid username or password') ||
+                            data.error.faultString.includes('Token inválido') ||
+                            data.error.faultString.includes('sesión expirada')) {
+                            addLog('🔑 Error de autenticación. Verifica tus credenciales o vuelve a autenticarte.', 'error');
+                            resetAuthState();
+                        }
+                    } else {
+                        addLog(`❌ Error en ${method}: ${data.error.message}`, 'error');
+                    }
+                    return { error: data.error };
+                } else {
+                    // Mostrar resultado según el tipo
+                    if (method === 'user.login') {
+                        // Para autenticación, mostrar información estructurada
+                        if (data.result && typeof data.result.role !== 'undefined' && data.result.token) {
+                            const roleText = data.result.role === 0 ? 'ADMIN' : (data.result.role === 1 ? 'OPERATOR' : 'UNKNOWN');
+                            addLog(`✅ Login exitoso: ${roleText}`, 'success');
+                        } else {
+                            addLog(`❌ Login fallido - respuesta inválida`, 'error');
+                        }
+                    } else {
+                        // Para otros métodos, mostrar resultado como antes
+                        const resultStr = typeof data.result === 'string' ? data.result : JSON.stringify(data.result);
+                        addLog(`✅ ${method}: ${resultStr}`, 'success');
+                    }
+                    return { success: true, result: data.result };
+                }
+            } catch (error) {
+                addLog(`❌ Error de conexión: ${error.message}`, 'error');
+                return { error: { message: error.message } };
+            }
+        }
+        
+        function resetAuthState() {
+            currentToken = null;
+            motorsEnabled = false;
+            document.getElementById('tokenDisplay').classList.add('hidden');
+            document.getElementById('authSection').classList.remove('authenticated');
+            document.getElementById('movementSection').classList.add('hidden');
+            document.getElementById('loginBtn').classList.remove('hidden');
+            document.getElementById('logoutBtn').classList.add('hidden');
+            document.getElementById('motorsText').textContent = 'Habilitar motores';
+            
+            // Limpiar el display del token
+            document.getElementById('tokenValue').textContent = '';
+            
+            // Resetear valores de posición
+            document.getElementById('moveX').value = '0.0';
+            document.getElementById('moveY').value = '0.0';
+            document.getElementById('moveZ').value = '0.0';
+            
+            // Deshabilitar todos los botones de acciones
+            document.getElementById('connectCard').classList.add('disabled');
+            document.getElementById('statusCard').classList.add('disabled');
+            document.getElementById('helpCard').classList.add('disabled');
+            document.getElementById('motorsCard').classList.add('disabled');
+            
+            // Resetear estado visual del robot
+            updateRobotStatus(false);
+            
+            addLog('🔄 Estado de autenticación reiniciado', 'info');
+        }
+        
+        async function checkConnection() {
+            addLog('🔍 Verificando conexión con el servidor...', 'info');
+            
+            try {
+                const response = await fetch('/health');
+                const data = await response.json();
+                
+                if (data.status === 'ok') {
+                    addLog('✅ Servidor XML-RPC alcanzable y funcionando', 'success');
+                    updateConnectionStatus(true);
+                } else {
+                    addLog(`❌ ${data.message}`, 'error');
+                    updateConnectionStatus(false);
+                }
+            } catch (error) {
+                addLog(`❌ Error: ${error.message}`, 'error');
+                updateConnectionStatus(false);
+            }
+        }
+        
+        async function authenticate() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (!username || !password) {
+                addLog('❌ Por favor ingresa usuario y contraseña', 'error');
+                return;
+            }
+            
+            addLog(`🔐 Autenticando usuario: ${username}`, 'info');
+            
+            const result = await makeRPCCall('user.login', [username, password]);
+            
+            if (result.success && result.result) {
+                // El servidor retorna {role: int, token: string}
+                const authData = result.result;
+                
+                // Si tenemos role y token, la autenticación fue exitosa
+                if (typeof authData.role !== 'undefined' && authData.token) {
+                    // Guardar información de autenticación
+                    currentToken = authData.token;
+                    const roleText = authData.role === 0 ? 'ADMIN' : (authData.role === 1 ? 'OPERATOR' : 'UNKNOWN');
+                    
+                    document.getElementById('tokenValue').textContent = `Usuario: ${username} | Rol: ${roleText} | Token: ${authData.token.substring(0, 8)}...`;
+                    document.getElementById('tokenDisplay').classList.remove('hidden');
+                    document.getElementById('authSection').classList.add('authenticated');
+                    document.getElementById('loginBtn').classList.add('hidden');
+                    document.getElementById('logoutBtn').classList.remove('hidden');
+                    
+                    addLog(`🎉 Autenticación exitosa!`, 'success');
+                    addLog(`👤 Usuario: ${username} | 🎭 Rol: ${roleText} (${authData.role}) | 🔑 Token: ${authData.token.substring(0, 16)}...`, 'success');
+                    addLog('ℹ️ NOTA: Los métodos del robot requieren el token obtenido del login', 'info');
+                    
+                    // Habilitar acciones iniciales
+                    document.getElementById('connectCard').classList.remove('disabled');
+                    document.getElementById('statusCard').classList.remove('disabled');
+                    document.getElementById('helpCard').classList.remove('disabled');
+                    
+                    addLog('✅ Botones habilitados: Conectar, Estado, Ayuda', 'success');
+                    addLog('💡 Ahora puedes conectarte al robot o ver el estado/ayuda', 'info');
+                    
+                    // Verificar automáticamente el estado del robot después de autenticarse
+                    addLog('🔍 Verificando estado del robot automáticamente...', 'info');
+                    await checkRobotStatusAfterLogin();
+                } else {
+                    addLog('❌ Autenticación fallida: Respuesta inesperada del servidor', 'error');
+                }
+            } else {
+                addLog('❌ Error en el proceso de autenticación', 'error');
+            }
+        }
+        
+        function logout() {
+            addLog('🚪 Cerrando sesión...', 'info');
+            
+            // Intentar logout en el servidor si tenemos token
+            if (currentToken) {
+                makeRPCCall('user.logout', [currentToken])
+                    .then(() => addLog('🔓 Logout del servidor exitoso', 'success'))
+                    .catch(() => addLog('⚠️ Error en logout del servidor (continuando)', 'info'));
+            }
+            
+            resetAuthState();
+            document.getElementById('loginBtn').classList.remove('hidden');
+            document.getElementById('logoutBtn').classList.add('hidden');
+            addLog('✅ Sesión cerrada correctamente', 'success');
+        }
+        
+        async function checkRobotStatusAfterLogin() {
+            try {
+                // Obtener estado del robot para verificar si ya está conectado
+                const result = await makeRPCCall('robot.getStatus', [currentToken]);
+                
+                if (result.success && typeof result.result === 'object') {
+                    const status = result.result;
+                    
+                    addLog('📊 Estado del robot obtenido:', 'info');
+                    Object.entries(status).forEach(([key, value]) => {
+                        addLog(`  • ${key}: ${value}`, 'info');
+                    });
+                    
+                    // Verificar si el robot está conectado
+                    if (status.isConnected === true) {
+                        addLog('✅ ¡El robot ya está conectado! Actualizando interfaz...', 'success');
+                        
+                        // Actualizar estado visual
+                        updateRobotStatus(true, status.areMotorsEnabled === true);
+                        
+                        // Habilitar sección de movimiento
+                        document.getElementById('movementSection').classList.remove('hidden');
+                        document.getElementById('motorsCard').classList.remove('disabled');
+                        
+                        // Verificar estado de los motores
+                        if (status.areMotorsEnabled === true) {
+                            motorsEnabled = true;
+                            document.getElementById('motorsText').textContent = 'Deshabilitar motores';
+                            addLog('⚡ Los motores ya están habilitados', 'success');
+                        } else {
+                            motorsEnabled = false;
+                            document.getElementById('motorsText').textContent = 'Habilitar motores';
+                            addLog('⚡ Los motores están deshabilitados', 'info');
+                        }
+                        
+                        // Si hay información de posición, actualizarla en la interfaz
+                        if (status.position && typeof status.position === 'object') {
+                            if (typeof status.position.x !== 'undefined') {
+                                document.getElementById('moveX').value = status.position.x.toFixed(1);
+                            }
+                            if (typeof status.position.y !== 'undefined') {
+                                document.getElementById('moveY').value = status.position.y.toFixed(1);
+                            }
+                            if (typeof status.position.z !== 'undefined') {
+                                document.getElementById('moveZ').value = status.position.z.toFixed(1);
+                            }
+                            addLog(`📍 Posición actual cargada: (${status.position.x}, ${status.position.y}, ${status.position.z})`, 'info');
+                        }
+                        
+                        addLog('🎮 ¡Todo listo! Controles de robot habilitados automáticamente', 'success');
+                    } else {
+                        updateRobotStatus(false);
+                        addLog('🔌 Robot no conectado. Usa el botón "Conectar" cuando esté listo', 'info');
+                    }
+                } else {
+                    addLog('⚠️ No se pudo obtener el estado del robot automáticamente', 'info');
+                }
+            } catch (error) {
+                addLog('⚠️ Error al verificar estado automático del robot (continuando normalmente)', 'info');
+            }
+        }
+        
+        async function connectRobot() {
+            if (!currentToken) {
+                addLog('❌ Debe autenticarse primero', 'error');
+                return;
+            }
+            
+            addLog('🔌 Conectando al robot...', 'info');
+            const result = await makeRPCCall('robot.connect', [currentToken]);
+            if (result.success) {
+                document.getElementById('movementSection').classList.remove('hidden');
+                document.getElementById('motorsCard').classList.remove('disabled');
+                addLog(`🔌 Robot conectado: ${result.result}`, 'success');
+                addLog('🎮 Controles de movimiento habilitados', 'info');
+                
+                // Actualizar estado obteniendo información actual del robot
+                setTimeout(async () => {
+                    addLog('🔄 Actualizando estado del robot...', 'info');
+                    await checkRobotStatusAfterLogin();
+                }, 1000);
+            }
+        }
+        
+        async function disconnectRobot() {
+            if (!currentToken) return;
+            
+            const result = await makeRPCCall('robot.disconnect', [currentToken]);
+            if (result.success) {
+                document.getElementById('movementSection').classList.add('hidden');
+                addLog(`🔌 Robot desconectado: ${result.result}`, 'info');
+            }
+        }
+        
+        async function getRobotStatus() {
+            if (!currentToken) {
+                addLog('❌ Debe autenticarse primero', 'error');
+                return;
+            }
+            
+            addLog('📊 Consultando estado del robot...', 'info');
+            const result = await makeRPCCall('robot.getStatus', [currentToken]);
+            if (result.success && typeof result.result === 'object') {
+                addLog(`📊 Estado del robot:`, 'info');
+                Object.entries(result.result).forEach(([key, value]) => {
+                    addLog(`  • ${key}: ${value}`, 'info');
+                });
+            }
+        }
+        
+        async function getHelp() {
+            if (!currentToken) {
+                addLog('❌ Debe autenticarse primero', 'error');
+                return;
+            }
+            
+            addLog('❓ Consultando comandos disponibles...', 'info');
+            const result = await makeRPCCall('robot.help', [currentToken]);
+            // El resultado se mostrará automáticamente en makeRPCCall
+        }
+        
+        async function toggleMotors() {
+            if (!currentToken) {
+                addLog('❌ Debe autenticarse primero', 'error');
+                return;
+            }
+            
+            const method = motorsEnabled ? 'robot.disableMotors' : 'robot.enableMotors';
+            const result = await makeRPCCall(method, [currentToken]);
+            
+            if (result.success) {
+                motorsEnabled = !motorsEnabled;
+                document.getElementById('motorsText').textContent = 
+                    motorsEnabled ? 'Deshabilitar motores' : 'Habilitar motores';
+                addLog(`⚡ Motores ${motorsEnabled ? 'habilitados' : 'deshabilitados'}`, 'success');
+            }
+        }
+        
+        async function moveRobot() {
+            if (!currentToken) {
+                addLog('❌ Debe autenticarse primero', 'error');
+                return;
+            }
+            
+            const x = parseFloat(document.getElementById('moveX').value);
+            const y = parseFloat(document.getElementById('moveY').value);
+            const z = parseFloat(document.getElementById('moveZ').value);
+            
+            // Verificar que los valores sean números válidos
+            if (isNaN(x) || isNaN(y) || isNaN(z)) {
+                addLog('❌ Error: Las coordenadas deben ser números válidos', 'error');
+                return;
+            }
+            
+            // Usar moveDefaultSpeed que solo requiere token, x, y, z (todos como float)
+            const result = await makeRPCCall('robot.moveDefaultSpeed', [currentToken, x, y, z]);
+            if (result.success) {
+                addLog(`🎯 Robot movido a posición (${x}, ${y}, ${z})`, 'success');
+            }
+        }
+        
+        async function moveRobotDefaultSpeed() {
+            if (!currentToken) {
+                addLog('❌ Debe autenticarse primero', 'error');
+                return;
+            }
+            
+            const x = parseFloat(document.getElementById('moveX').value);
+            const y = parseFloat(document.getElementById('moveY').value);
+            const z = parseFloat(document.getElementById('moveZ').value);
+            
+            // Verificar que los valores sean números válidos
+            if (isNaN(x) || isNaN(y) || isNaN(z)) {
+                addLog('❌ Error: Las coordenadas deben ser números válidos', 'error');
+                return;
+            }
+            
+            const result = await makeRPCCall('robot.moveDefaultSpeed', [currentToken, x, y, z]);
+            if (result.success) {
+                addLog(`🚀 Movimiento a velocidad por defecto: (${x}, ${y}, ${z})`, 'success');
+            }
+        }
+        
+        async function moveRobotWithSpeed() {
+            if (!currentToken) {
+                addLog('❌ Debe autenticarse primero', 'error');
+                return;
+            }
+            
+            const x = parseFloat(document.getElementById('moveX').value);
+            const y = parseFloat(document.getElementById('moveY').value);
+            const z = parseFloat(document.getElementById('moveZ').value);
+            
+            // Verificar que los valores sean números válidos
+            if (isNaN(x) || isNaN(y) || isNaN(z)) {
+                addLog('❌ Error: Las coordenadas deben ser números válidos', 'error');
+                return;
+            }
+            
+            const speedInput = prompt("Ingresa la velocidad de movimiento:", "100.0");
+            if (!speedInput) {
+                addLog('❌ Movimiento cancelado', 'info');
+                return;
+            }
+            
+            const speed = parseFloat(speedInput);
+            if (isNaN(speed)) {
+                addLog('❌ Error: La velocidad debe ser un número válido', 'error');
+                return;
+            }
+            
+            const result = await makeRPCCall('robot.move', [currentToken, x, y, z, speed]);
+            if (result.success) {
+                addLog(`🎯 Robot movido a posición (${x}, ${y}, ${z}) con velocidad ${speed}`, 'success');
+            }
+        }
+        
+        async function quickMove(deltaX, deltaY, deltaZ) {
+            if (!currentToken) {
+                addLog('❌ Debe autenticarse primero', 'error');
+                return;
+            }
+            
+            const currentX = parseFloat(document.getElementById('moveX').value) || 0.0;
+            const currentY = parseFloat(document.getElementById('moveY').value) || 0.0;
+            const currentZ = parseFloat(document.getElementById('moveZ').value) || 0.0;
+            
+            const newX = currentX + parseFloat(deltaX);
+            const newY = currentY + parseFloat(deltaY);
+            const newZ = currentZ + parseFloat(deltaZ);
+            
+            // Verificar que los nuevos valores sean números válidos
+            if (isNaN(newX) || isNaN(newY) || isNaN(newZ)) {
+                addLog('❌ Error: Error en el cálculo de coordenadas', 'error');
+                return;
+            }
+            
+            document.getElementById('moveX').value = newX.toFixed(1);
+            document.getElementById('moveY').value = newY.toFixed(1);
+            document.getElementById('moveZ').value = newZ.toFixed(1);
+            
+            await moveRobot();
+        }
+        
+        async function showTasks() {
+            if (!currentToken) {
+                addLog('❌ Debe autenticarse primero', 'error');
+                return;
+            }
+            
+            const result = await makeRPCCall('robot.listTasks', [currentToken]);
+            if (result.success) {
+                addLog(`📋 Tareas disponibles:\n${JSON.stringify(result.result, null, 2)}`, 'info');
+            }
+        }
+        
+        // Verificar conexión e inicializar estado al cargar la página
+        window.addEventListener('load', () => {
+            checkConnection();
+            // Asegurar que todos los botones empiecen deshabilitados
+            resetAuthState();
+        });
+        
+        // Atajos de teclado
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey || e.metaKey) {
+                switch (e.key) {
+                    case 'Enter':
+                        if (currentToken) {
+                            moveRobot();
+                        } else {
+                            authenticate();
+                        }
+                        e.preventDefault();
+                        break;
+                    case 'r':
+                        checkConnection();
+                        e.preventDefault();
+                        break;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

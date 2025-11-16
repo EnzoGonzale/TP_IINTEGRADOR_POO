@@ -1,0 +1,80 @@
+#include "Server.h"
+#include <arpa/inet.h>
+#include <netinet/in.h>
+#include <string.h>  // para memset
+#include <iostream>
+#include <chrono> // Para std::this_thread::sleep_for
+#include <xmlrpc-c/server_abyss.hpp>
+#include <string>
+#include <filesystem> // Requerido para C++17
+#include "Logger.h"
+
+// Helper para obtener la ruta del directorio del proyecto
+std::string getProjectDirectory() {
+    // __FILE__ es una macro que se expande a la ruta completa de este archivo de código fuente.
+    std::filesystem::path source_path = std::filesystem::absolute(__FILE__);
+    // Subimos dos niveles desde /include/Server.cpp para llegar a la raíz del proyecto.
+    return source_path.parent_path().parent_path().parent_path().string();
+}
+
+// Constructors/Destructors
+
+Server::Server() 
+    : running(false),
+      dbManager(getProjectDirectory() + "/server_database.db"),
+      sessionManager(), // Se inicializa aquí
+      authService(dbManager, sessionManager), // Pasamos el sessionManager
+      robot(),
+      reportGenerator(), // Se mantiene por si los métodos RPC la necesitan
+      taskManager("./tasks.json"),
+      rpcHandler(authService, robot, taskManager) // rpcHandler también necesitará el authService modificado
+{ 
+    // Cargamos las tareas al iniciar el servidor.
+    if (taskManager.loadTasks()) {
+        Logger::getInstance().log(LogLevel::INFO, "[Server] Tareas cargadas exitosamente desde tasks.json.");
+    } else {
+        Logger::getInstance().log(LogLevel::ERROR, "[Server] Error al cargar las tareas desde tasks.json.");
+    }
+}
+
+Server::~Server()
+{
+}
+
+void Server::startRpcServer() {
+    try {
+        xmlrpc_c::registry myRegistry;
+        rpcHandler.registerMethods(myRegistry);
+
+        struct sockaddr_in addr;
+        memset(&addr, 0, sizeof(addr));
+        addr.sin_family = AF_INET;
+        addr.sin_addr.s_addr = INADDR_ANY;  // 0.0.0.0 - escucha en todas las interfaces
+        addr.sin_port = htons(8080);
+
+        xmlrpc_c::serverAbyss myAbyssServer(
+            xmlrpc_c::serverAbyss::constrOpt()
+            .registryP(&myRegistry)
+            .sockAddrP((struct sockaddr*)&addr)
+            .sockAddrLen(sizeof(addr)));
+        
+        Logger::getInstance().log(LogLevel::INFO, "[RPC Server] Servidor XML-RPC iniciado en el puerto 8080. Esperando peticiones...");
+        myAbyssServer.run(); // Esto bloquea este hilo y empieza a escuchar.
+
+    } catch (std::exception const& e) {
+        Logger::getInstance().log(LogLevel::CRITICAL, "[RPC Server] Excepción crítica: " + std::string(e.what()));
+    }
+}
+
+void Server::run()
+{
+    // El servidor ahora solo inicia el RPC Server y bloquea el hilo principal.
+    Logger::getInstance().log(LogLevel::INFO, "[Main] Iniciando Servidor RPC. Use Ctrl+C para detener.");
+    startRpcServer(); // Esta llamada es bloqueante.
+    // Cuando startRpcServer() termina (por ejemplo, por Ctrl+C), el programa finaliza.
+}
+
+void Server::shutdown()
+{
+    // Lógica para detener los servicios de forma segura.
+}

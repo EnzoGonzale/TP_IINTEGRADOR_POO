@@ -1,0 +1,8 @@
+nohup: ignoring input
+[DB] Base de datos abierta en /server_database.db
+[DB] Tabla de usuarios lista.
+[TaskManager] 3 tareas cargadas exitosamente desde ./tasks.json
+[Server] Tareas cargadas exitosamente desde tasks.json.
+[Main] Iniciando Servidor RPC. Use Ctrl+C para detener.
+[RPC Server] Servidor XML-RPC iniciado en el puerto 8080. Esperando peticiones...
+Signal of Class 1 received.  Exiting

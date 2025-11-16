@@ -1,0 +1,1210 @@
+2025-11-16 | 01:55:20, INFO, Logger finalizado.
+2025-11-16 | 01:55:35, INFO, Logger inicializado.
+2025-11-16 | 01:55:35, INFO, [DB] Base de datos abierta en /home/nenodios/Desktop/Codes_POO/TP_INTEGRADOR/ProyectoCompleto/ProyectoPooFinal/Servidor/server_database.db
+2025-11-16 | 01:55:35, INFO, [DB] Tabla de usuarios lista.
+2025-11-16 | 01:55:35, INFO, [TaskManager] 4 tareas cargadas exitosamente desde ./tasks.json
+2025-11-16 | 01:55:35, INFO, [Server] Tareas cargadas exitosamente desde tasks.json.
+2025-11-16 | 01:55:35, INFO, [Main] Iniciando Servidor RPC. Use Ctrl+C para detener.
+2025-11-16 | 01:55:35, INFO, [RPC Server] Servidor XML-RPC iniciado en el puerto 8080. Esperando peticiones...
+2025-11-16 | 01:55:43, CRITICAL, Authentication Error: Token inválido o sesión expirada.
+2025-11-16 | 01:55:43, WARNING, Failed RPC call for user 'unknown_token': Authentication Error: Token inválido o sesión expirada., unknown_token, 127.0.0.1
+2025-11-16 | 01:56:37, INFO, Successful login attempt, enzo, 127.0.0.1
+2025-11-16 | 01:56:42, INFO, [RPC] RPC call from user 'enzo': robot.connect, enzo, 127.0.0.1
+2025-11-16 | 01:56:42, INFO, [Robot] Iniciando conexión...
+2025-11-16 | 01:56:42, INFO, Puerto serie /dev/ttyUSB0 abierto con éxito a 115200 baudios.
+2025-11-16 | 01:56:42, INFO, [Robot] Limpiando mensajes de arranque...
+2025-11-16 | 01:56:44, INFO, [Robot] Conexión establecida.
+2025-11-16 | 01:59:27, INFO, Successful login attempt, enzo, 127.0.0.1
+2025-11-16 | 01:59:34, INFO, [RPC] RPC call from user 'enzo': robot.connect, enzo, 127.0.0.1
+2025-11-16 | 01:59:34, CRITICAL, [Robot] Error: El robot ya está conectado.
+2025-11-16 | 01:59:34, WARNING, Failed RPC call for user 'enzo': [Robot] Error: El robot ya está conectado., enzo, 127.0.0.1
+2025-11-16 | 01:59:40, INFO, [RPC] RPC call from user 'enzo': robot.getStatus, enzo, 127.0.0.1
+2025-11-16 | 02:00:16, INFO, Successful logout attempt, enzo, 127.0.0.1
+2025-11-16 | 02:02:35, INFO, Successful login attempt, enzo, 127.0.0.1
+2025-11-16 | 02:02:38, INFO, [RPC] RPC call from user 'enzo': robot.getStatus, enzo, 127.0.0.1
+2025-11-16 | 02:02:58, INFO, Successful logout attempt, enzo, 127.0.0.1
+2025-11-16 | 02:03:22, INFO, Successful login attempt, enzo, 127.0.0.1
+2025-11-16 | 02:03:26, INFO, [RPC] RPC call from user 'enzo': robot.getStatus, enzo, 127.0.0.1
+2025-11-16 | 02:03:35, INFO, Successful logout attempt, enzo, 127.0.0.1
+2025-11-16 | 02:04:44, INFO, Successful login attempt, enzo, 127.0.0.1
+2025-11-16 | 02:04:48, INFO, [RPC] RPC call from user 'enzo': robot.getStatus, enzo, 127.0.0.1
+2025-11-16 | 02:05:04, INFO, Successful logout attempt, enzo, 127.0.0.1
+2025-11-16 | 02:08:26, INFO, Successful login attempt, enzo, 127.0.0.1
+2025-11-16 | 02:08:29, INFO, [RPC] RPC call from user 'enzo': robot.getStatus, enzo, 127.0.0.1
+2025-11-16 | 02:08:42, INFO, Successful logout attempt, enzo, 127.0.0.1
+2025-11-16 | 02:09:55, INFO, Successful login attempt, enzo, 127.0.0.1
+2025-11-16 | 02:09:58, INFO, [RPC] RPC call from user 'enzo': robot.getStatus, enzo, 127.0.0.1
+2025-11-16 | 02:10:28, INFO, Successful logout attempt, enzo, 127.0.0.1
+2025-11-16 | 02:15:25, INFO, Successful login attempt, enzo, 127.0.0.1
+2025-11-16 | 02:15:28, INFO, [RPC] RPC call from user 'enzo': robot.getStatus, enzo, 127.0.0.1
+2025-11-16 | 02:15:39, INFO, Successful logout attempt, enzo, 127.0.0.1
+2025-11-16 | 02:28:16, INFO, Successful login attempt, enzo, 127.0.0.1
+2025-11-16 | 02:28:30, INFO, [RPC] RPC call from user 'enzo': robot.getStatus, enzo, 127.0.0.1
+2025-11-16 | 02:28:41, INFO, Successful logout attempt, enzo, 127.0.0.1
+2025-11-16 | 02:39:40, INFO, Successful login attempt, enzo, 127.0.0.1
+2025-11-16 | 02:39:43, INFO, [RPC] RPC call from user 'enzo': robot.getStatus, enzo, 127.0.0.1
+2025-11-16 | 02:40:06, INFO, Successful logout attempt, enzo, 127.0.0.1
+2025-11-16 | 02:41:39, INFO, Successful login attempt, enzo, 127.0.0.1
+2025-11-16 | 02:41:42, INFO, [RPC] RPC call from user 'enzo': robot.getStatus, enzo, 127.0.0.1
+2025-11-16 | 02:41:51, INFO, Successful logout attempt, enzo, 127.0.0.1
+2025-11-16 | 02:46:19, INFO, Successful login attempt, enzo, 127.0.0.1
+2025-11-16 | 02:46:23, INFO, [RPC] RPC call from user 'enzo': robot.getStatus, enzo, 127.0.0.1
+2025-11-16 | 02:46:33, INFO, Successful logout attempt, enzo, 127.0.0.1
+2025-11-16 | 02:48:21, INFO, Successful login attempt, enzo, 127.0.0.1
+2025-11-16 | 02:48:24, INFO, [RPC] RPC call from user 'enzo': robot.getStatus, enzo, 127.0.0.1
+2025-11-16 | 02:48:33, INFO, Successful logout attempt, enzo, 127.0.0.1
+2025-11-16 | 02:50:30, INFO, Successful login attempt, enzo, 127.0.0.1
+2025-11-16 | 02:50:33, INFO, [RPC] RPC call from user 'enzo': robot.getStatus, enzo, 127.0.0.1
+2025-11-16 | 02:50:49, INFO, Successful logout attempt, enzo, 127.0.0.1
+2025-11-16 | 02:52:42, INFO, Successful login attempt, enzo, 127.0.0.1
+2025-11-16 | 02:52:50, INFO, [RPC] RPC call from user 'enzo': robot.getStatus, enzo, 127.0.0.1
+2025-11-16 | 02:53:00, INFO, Successful logout attempt, enzo, 127.0.0.1
+2025-11-16 | 02:53:47, INFO, Successful login attempt, enzo, 127.0.0.1
+2025-11-16 | 02:53:52, INFO, [RPC] RPC call from user 'enzo': robot.getStatus, enzo, 127.0.0.1
+2025-11-16 | 02:54:11, INFO, Successful logout attempt, enzo, 127.0.0.1
+2025-11-16 | 02:55:38, INFO, Successful login attempt, enzo, 127.0.0.1
+2025-11-16 | 02:55:46, INFO, [RPC] RPC call from user 'enzo': robot.getStatus, enzo, 127.0.0.1
+2025-11-16 | 02:55:55, INFO, Successful logout attempt, enzo, 127.0.0.1
+2025-11-16 | 02:57:29, INFO, Successful login attempt, enzo, 127.0.0.1
+2025-11-16 | 02:57:33, INFO, [RPC] RPC call from user 'enzo': robot.getStatus, enzo, 127.0.0.1
+2025-11-16 | 02:57:42, INFO, Successful logout attempt, enzo, 127.0.0.1
+2025-11-16 | 02:59:16, INFO, Successful login attempt, enzo, 127.0.0.1
+2025-11-16 | 02:59:18, INFO, [RPC] RPC call from user 'enzo': robot.getStatus, enzo, 127.0.0.1
+2025-11-16 | 02:59:37, INFO, Successful logout attempt, enzo, 127.0.0.1
+2025-11-16 | 03:00:10, INFO, Successful login attempt, enzo, 127.0.0.1
+2025-11-16 | 03:00:14, INFO, [RPC] RPC call from user 'enzo': robot.getStatus, enzo, 127.0.0.1
+2025-11-16 | 03:00:27, INFO, Successful logout attempt, enzo, 127.0.0.1
+2025-11-16 | 03:06:21, INFO, Successful login attempt, enzo, 127.0.0.1
+2025-11-16 | 03:06:25, INFO, [RPC] RPC call from user 'enzo': robot.getStatus, enzo, 127.0.0.1
+2025-11-16 | 03:06:35, INFO, Successful logout attempt, enzo, 127.0.0.1
+2025-11-16 | 03:13:33, INFO, Successful login attempt, enzo, 127.0.0.1
+2025-11-16 | 03:13:37, INFO, [RPC] RPC call from user 'enzo': robot.getStatus, enzo, 127.0.0.1
+2025-11-16 | 03:13:45, INFO, Successful logout attempt, enzo, 127.0.0.1
+2025-11-16 | 03:26:40, INFO, Successful login attempt, enzo, 127.0.0.1
+2025-11-16 | 03:26:44, INFO, [RPC] RPC call from user 'enzo': robot.getStatus, enzo, 127.0.0.1
+2025-11-16 | 03:26:56, INFO, Successful logout attempt, enzo, 127.0.0.1
+2025-11-16 | 03:34:37, INFO, Logger finalizado.
+2025-11-16 | 03:36:20, INFO, Logger inicializado.
+2025-11-16 | 03:36:20, INFO, [DB] Base de datos abierta en /home/nenodios/Desktop/Codes_POO/TP_INTEGRADOR/ProyectoCompleto/ProyectoPooFinal/Servidor/server_database.db
+2025-11-16 | 03:36:20, INFO, [DB] Tabla de usuarios lista.
+2025-11-16 | 03:36:20, INFO, [TaskManager] 3 tareas cargadas exitosamente desde ./tasks.json
+2025-11-16 | 03:36:20, INFO, [Server] Tareas cargadas exitosamente desde tasks.json.
+2025-11-16 | 03:36:20, INFO, [Main] Iniciando Servidor RPC. Use Ctrl+C para detener.
+2025-11-16 | 03:36:20, INFO, [RPC Server] Servidor XML-RPC iniciado en el puerto 8080. Esperando peticiones...
+2025-11-16 | 03:36:27, INFO, Successful login attempt, enzo, 127.0.0.1
+2025-11-16 | 03:36:31, INFO, [RPC] RPC call from user 'enzo': robot.getStatus, enzo, 127.0.0.1
+2025-11-16 | 03:36:44, INFO, [RPC] RPC call from user 'enzo': robot.connect, enzo, 127.0.0.1
+2025-11-16 | 03:36:44, INFO, [Robot] Iniciando conexión...
+2025-11-16 | 03:36:44, INFO, Puerto serie /dev/ttyUSB0 abierto con éxito a 115200 baudios.
+2025-11-16 | 03:36:44, INFO, [Robot] Limpiando mensajes de arranque...
+2025-11-16 | 03:36:46, INFO, [Robot] Conexión establecida.
+2025-11-16 | 03:37:55, INFO, [RPC] RPC call from user 'enzo': robot.moveDefaultSpeed, enzo, 127.0.0.1
+2025-11-16 | 03:37:55, CRITICAL, [Robot] Error: No se puede mover. Asegúrese de que el robot esté conectado y los motores estén habilitados.
+2025-11-16 | 03:37:55, WARNING, Failed RPC call for user 'enzo': [Robot] Error: No se puede mover. Asegúrese de que el robot esté conectado y los motores estén habilitados., enzo, 127.0.0.1
+2025-11-16 | 03:37:59, INFO, [RPC] RPC call from user 'enzo': robot.enableMotors, enzo, 127.0.0.1
+2025-11-16 | 03:38:03, INFO, [Robot] Respuesta de M17: INFO: MOTORS ENABLED. OK. 
+2025-11-16 | 03:38:03, INFO, [Robot] Motores activados.
+2025-11-16 | 03:38:06, INFO, [RPC] RPC call from user 'enzo': robot.moveDefaultSpeed, enzo, 127.0.0.1
+2025-11-16 | 03:38:06, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X100.000 Y100.000 Z100.000 E0.0"
+2025-11-16 | 03:38:06, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 03:38:11, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:100.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 03:38:11, INFO, [Robot] Movimiento completado.
+2025-11-16 | 03:42:21, INFO, Successful logout attempt, enzo, 127.0.0.1
+2025-11-16 | 03:42:56, INFO, Successful login attempt, enzo, 127.0.0.1
+2025-11-16 | 03:43:03, INFO, [RPC] RPC call from user 'enzo': robot.getStatus, enzo, 127.0.0.1
+2025-11-16 | 03:43:46, INFO, [RPC] RPC call from user 'enzo': robot.moveDefaultSpeed, enzo, 127.0.0.1
+2025-11-16 | 03:43:46, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X110.000 Y100.000 Z100.000 E0.0"
+2025-11-16 | 03:43:46, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 03:43:51, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:110.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 03:43:51, INFO, [Robot] Movimiento completado.
+2025-11-16 | 03:47:23, INFO, Successful logout attempt, enzo, 127.0.0.1
+2025-11-16 | 03:47:47, INFO, Successful login attempt, enzo, 127.0.0.1
+2025-11-16 | 03:47:51, INFO, [RPC] RPC call from user 'enzo': robot.getStatus, enzo, 127.0.0.1
+2025-11-16 | 03:48:09, INFO, [RPC] RPC call from user 'enzo': robot.getStatus, enzo, 127.0.0.1
+2025-11-16 | 03:48:43, INFO, [RPC] RPC call from user 'enzo': robot.moveDefaultSpeed, enzo, 127.0.0.1
+2025-11-16 | 03:48:43, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X100.000 Y100.000 Z100.000 E0.0"
+2025-11-16 | 03:48:43, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 03:48:48, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:100.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 03:48:48, INFO, [Robot] Movimiento completado.
+2025-11-16 | 03:48:55, INFO, Successful logout attempt, enzo, 127.0.0.1
+2025-11-16 | 03:52:12, INFO, Successful login attempt, enzo, 127.0.0.1
+2025-11-16 | 03:52:15, INFO, [RPC] RPC call from user 'enzo': robot.getStatus, enzo, 127.0.0.1
+2025-11-16 | 03:52:42, INFO, [RPC] RPC call from user 'enzo': robot.moveDefaultSpeed, enzo, 127.0.0.1
+2025-11-16 | 03:52:42, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X100.000 Y100.000 Z100.000 E0.0"
+2025-11-16 | 03:52:42, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 03:52:47, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:100.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 03:52:47, INFO, [Robot] Movimiento completado.
+2025-11-16 | 03:52:58, INFO, [RPC] RPC call from user 'enzo': robot.enableMotors, enzo, 127.0.0.1
+2025-11-16 | 03:52:58, CRITICAL, [Robot] Error: Los motores ya están activados.
+2025-11-16 | 03:52:58, WARNING, Failed RPC call for user 'enzo': [Robot] Error: Los motores ya están activados., enzo, 127.0.0.1
+2025-11-16 | 03:53:01, INFO, [RPC] RPC call from user 'enzo': robot.disableMotors, enzo, 127.0.0.1
+2025-11-16 | 03:53:05, INFO, [Robot] Respuesta de M18: INFO: MOTORS DISABLED. OK. 
+2025-11-16 | 03:53:05, INFO, [Robot] Motores desactivados.
+2025-11-16 | 03:53:06, INFO, [RPC] RPC call from user 'enzo': robot.enableMotors, enzo, 127.0.0.1
+2025-11-16 | 03:53:10, INFO, [Robot] Respuesta de M17: INFO: MOTORS ENABLED. OK. 
+2025-11-16 | 03:53:10, INFO, [Robot] Motores activados.
+2025-11-16 | 03:53:16, INFO, [RPC] RPC call from user 'enzo': robot.moveDefaultSpeed, enzo, 127.0.0.1
+2025-11-16 | 03:53:16, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X100.000 Y100.000 Z100.000 E0.0"
+2025-11-16 | 03:53:16, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 03:53:21, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:100.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 03:53:21, INFO, [Robot] Movimiento completado.
+2025-11-16 | 03:54:11, INFO, [RPC] RPC call from user 'enzo': robot.setEffector, enzo, 127.0.0.1
+2025-11-16 | 03:54:15, INFO, [Robot] Respuesta de M3: INFO: GRIPPER ON. OK. 
+2025-11-16 | 03:54:15, INFO, [Robot] Efector final activado.
+2025-11-16 | 03:54:20, INFO, [RPC] RPC call from user 'enzo': robot.setEffector, enzo, 127.0.0.1
+2025-11-16 | 03:54:24, INFO, [Robot] Respuesta de M5: INFO: GRIPPER OFF. OK. 
+2025-11-16 | 03:54:24, INFO, [Robot] Efector final desactivado.
+2025-11-16 | 03:54:34, INFO, [RPC] RPC call from user 'enzo': robot.listTasks, enzo, 127.0.0.1
+2025-11-16 | 03:55:05, INFO, [RPC] RPC call from user 'enzo': robot.executeTask, enzo, 127.0.0.1
+2025-11-16 | 03:55:05, INFO, [Robot] Enviando G-Code crudo: "G91"
+2025-11-16 | 03:55:09, INFO, [Robot] Respuesta a G-Code crudo: INFO: RELATIVE MODE ON. OK. 
+2025-11-16 | 03:55:09, INFO, [Robot] Enviando G-Code crudo: "G1 Y30"
+2025-11-16 | 03:55:13, INFO, [Robot] Respuesta a G-Code crudo: INFO: LINEAR MOVE: [X:100.00 Y:130.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 03:55:13, INFO, [Robot] Enviando G-Code crudo: "G1 X30"
+2025-11-16 | 03:55:17, INFO, [Robot] Respuesta a G-Code crudo: INFO: LINEAR MOVE: [X:130.00 Y:130.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 03:55:17, INFO, [Robot] Enviando G-Code crudo: "G1 Y-30"
+2025-11-16 | 03:55:21, INFO, [Robot] Respuesta a G-Code crudo: INFO: LINEAR MOVE: [X:130.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 03:55:21, INFO, [Robot] Enviando G-Code crudo: "G1 X-30"
+2025-11-16 | 03:55:25, INFO, [Robot] Respuesta a G-Code crudo: INFO: LINEAR MOVE: [X:100.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 03:55:25, INFO, [Robot] Enviando G-Code crudo: "G90"
+2025-11-16 | 03:55:29, INFO, [Robot] Respuesta a G-Code crudo: INFO: ABSOLUTE MODE ON. OK. 
+2025-11-16 | 03:56:28, INFO, [RPC] RPC call from user 'enzo': robot.moveDefaultSpeed, enzo, 127.0.0.1
+2025-11-16 | 03:56:28, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X100.000 Y100.000 Z100.000 E0.0"
+2025-11-16 | 03:56:28, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 03:56:33, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:100.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 03:56:33, INFO, [Robot] Movimiento completado.
+2025-11-16 | 03:56:39, INFO, [RPC] RPC call from user 'enzo': robot.getStatus, enzo, 127.0.0.1
+2025-11-16 | 03:56:57, INFO, [RPC] RPC call from user 'enzo': robot.executeTask, enzo, 127.0.0.1
+2025-11-16 | 03:56:57, INFO, [Robot] Enviando G-Code crudo: "G91"
+2025-11-16 | 03:57:01, INFO, [Robot] Respuesta a G-Code crudo: INFO: RELATIVE MODE ON. OK. 
+2025-11-16 | 03:57:01, INFO, [Robot] Enviando G-Code crudo: "G1 Y30"
+2025-11-16 | 03:57:05, INFO, [Robot] Respuesta a G-Code crudo: INFO: LINEAR MOVE: [X:100.00 Y:130.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 03:57:05, INFO, [Robot] Enviando G-Code crudo: "G1 X30"
+2025-11-16 | 03:57:09, INFO, [Robot] Respuesta a G-Code crudo: INFO: LINEAR MOVE: [X:130.00 Y:130.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 03:57:09, INFO, [Robot] Enviando G-Code crudo: "G1 Y-30"
+2025-11-16 | 03:57:13, INFO, [Robot] Respuesta a G-Code crudo: INFO: LINEAR MOVE: [X:130.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 03:57:13, INFO, [Robot] Enviando G-Code crudo: "G1 X-30"
+2025-11-16 | 03:57:17, INFO, [Robot] Respuesta a G-Code crudo: INFO: LINEAR MOVE: [X:100.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 03:57:17, INFO, [Robot] Enviando G-Code crudo: "G90"
+2025-11-16 | 03:57:21, INFO, [Robot] Respuesta a G-Code crudo: INFO: ABSOLUTE MODE ON. OK. 
+2025-11-16 | 04:02:09, INFO, Successful logout attempt, enzo, 127.0.0.1
+2025-11-16 | 04:02:25, INFO, Successful login attempt, enzo, 127.0.0.1
+2025-11-16 | 04:02:48, INFO, [RPC] RPC call from user 'enzo': robot.getStatus, enzo, 127.0.0.1
+2025-11-16 | 04:03:04, INFO, [RPC] RPC call from user 'enzo': robot.moveDefaultSpeed, enzo, 127.0.0.1
+2025-11-16 | 04:03:04, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X100.000 Y100.000 Z100.000 E0.0"
+2025-11-16 | 04:03:04, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 04:03:09, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:100.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 04:03:09, INFO, [Robot] Movimiento completado.
+2025-11-16 | 04:03:26, INFO, [RPC] RPC call from user 'enzo': robot.moveDefaultSpeed, enzo, 127.0.0.1
+2025-11-16 | 04:03:26, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X100.000 Y100.000 Z100.000 E0.0"
+2025-11-16 | 04:03:26, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 04:03:31, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:100.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 04:03:31, INFO, [Robot] Movimiento completado.
+2025-11-16 | 04:03:51, INFO, [RPC] RPC call from user 'enzo': robot.disableMotors, enzo, 127.0.0.1
+2025-11-16 | 04:03:55, INFO, [Robot] Respuesta de M18: INFO: MOTORS DISABLED. OK. 
+2025-11-16 | 04:03:55, INFO, [Robot] Motores desactivados.
+2025-11-16 | 04:03:57, INFO, [RPC] RPC call from user 'enzo': robot.enableMotors, enzo, 127.0.0.1
+2025-11-16 | 04:04:01, INFO, [Robot] Respuesta de M17: INFO: MOTORS ENABLED. OK. 
+2025-11-16 | 04:04:01, INFO, [Robot] Motores activados.
+2025-11-16 | 04:04:02, INFO, [RPC] RPC call from user 'enzo': robot.moveDefaultSpeed, enzo, 127.0.0.1
+2025-11-16 | 04:04:02, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X100.000 Y100.000 Z100.000 E0.0"
+2025-11-16 | 04:04:02, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 04:04:07, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:100.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 04:04:07, INFO, [Robot] Movimiento completado.
+2025-11-16 | 04:04:27, INFO, [RPC] RPC call from user 'enzo': robot.executeTask, enzo, 127.0.0.1
+2025-11-16 | 04:04:27, INFO, [Robot] Enviando G-Code crudo: "G91"
+2025-11-16 | 04:04:31, INFO, [Robot] Respuesta a G-Code crudo: INFO: RELATIVE MODE ON. OK. 
+2025-11-16 | 04:04:31, INFO, [Robot] Enviando G-Code crudo: "G1 Y30"
+2025-11-16 | 04:04:35, INFO, [Robot] Respuesta a G-Code crudo: INFO: LINEAR MOVE: [X:100.00 Y:130.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 04:04:36, INFO, [Robot] Enviando G-Code crudo: "G1 X30"
+2025-11-16 | 04:04:40, INFO, [Robot] Respuesta a G-Code crudo: INFO: LINEAR MOVE: [X:130.00 Y:130.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 04:04:40, INFO, [Robot] Enviando G-Code crudo: "G1 Y-30"
+2025-11-16 | 04:04:44, INFO, [Robot] Respuesta a G-Code crudo: INFO: LINEAR MOVE: [X:130.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 04:04:44, INFO, [Robot] Enviando G-Code crudo: "G1 X-30"
+2025-11-16 | 04:04:48, INFO, [Robot] Respuesta a G-Code crudo: INFO: LINEAR MOVE: [X:100.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 04:04:48, INFO, [Robot] Enviando G-Code crudo: "G90"
+2025-11-16 | 04:04:52, INFO, [Robot] Respuesta a G-Code crudo: INFO: ABSOLUTE MODE ON. OK. 
+2025-11-16 | 04:06:19, INFO, Successful logout attempt, enzo, 127.0.0.1
+2025-11-16 | 04:08:03, INFO, Successful login attempt, enzo, 127.0.0.1
+2025-11-16 | 04:08:07, INFO, [RPC] RPC call from user 'enzo': robot.disconnect, enzo, 127.0.0.1
+2025-11-16 | 04:08:07, INFO, [Robot] Cerrando conexión...
+2025-11-16 | 04:08:07, INFO, [Robot] Desconexión completada.
+2025-11-16 | 04:08:12, INFO, [RPC] RPC call from user 'enzo': robot.connect, enzo, 127.0.0.1
+2025-11-16 | 04:08:12, INFO, [Robot] Iniciando conexión...
+2025-11-16 | 04:08:12, INFO, Puerto serie /dev/ttyUSB0 abierto con éxito a 115200 baudios.
+2025-11-16 | 04:08:12, INFO, [Robot] Limpiando mensajes de arranque...
+2025-11-16 | 04:08:14, INFO, [Robot] Conexión establecida.
+2025-11-16 | 04:08:15, INFO, [RPC] RPC call from user 'enzo': robot.getStatus, enzo, 127.0.0.1
+2025-11-16 | 04:08:22, INFO, [RPC] RPC call from user 'enzo': robot.enableMotors, enzo, 127.0.0.1
+2025-11-16 | 04:08:26, INFO, [Robot] Respuesta de M17: INFO: MOTORS ENABLED. OK. 
+2025-11-16 | 04:08:26, INFO, [Robot] Motores activados.
+2025-11-16 | 04:08:42, INFO, [RPC] RPC call from user 'enzo': robot.disableMotors, enzo, 127.0.0.1
+2025-11-16 | 04:08:46, INFO, [Robot] Respuesta de M18: INFO: MOTORS DISABLED. OK. 
+2025-11-16 | 04:08:46, INFO, [Robot] Motores desactivados.
+2025-11-16 | 04:08:46, INFO, [RPC] RPC call from user 'enzo': robot.enableMotors, enzo, 127.0.0.1
+2025-11-16 | 04:08:50, INFO, [Robot] Respuesta de M17: INFO: MOTORS ENABLED. OK. 
+2025-11-16 | 04:08:50, INFO, [Robot] Motores activados.
+2025-11-16 | 04:09:00, INFO, [RPC] RPC call from user 'enzo': robot.moveDefaultSpeed, enzo, 127.0.0.1
+2025-11-16 | 04:09:00, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X100.000 Y100.000 Z100.000 E0.0"
+2025-11-16 | 04:09:00, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 04:09:05, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:100.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 04:09:05, INFO, [Robot] Movimiento completado.
+2025-11-16 | 04:09:23, INFO, [RPC] RPC call from user 'enzo': robot.executeTask, enzo, 127.0.0.1
+2025-11-16 | 04:09:23, INFO, [Robot] Enviando G-Code crudo: "G91"
+2025-11-16 | 04:09:27, INFO, [Robot] Respuesta a G-Code crudo: INFO: RELATIVE MODE ON. OK. 
+2025-11-16 | 04:09:27, INFO, [Robot] Enviando G-Code crudo: "G1 Y30"
+2025-11-16 | 04:09:31, INFO, [Robot] Respuesta a G-Code crudo: INFO: LINEAR MOVE: [X:100.00 Y:130.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 04:09:32, INFO, [Robot] Enviando G-Code crudo: "G1 X30"
+2025-11-16 | 04:09:36, INFO, [Robot] Respuesta a G-Code crudo: INFO: LINEAR MOVE: [X:130.00 Y:130.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 04:09:36, INFO, [Robot] Enviando G-Code crudo: "G1 Y-30"
+2025-11-16 | 04:09:40, INFO, [Robot] Respuesta a G-Code crudo: INFO: LINEAR MOVE: [X:130.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 04:09:40, INFO, [Robot] Enviando G-Code crudo: "G1 X-30"
+2025-11-16 | 04:09:44, INFO, [Robot] Respuesta a G-Code crudo: INFO: LINEAR MOVE: [X:100.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 04:09:44, INFO, [Robot] Enviando G-Code crudo: "G90"
+2025-11-16 | 04:09:48, INFO, [Robot] Respuesta a G-Code crudo: INFO: ABSOLUTE MODE ON. OK. 
+2025-11-16 | 04:10:10, INFO, [RPC] RPC call from user 'enzo': robot.getStatus, enzo, 127.0.0.1
+2025-11-16 | 04:10:51, INFO, Successful logout attempt, enzo, 127.0.0.1
+2025-11-16 | 04:20:43, INFO, Successful login attempt, enzo, 127.0.0.1
+2025-11-16 | 04:20:55, INFO, [RPC] RPC call from user 'enzo': robot.getStatus, enzo, 127.0.0.1
+2025-11-16 | 04:21:09, INFO, [RPC] RPC call from user 'enzo': robot.getStatus, enzo, 127.0.0.1
+2025-11-16 | 04:21:25, INFO, [RPC] RPC call from user 'enzo': robot.getStatus, enzo, 127.0.0.1
+2025-11-16 | 04:27:49, INFO, Successful logout attempt, enzo, 127.0.0.1
+2025-11-16 | 04:28:01, INFO, Successful login attempt, enzo, 127.0.0.1
+2025-11-16 | 04:28:09, INFO, [RPC] RPC call from user 'enzo': robot.getStatus, enzo, 127.0.0.1
+2025-11-16 | 04:28:21, INFO, [RPC] RPC call from user 'enzo': robot.getStatus, enzo, 127.0.0.1
+2025-11-16 | 04:28:37, INFO, Successful logout attempt, enzo, 127.0.0.1
+2025-11-16 | 04:30:04, INFO, Successful login attempt, nacho, 127.0.0.1
+2025-11-16 | 04:30:12, INFO, Successful logout attempt, nacho, 127.0.0.1
+2025-11-16 | 04:33:08, INFO, Successful login attempt, nacho, 127.0.0.1
+2025-11-16 | 04:33:11, INFO, Successful logout attempt, nacho, 127.0.0.1
+2025-11-16 | 04:36:52, INFO, Successful login attempt, nacho, 127.0.0.1
+2025-11-16 | 04:37:27, INFO, Successful logout attempt, nacho, 127.0.0.1
+2025-11-16 | 04:40:16, CRITICAL, Authentication Error: Credenciales inválidas para el usuario 'nacho'.
+2025-11-16 | 04:40:16, WARNING, Failed login attempt, nacho, 127.0.0.1
+2025-11-16 | 04:40:23, INFO, Successful login attempt, nacho, 127.0.0.1
+2025-11-16 | 04:41:04, INFO, Successful login attempt, nacho, 127.0.0.1
+2025-11-16 | 04:41:50, CRITICAL, Authentication Error: Credenciales inválidas para el usuario 'nacho'.
+2025-11-16 | 04:41:50, WARNING, Failed login attempt, nacho, 127.0.0.1
+2025-11-16 | 04:41:55, INFO, Successful login attempt, nacho, 127.0.0.1
+2025-11-16 | 04:44:08, INFO, Successful login attempt, enzo, 127.0.0.1
+2025-11-16 | 04:44:22, INFO, [RPC] RPC call from user 'enzo': robot.getAdminReport, enzo, 127.0.0.1
+2025-11-16 | 04:44:27, INFO, [RPC] RPC call from user 'enzo': robot.getLogReport, enzo, 127.0.0.1
+2025-11-16 | 04:44:37, INFO, [RPC] RPC call from user 'enzo': robot.getReport, enzo, 127.0.0.1
+2025-11-16 | 04:46:24, INFO, Successful logout attempt, nacho, 127.0.0.1
+2025-11-16 | 04:46:31, INFO, Successful logout attempt, enzo, 127.0.0.1
+2025-11-16 | 04:46:45, INFO, Successful login attempt, enzo, 127.0.0.1
+2025-11-16 | 04:46:51, INFO, [RPC] RPC call from user 'enzo': robot.getAdminReport, enzo, 127.0.0.1
+2025-11-16 | 04:47:16, INFO, Successful logout attempt, enzo, 127.0.0.1
+2025-11-16 | 04:47:28, INFO, Successful login attempt, enzo, 127.0.0.1
+2025-11-16 | 04:47:33, INFO, [RPC] RPC call from user 'enzo': robot.getAdminReport, enzo, 127.0.0.1
+2025-11-16 | 04:47:39, INFO, Successful logout attempt, enzo, 127.0.0.1
+2025-11-16 | 04:48:00, INFO, Successful login attempt, enzo, 127.0.0.1
+2025-11-16 | 04:48:05, INFO, [RPC] RPC call from user 'enzo': robot.getAdminReport, enzo, 127.0.0.1
+2025-11-16 | 04:48:32, INFO, Successful logout attempt, enzo, 127.0.0.1
+2025-11-16 | 04:53:47, INFO, Successful login attempt, enzo, 127.0.0.1
+2025-11-16 | 04:58:10, INFO, [RPC] RPC call from user 'enzo': robot.enableMotors, enzo, 127.0.0.1
+2025-11-16 | 04:58:10, CRITICAL, [Robot] Error: Los motores ya están activados.
+2025-11-16 | 04:58:10, WARNING, Failed RPC call for user 'enzo': [Robot] Error: Los motores ya están activados., enzo, 127.0.0.1
+2025-11-16 | 04:58:16, INFO, [RPC] RPC call from user 'enzo': robot.disableMotors, enzo, 127.0.0.1
+2025-11-16 | 04:58:20, INFO, [Robot] Respuesta de M18: INFO: MOTORS DISABLED. OK. 
+2025-11-16 | 04:58:20, INFO, [Robot] Motores desactivados.
+2025-11-16 | 04:58:21, INFO, [RPC] RPC call from user 'enzo': robot.disableMotors, enzo, 127.0.0.1
+2025-11-16 | 04:58:21, CRITICAL, [Robot] Error: Los motores ya están desactivados.
+2025-11-16 | 04:58:21, WARNING, Failed RPC call for user 'enzo': [Robot] Error: Los motores ya están desactivados., enzo, 127.0.0.1
+2025-11-16 | 05:17:28, INFO, [RPC] RPC call from user 'enzo': robot.getAdminReport, enzo, 127.0.0.1
+2025-11-16 | 05:17:57, INFO, [RPC] RPC call from user 'enzo': robot.getAdminReport, enzo, 127.0.0.1
+2025-11-16 | 05:33:47, INFO, Successful logout attempt, enzo, 127.0.0.1
+2025-11-16 | 05:34:42, INFO, Logger finalizado.
+2025-11-16 | 05:37:09, INFO, Logger inicializado.
+2025-11-16 | 05:37:09, INFO, [DB] Base de datos abierta en /home/nenodios/Desktop/Codes_POO/TP_INTEGRADOR/ProyectoCompleto/ProyectoPooFinal/Servidor/server_database.db
+2025-11-16 | 05:37:09, WARNING, [DB] La tabla de usuarios está vacía. Creando Administrador Principal...
+2025-11-16 | 05:37:09, INFO, [DB] Usuario 'principalAdmin' creado exitosamente.
+2025-11-16 | 05:37:09, INFO, [DB] Usuario 'principalAdmin' creado con clave por defecto.
+2025-11-16 | 05:37:09, INFO, [DB] Tabla de usuarios lista.
+2025-11-16 | 05:37:09, INFO, [TaskManager] 3 tareas cargadas exitosamente desde ./tasks.json
+2025-11-16 | 05:37:09, INFO, [Server] Tareas cargadas exitosamente desde tasks.json.
+2025-11-16 | 05:37:09, INFO, [Main] Iniciando Servidor RPC. Use Ctrl+C para detener.
+2025-11-16 | 05:37:09, INFO, [RPC Server] Servidor XML-RPC iniciado en el puerto 8080. Esperando peticiones...
+2025-11-16 | 05:37:35, INFO, Successful login attempt, principalAdmin, 127.0.0.1
+2025-11-16 | 05:37:51, INFO, [RPC] RPC call from user 'principalAdmin': robot.connect, principalAdmin, 127.0.0.1
+2025-11-16 | 05:37:51, INFO, [Robot] Iniciando conexión...
+2025-11-16 | 05:37:51, INFO, Puerto serie /dev/ttyUSB0 abierto con éxito a 115200 baudios.
+2025-11-16 | 05:37:51, INFO, [Robot] Limpiando mensajes de arranque...
+2025-11-16 | 05:37:53, INFO, [Robot] Conexión establecida.
+2025-11-16 | 05:37:59, INFO, [RPC] RPC call from user 'principalAdmin': robot.connect, principalAdmin, 127.0.0.1
+2025-11-16 | 05:37:59, CRITICAL, [Robot] Error: El robot ya está conectado.
+2025-11-16 | 05:37:59, WARNING, Failed RPC call for user 'principalAdmin': [Robot] Error: El robot ya está conectado., principalAdmin, 127.0.0.1
+2025-11-16 | 05:38:02, INFO, [RPC] RPC call from user 'principalAdmin': robot.disconnect, principalAdmin, 127.0.0.1
+2025-11-16 | 05:38:02, INFO, [Robot] Cerrando conexión...
+2025-11-16 | 05:38:02, INFO, [Robot] Desconexión completada.
+2025-11-16 | 05:38:06, INFO, [RPC] RPC call from user 'principalAdmin': robot.disconnect, principalAdmin, 127.0.0.1
+2025-11-16 | 05:38:06, CRITICAL, [Robot] Error: El robot ya está desconectado.
+2025-11-16 | 05:38:06, WARNING, Failed RPC call for user 'principalAdmin': [Robot] Error: El robot ya está desconectado., principalAdmin, 127.0.0.1
+2025-11-16 | 05:38:10, INFO, [RPC] RPC call from user 'principalAdmin': robot.connect, principalAdmin, 127.0.0.1
+2025-11-16 | 05:38:10, INFO, [Robot] Iniciando conexión...
+2025-11-16 | 05:38:10, INFO, Puerto serie /dev/ttyUSB0 abierto con éxito a 115200 baudios.
+2025-11-16 | 05:38:10, INFO, [Robot] Limpiando mensajes de arranque...
+2025-11-16 | 05:38:12, INFO, [Robot] Conexión establecida.
+2025-11-16 | 05:38:42, INFO, [RPC] RPC call from user 'principalAdmin': robot.disconnect, principalAdmin, 127.0.0.1
+2025-11-16 | 05:38:42, INFO, [Robot] Cerrando conexión...
+2025-11-16 | 05:38:42, INFO, [Robot] Desconexión completada.
+2025-11-16 | 05:38:52, INFO, [RPC] RPC call from user 'principalAdmin': robot.connect, principalAdmin, 127.0.0.1
+2025-11-16 | 05:38:52, INFO, [Robot] Iniciando conexión...
+2025-11-16 | 05:38:52, INFO, Puerto serie /dev/ttyUSB0 abierto con éxito a 115200 baudios.
+2025-11-16 | 05:38:52, INFO, [Robot] Limpiando mensajes de arranque...
+2025-11-16 | 05:38:54, INFO, [Robot] Conexión establecida.
+2025-11-16 | 05:39:06, INFO, [RPC] RPC call from user 'principalAdmin': robot.getStatus, principalAdmin, 127.0.0.1
+2025-11-16 | 05:40:16, INFO, [RPC] RPC call from user 'principalAdmin': robot.enableMotors, principalAdmin, 127.0.0.1
+2025-11-16 | 05:40:20, INFO, [Robot] Respuesta de M17: INFO: MOTORS ENABLED. OK. 
+2025-11-16 | 05:40:20, INFO, [Robot] Motores activados.
+2025-11-16 | 05:40:22, INFO, [RPC] RPC call from user 'principalAdmin': robot.enableMotors, principalAdmin, 127.0.0.1
+2025-11-16 | 05:40:22, CRITICAL, [Robot] Error: Los motores ya están activados.
+2025-11-16 | 05:40:22, WARNING, Failed RPC call for user 'principalAdmin': [Robot] Error: Los motores ya están activados., principalAdmin, 127.0.0.1
+2025-11-16 | 05:40:25, INFO, [RPC] RPC call from user 'principalAdmin': robot.disableMotors, principalAdmin, 127.0.0.1
+2025-11-16 | 05:40:29, INFO, [Robot] Respuesta de M18: INFO: MOTORS DISABLED. OK. 
+2025-11-16 | 05:40:29, INFO, [Robot] Motores desactivados.
+2025-11-16 | 05:40:35, INFO, [RPC] RPC call from user 'principalAdmin': robot.disableMotors, principalAdmin, 127.0.0.1
+2025-11-16 | 05:40:35, CRITICAL, [Robot] Error: Los motores ya están desactivados.
+2025-11-16 | 05:40:35, WARNING, Failed RPC call for user 'principalAdmin': [Robot] Error: Los motores ya están desactivados., principalAdmin, 127.0.0.1
+2025-11-16 | 05:40:39, INFO, [RPC] RPC call from user 'principalAdmin': robot.enableMotors, principalAdmin, 127.0.0.1
+2025-11-16 | 05:40:43, INFO, [Robot] Respuesta de M17: INFO: MOTORS ENABLED. OK. 
+2025-11-16 | 05:40:43, INFO, [Robot] Motores activados.
+2025-11-16 | 05:40:51, INFO, [RPC] RPC call from user 'principalAdmin': robot.setCoordinateMode, principalAdmin, 127.0.0.1
+2025-11-16 | 05:40:55, INFO, [Robot] Respuesta de G91: INFO: RELATIVE MODE ON. OK. 
+2025-11-16 | 05:41:25, INFO, [RPC] RPC call from user 'principalAdmin': robot.setCoordinateMode, principalAdmin, 127.0.0.1
+2025-11-16 | 05:41:29, INFO, [Robot] Respuesta de G90: INFO: ABSOLUTE MODE ON. OK. 
+2025-11-16 | 05:41:48, INFO, [RPC] RPC call from user 'principalAdmin': robot.moveDefaultSpeed, principalAdmin, 127.0.0.1
+2025-11-16 | 05:41:48, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X100.000 Y100.000 Z100.000 E0.0"
+2025-11-16 | 05:41:48, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 05:41:53, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:100.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 05:41:53, INFO, [Robot] Movimiento completado.
+2025-11-16 | 05:42:02, INFO, [RPC] RPC call from user 'principalAdmin': robot.setCoordinateMode, principalAdmin, 127.0.0.1
+2025-11-16 | 05:42:06, INFO, [Robot] Respuesta de G91: INFO: RELATIVE MODE ON. OK. 
+2025-11-16 | 05:42:35, INFO, [RPC] RPC call from user 'principalAdmin': robot.moveDefaultSpeed, principalAdmin, 127.0.0.1
+2025-11-16 | 05:42:35, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X30.000 Y0.000 Z0.000 E0.0"
+2025-11-16 | 05:42:35, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 05:42:40, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:130.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 05:42:40, INFO, [Robot] Movimiento completado.
+2025-11-16 | 05:43:13, INFO, [RPC] RPC call from user 'principalAdmin': robot.moveDefaultSpeed, principalAdmin, 127.0.0.1
+2025-11-16 | 05:43:13, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X-30.000 Y0.000 Z0.000 E0.0"
+2025-11-16 | 05:43:13, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 05:43:18, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:100.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 05:43:18, INFO, [Robot] Movimiento completado.
+2025-11-16 | 05:44:05, INFO, Successful logout attempt, principalAdmin, 127.0.0.1
+2025-11-16 | 05:56:39, INFO, Successful login attempt, principalAdmin, 127.0.0.1
+2025-11-16 | 05:56:45, INFO, [RPC] RPC call from user 'principalAdmin': robot.getStatus, principalAdmin, 127.0.0.1
+2025-11-16 | 05:57:05, INFO, [RPC] RPC call from user 'principalAdmin': robot.getStatus, principalAdmin, 127.0.0.1
+2025-11-16 | 05:57:23, INFO, [RPC] RPC call from user 'principalAdmin': robot.setCoordinateMode, principalAdmin, 127.0.0.1
+2025-11-16 | 05:57:27, INFO, [Robot] Respuesta de G91: INFO: RELATIVE MODE ON. OK. 
+2025-11-16 | 05:57:37, INFO, [RPC] RPC call from user 'principalAdmin': robot.moveDefaultSpeed, principalAdmin, 127.0.0.1
+2025-11-16 | 05:57:37, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X30.000 Y0.000 Z0.000 E0.0"
+2025-11-16 | 05:57:37, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 05:57:42, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:130.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 05:57:42, INFO, [Robot] Movimiento completado.
+2025-11-16 | 05:57:58, INFO, [RPC] RPC call from user 'principalAdmin': robot.moveDefaultSpeed, principalAdmin, 127.0.0.1
+2025-11-16 | 05:57:58, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X-30.000 Y0.000 Z0.000 E0.0"
+2025-11-16 | 05:57:58, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 05:58:03, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:100.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 05:58:03, INFO, [Robot] Movimiento completado.
+2025-11-16 | 05:58:08, INFO, Successful logout attempt, principalAdmin, 127.0.0.1
+2025-11-16 | 06:06:35, INFO, Successful login attempt, principalAdmin, 127.0.0.1
+2025-11-16 | 06:06:45, INFO, [RPC] RPC call from user 'principalAdmin': robot.getStatus, principalAdmin, 127.0.0.1
+2025-11-16 | 06:06:59, INFO, [RPC] RPC call from user 'principalAdmin': robot.getStatus, principalAdmin, 127.0.0.1
+2025-11-16 | 06:07:11, INFO, [RPC] RPC call from user 'principalAdmin': robot.setCoordinateMode, principalAdmin, 127.0.0.1
+2025-11-16 | 06:07:15, INFO, [Robot] Respuesta de G91: INFO: RELATIVE MODE ON. OK. 
+2025-11-16 | 06:07:29, INFO, [RPC] RPC call from user 'principalAdmin': robot.moveDefaultSpeed, principalAdmin, 127.0.0.1
+2025-11-16 | 06:07:29, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X30.000 Y0.000 Z0.000 E0.0"
+2025-11-16 | 06:07:29, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 06:07:34, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:130.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 06:07:34, INFO, [Robot] Movimiento completado.
+2025-11-16 | 06:07:43, INFO, [RPC] RPC call from user 'principalAdmin': robot.moveDefaultSpeed, principalAdmin, 127.0.0.1
+2025-11-16 | 06:07:43, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X30.000 Y0.000 Z0.000 E0.0"
+2025-11-16 | 06:07:43, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 06:07:48, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:160.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 06:07:48, INFO, [Robot] Movimiento completado.
+2025-11-16 | 06:09:49, INFO, Successful logout attempt, principalAdmin, 127.0.0.1
+2025-11-16 | 06:10:08, INFO, Successful login attempt, principalAdmin, 127.0.0.1
+2025-11-16 | 06:10:13, INFO, [RPC] RPC call from user 'principalAdmin': robot.setEffector, principalAdmin, 127.0.0.1
+2025-11-16 | 06:10:17, INFO, [Robot] Respuesta de M3: INFO: GRIPPER ON. OK. 
+2025-11-16 | 06:10:17, INFO, [Robot] Efector final activado.
+2025-11-16 | 06:10:18, INFO, [RPC] RPC call from user 'principalAdmin': robot.getStatus, principalAdmin, 127.0.0.1
+2025-11-16 | 06:10:26, INFO, [RPC] RPC call from user 'principalAdmin': robot.getStatus, principalAdmin, 127.0.0.1
+2025-11-16 | 06:10:44, INFO, [RPC] RPC call from user 'principalAdmin': robot.setCoordinateMode, principalAdmin, 127.0.0.1
+2025-11-16 | 06:10:48, INFO, [Robot] Respuesta de G91: INFO: RELATIVE MODE ON. OK. 
+2025-11-16 | 06:10:57, INFO, [RPC] RPC call from user 'principalAdmin': robot.moveDefaultSpeed, principalAdmin, 127.0.0.1
+2025-11-16 | 06:10:57, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X-30.000 Y0.000 Z0.000 E0.0"
+2025-11-16 | 06:10:57, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 06:11:02, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:130.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 06:11:02, INFO, [Robot] Movimiento completado.
+2025-11-16 | 06:11:12, INFO, Successful logout attempt, principalAdmin, 127.0.0.1
+2025-11-16 | 06:12:12, INFO, Successful login attempt, principalAdmin, 127.0.0.1
+2025-11-16 | 06:12:20, INFO, [RPC] RPC call from user 'principalAdmin': robot.getStatus, principalAdmin, 127.0.0.1
+2025-11-16 | 06:12:34, INFO, [RPC] RPC call from user 'principalAdmin': robot.getStatus, principalAdmin, 127.0.0.1
+2025-11-16 | 06:12:39, INFO, [RPC] RPC call from user 'principalAdmin': robot.setCoordinateMode, principalAdmin, 127.0.0.1
+2025-11-16 | 06:12:43, INFO, [Robot] Respuesta de G91: INFO: RELATIVE MODE ON. OK. 
+2025-11-16 | 06:12:54, INFO, [RPC] RPC call from user 'principalAdmin': robot.moveDefaultSpeed, principalAdmin, 127.0.0.1
+2025-11-16 | 06:12:54, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X-30.000 Y0.000 Z0.000 E0.0"
+2025-11-16 | 06:12:54, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 06:12:59, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:100.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 06:12:59, INFO, [Robot] Movimiento completado.
+2025-11-16 | 06:15:21, INFO, [RPC] RPC call from user 'principalAdmin': robot.moveDefaultSpeed, principalAdmin, 127.0.0.1
+2025-11-16 | 06:15:21, INFO, [Robot] Moviendo al origen (0,0,0).
+2025-11-16 | 06:15:21, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 06:15:29, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: HOMING COMPLETE. OK. 
+2025-11-16 | 06:15:29, INFO, [Robot] Movimiento completado.
+2025-11-16 | 06:27:17, INFO, Successful logout attempt, principalAdmin, 127.0.0.1
+2025-11-16 | 06:27:37, INFO, Successful login attempt, principalAdmin, 127.0.0.1
+2025-11-16 | 06:27:42, INFO, [RPC] RPC call from user 'principalAdmin': robot.getStatus, principalAdmin, 127.0.0.1
+2025-11-16 | 06:37:01, INFO, Successful logout attempt, principalAdmin, 127.0.0.1
+2025-11-16 | 06:37:17, INFO, Successful login attempt, principalAdmin, 127.0.0.1
+2025-11-16 | 06:37:20, INFO, [RPC] RPC call from user 'principalAdmin': robot.getStatus, principalAdmin, 127.0.0.1
+2025-11-16 | 06:37:50, INFO, [RPC] RPC call from user 'principalAdmin': robot.getStatus, principalAdmin, 127.0.0.1
+2025-11-16 | 06:37:59, INFO, [RPC] RPC call from user 'principalAdmin': robot.setCoordinateMode, principalAdmin, 127.0.0.1
+2025-11-16 | 06:38:03, INFO, [Robot] Respuesta de G91: INFO: RELATIVE MODE ON. OK. 
+2025-11-16 | 06:38:26, INFO, [RPC] RPC call from user 'principalAdmin': robot.moveDefaultSpeed, principalAdmin, 127.0.0.1
+2025-11-16 | 06:38:26, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X0.000 Y-30.000 Z0.000 E0.0"
+2025-11-16 | 06:38:26, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 06:38:31, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:0.00 Y:140.00 Z:120.00 E:0.00]. OK. 
+2025-11-16 | 06:38:31, INFO, [Robot] Movimiento completado.
+2025-11-16 | 06:43:40, INFO, Successful logout attempt, principalAdmin, 127.0.0.1
+2025-11-16 | 06:44:11, INFO, Successful login attempt, principalAdmin, 127.0.0.1
+2025-11-16 | 06:44:14, INFO, [RPC] RPC call from user 'principalAdmin': robot.getStatus, principalAdmin, 127.0.0.1
+2025-11-16 | 06:44:37, INFO, [RPC] RPC call from user 'principalAdmin': robot.getStatus, principalAdmin, 127.0.0.1
+2025-11-16 | 06:44:58, INFO, [RPC] RPC call from user 'principalAdmin': robot.moveDefaultSpeed, principalAdmin, 127.0.0.1
+2025-11-16 | 06:44:58, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X0.000 Y-10.000 Z0.000 E0.0"
+2025-11-16 | 06:44:58, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 06:45:03, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:0.00 Y:130.00 Z:120.00 E:0.00]. OK. 
+2025-11-16 | 06:45:03, INFO, [Robot] Movimiento completado.
+2025-11-16 | 06:45:21, INFO, Successful logout attempt, principalAdmin, 127.0.0.1
+2025-11-16 | 06:47:39, INFO, Successful login attempt, principalAdmin, 127.0.0.1
+2025-11-16 | 06:47:46, INFO, [RPC] RPC call from user 'principalAdmin': robot.getStatus, principalAdmin, 127.0.0.1
+2025-11-16 | 06:48:14, INFO, [RPC] RPC call from user 'principalAdmin': robot.getStatus, principalAdmin, 127.0.0.1
+2025-11-16 | 06:48:28, INFO, [RPC] RPC call from user 'principalAdmin': robot.moveDefaultSpeed, principalAdmin, 127.0.0.1
+2025-11-16 | 06:48:28, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X0.000 Y30.000 Z0.000 E0.0"
+2025-11-16 | 06:48:28, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 06:48:33, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:0.00 Y:160.00 Z:120.00 E:0.00]. OK. 
+2025-11-16 | 06:48:33, INFO, [Robot] Movimiento completado.
+2025-11-16 | 06:48:55, INFO, [RPC] RPC call from user 'principalAdmin': robot.moveDefaultSpeed, principalAdmin, 127.0.0.1
+2025-11-16 | 06:48:55, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X-30.000 Y0.000 Z0.000 E0.0"
+2025-11-16 | 06:48:55, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 06:49:00, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:-30.00 Y:160.00 Z:120.00 E:0.00]. OK. 
+2025-11-16 | 06:49:00, INFO, [Robot] Movimiento completado.
+2025-11-16 | 06:50:06, INFO, [RPC] RPC call from user 'principalAdmin': robot.setCoordinateMode, principalAdmin, 127.0.0.1
+2025-11-16 | 06:50:10, INFO, [Robot] Respuesta de G90: INFO: ABSOLUTE MODE ON. OK. 
+2025-11-16 | 06:50:19, INFO, [RPC] RPC call from user 'principalAdmin': robot.moveDefaultSpeed, principalAdmin, 127.0.0.1
+2025-11-16 | 06:50:19, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X100.000 Y100.000 Z100.000 E0.0"
+2025-11-16 | 06:50:19, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 06:50:24, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:100.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 06:50:24, INFO, [Robot] Movimiento completado.
+2025-11-16 | 06:50:41, INFO, [RPC] RPC call from user 'principalAdmin': robot.setCoordinateMode, principalAdmin, 127.0.0.1
+2025-11-16 | 06:50:45, INFO, [Robot] Respuesta de G91: INFO: RELATIVE MODE ON. OK. 
+2025-11-16 | 06:50:59, INFO, [RPC] RPC call from user 'principalAdmin': robot.moveDefaultSpeed, principalAdmin, 127.0.0.1
+2025-11-16 | 06:50:59, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X30.000 Y0.000 Z0.000 E0.0"
+2025-11-16 | 06:50:59, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 06:51:04, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:130.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 06:51:04, INFO, [Robot] Movimiento completado.
+2025-11-16 | 06:51:50, INFO, Successful logout attempt, principalAdmin, 127.0.0.1
+2025-11-16 | 06:54:06, INFO, Successful login attempt, principalAdmin, 127.0.0.1
+2025-11-16 | 06:54:12, INFO, [RPC] RPC call from user 'principalAdmin': robot.getStatus, principalAdmin, 127.0.0.1
+2025-11-16 | 06:54:35, INFO, [RPC] RPC call from user 'principalAdmin': robot.getStatus, principalAdmin, 127.0.0.1
+2025-11-16 | 06:54:46, INFO, [RPC] RPC call from user 'principalAdmin': robot.setCoordinateMode, principalAdmin, 127.0.0.1
+2025-11-16 | 06:54:50, INFO, [Robot] Respuesta de G91: INFO: RELATIVE MODE ON. OK. 
+2025-11-16 | 06:55:01, INFO, [RPC] RPC call from user 'principalAdmin': robot.moveDefaultSpeed, principalAdmin, 127.0.0.1
+2025-11-16 | 06:55:01, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X0.000 Y30.000 Z0.000 E0.0"
+2025-11-16 | 06:55:01, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 06:55:06, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:130.00 Y:130.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 06:55:06, INFO, [Robot] Movimiento completado.
+2025-11-16 | 06:55:23, INFO, [RPC] RPC call from user 'principalAdmin': robot.moveDefaultSpeed, principalAdmin, 127.0.0.1
+2025-11-16 | 06:55:23, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X0.000 Y0.000 Z30.000 E0.0"
+2025-11-16 | 06:55:23, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 06:55:28, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:130.00 Y:130.00 Z:130.00 E:0.00]. OK. 
+2025-11-16 | 06:55:28, INFO, [Robot] Movimiento completado.
+2025-11-16 | 06:55:41, INFO, [RPC] RPC call from user 'principalAdmin': robot.moveDefaultSpeed, principalAdmin, 127.0.0.1
+2025-11-16 | 06:55:41, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X30.000 Y0.000 Z0.000 E0.0"
+2025-11-16 | 06:55:41, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 06:55:46, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:160.00 Y:130.00 Z:130.00 E:0.00]. OK. 
+2025-11-16 | 06:55:46, INFO, [Robot] Movimiento completado.
+2025-11-16 | 06:56:29, INFO, [RPC] RPC call from user 'principalAdmin': robot.setCoordinateMode, principalAdmin, 127.0.0.1
+2025-11-16 | 06:56:33, INFO, [Robot] Respuesta de G90: INFO: ABSOLUTE MODE ON. OK. 
+2025-11-16 | 06:56:40, INFO, [RPC] RPC call from user 'principalAdmin': robot.moveDefaultSpeed, principalAdmin, 127.0.0.1
+2025-11-16 | 06:56:40, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X100.000 Y100.000 Z100.000 E0.0"
+2025-11-16 | 06:56:40, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 06:56:45, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:100.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 06:56:45, INFO, [Robot] Movimiento completado.
+2025-11-16 | 06:57:01, INFO, [RPC] RPC call from user 'principalAdmin': robot.moveDefaultSpeed, principalAdmin, 127.0.0.1
+2025-11-16 | 06:57:01, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X0.000 Y10.000 Z0.000 E0.0"
+2025-11-16 | 06:57:01, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 06:57:06, CRITICAL, ERROR: POINT IS OUTSIDE OF WORKSPACE
+2025-11-16 | 06:57:06, WARNING, Failed RPC call for user 'principalAdmin': ERROR: POINT IS OUTSIDE OF WORKSPACE, principalAdmin, 127.0.0.1
+2025-11-16 | 06:57:13, INFO, [RPC] RPC call from user 'principalAdmin': robot.setCoordinateMode, principalAdmin, 127.0.0.1
+2025-11-16 | 06:57:17, INFO, [Robot] Respuesta de G91: INFO: RELATIVE MODE ON. OK. 
+2025-11-16 | 06:57:17, INFO, [RPC] RPC call from user 'principalAdmin': robot.moveDefaultSpeed, principalAdmin, 127.0.0.1
+2025-11-16 | 06:57:17, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X0.000 Y10.000 Z0.000 E0.0"
+2025-11-16 | 06:57:17, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 06:57:22, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:64.38 Y:77.94 Z:64.38 E:0.00]. OK. 
+2025-11-16 | 06:57:22, INFO, [Robot] Movimiento completado.
+2025-11-16 | 06:57:40, INFO, [RPC] RPC call from user 'principalAdmin': robot.moveDefaultSpeed, principalAdmin, 127.0.0.1
+2025-11-16 | 06:57:40, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X30.000 Y0.000 Z0.000 E0.0"
+2025-11-16 | 06:57:40, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 06:57:45, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:94.38 Y:77.94 Z:64.38 E:0.00]. OK. 
+2025-11-16 | 06:57:45, INFO, [Robot] Movimiento completado.
+2025-11-16 | 06:58:04, INFO, [RPC] RPC call from user 'principalAdmin': robot.executeTask, principalAdmin, 127.0.0.1
+2025-11-16 | 06:58:04, INFO, [Robot] Enviando G-Code crudo: "G91"
+2025-11-16 | 06:58:08, INFO, [Robot] Respuesta a G-Code crudo: INFO: RELATIVE MODE ON. OK. 
+2025-11-16 | 06:58:08, INFO, [Robot] Enviando G-Code crudo: "G1 Y30"
+2025-11-16 | 06:58:12, INFO, [Robot] Respuesta a G-Code crudo: INFO: LINEAR MOVE: [X:94.38 Y:107.94 Z:64.38 E:0.00]. OK. 
+2025-11-16 | 06:58:12, INFO, [Robot] Enviando G-Code crudo: "G1 X30"
+2025-11-16 | 06:58:16, INFO, [Robot] Respuesta a G-Code crudo: INFO: LINEAR MOVE: [X:124.38 Y:107.94 Z:64.38 E:0.00]. OK. 
+2025-11-16 | 06:58:16, INFO, [Robot] Enviando G-Code crudo: "G1 Y-30"
+2025-11-16 | 06:58:20, INFO, [Robot] Respuesta a G-Code crudo: INFO: LINEAR MOVE: [X:124.38 Y:77.94 Z:64.38 E:0.00]. OK. 
+2025-11-16 | 06:58:20, INFO, [Robot] Enviando G-Code crudo: "G1 X-30"
+2025-11-16 | 06:58:24, INFO, [Robot] Respuesta a G-Code crudo: INFO: LINEAR MOVE: [X:94.38 Y:77.94 Z:64.38 E:0.00]. OK. 
+2025-11-16 | 06:58:24, INFO, [Robot] Enviando G-Code crudo: "G90"
+2025-11-16 | 06:58:28, INFO, [Robot] Respuesta a G-Code crudo: INFO: ABSOLUTE MODE ON. OK. 
+2025-11-16 | 06:59:09, INFO, Successful logout attempt, principalAdmin, 127.0.0.1
+2025-11-16 | 06:59:37, INFO, Successful login attempt, principalAdmin, 127.0.0.1
+2025-11-16 | 06:59:44, INFO, [RPC] RPC call from user 'principalAdmin': robot.getStatus, principalAdmin, 127.0.0.1
+2025-11-16 | 06:59:55, INFO, [RPC] RPC call from user 'principalAdmin': robot.getStatus, principalAdmin, 127.0.0.1
+2025-11-16 | 07:00:10, INFO, [RPC] RPC call from user 'principalAdmin': robot.setCoordinateMode, principalAdmin, 127.0.0.1
+2025-11-16 | 07:00:14, INFO, [Robot] Respuesta de G90: INFO: ABSOLUTE MODE ON. OK. 
+2025-11-16 | 07:00:19, INFO, [RPC] RPC call from user 'principalAdmin': robot.moveDefaultSpeed, principalAdmin, 127.0.0.1
+2025-11-16 | 07:00:19, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X100.000 Y100.000 Z100.000 E0.0"
+2025-11-16 | 07:00:19, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 07:00:24, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:100.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 07:00:24, INFO, [Robot] Movimiento completado.
+2025-11-16 | 07:00:27, INFO, [RPC] RPC call from user 'principalAdmin': robot.setCoordinateMode, principalAdmin, 127.0.0.1
+2025-11-16 | 07:00:31, INFO, [Robot] Respuesta de G91: INFO: RELATIVE MODE ON. OK. 
+2025-11-16 | 07:00:49, INFO, [RPC] RPC call from user 'principalAdmin': robot.moveDefaultSpeed, principalAdmin, 127.0.0.1
+2025-11-16 | 07:00:49, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X0.000 Y0.000 Z-30.000 E0.0"
+2025-11-16 | 07:00:49, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 07:00:54, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:100.00 Y:100.00 Z:70.00 E:0.00]. OK. 
+2025-11-16 | 07:00:54, INFO, [Robot] Movimiento completado.
+2025-11-16 | 07:01:16, INFO, [RPC] RPC call from user 'principalAdmin': robot.moveDefaultSpeed, principalAdmin, 127.0.0.1
+2025-11-16 | 07:01:16, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X0.000 Y0.000 Z-30.000 E0.0"
+2025-11-16 | 07:01:16, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 07:01:21, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:100.00 Y:100.00 Z:40.00 E:0.00]. OK. 
+2025-11-16 | 07:01:21, INFO, [Robot] Movimiento completado.
+2025-11-16 | 07:02:07, INFO, [RPC] RPC call from user 'principalAdmin': robot.getStatus, principalAdmin, 127.0.0.1
+2025-11-16 | 07:02:43, INFO, Successful logout attempt, principalAdmin, 127.0.0.1
+2025-11-16 | 07:15:33, INFO, Successful login attempt, principalAdmin, 127.0.0.1
+2025-11-16 | 07:15:38, INFO, [RPC] RPC call from user 'principalAdmin': robot.getStatus, principalAdmin, 127.0.0.1
+2025-11-16 | 07:15:49, INFO, [RPC] RPC call from user 'principalAdmin': robot.getStatus, principalAdmin, 127.0.0.1
+2025-11-16 | 07:16:16, INFO, [RPC] RPC call from user 'principalAdmin': robot.setCoordinateMode, principalAdmin, 127.0.0.1
+2025-11-16 | 07:16:20, INFO, [Robot] Respuesta de G91: INFO: RELATIVE MODE ON. OK. 
+2025-11-16 | 07:16:23, INFO, [RPC] RPC call from user 'principalAdmin': robot.moveDefaultSpeed, principalAdmin, 127.0.0.1
+2025-11-16 | 07:16:23, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X0.000 Y0.000 Z40.000 E0.0"
+2025-11-16 | 07:16:23, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 07:16:28, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:100.00 Y:100.00 Z:80.00 E:0.00]. OK. 
+2025-11-16 | 07:16:28, INFO, [Robot] Movimiento completado.
+2025-11-16 | 07:16:44, INFO, [RPC] RPC call from user 'principalAdmin': robot.moveDefaultSpeed, principalAdmin, 127.0.0.1
+2025-11-16 | 07:16:44, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X0.000 Y0.000 Z-40.000 E0.0"
+2025-11-16 | 07:16:44, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 07:16:49, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:100.00 Y:100.00 Z:40.00 E:0.00]. OK. 
+2025-11-16 | 07:16:49, INFO, [Robot] Movimiento completado.
+2025-11-16 | 07:25:42, INFO, [RPC] RPC call from user 'principalAdmin': robot.setCoordinateMode, principalAdmin, 127.0.0.1
+2025-11-16 | 07:25:46, INFO, [Robot] Respuesta de G90: INFO: ABSOLUTE MODE ON. OK. 
+2025-11-16 | 07:25:55, INFO, [RPC] RPC call from user 'principalAdmin': robot.moveDefaultSpeed, principalAdmin, 127.0.0.1
+2025-11-16 | 07:25:55, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X100.000 Y100.000 Z100.000 E0.0"
+2025-11-16 | 07:25:55, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 07:26:00, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:100.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 07:26:00, INFO, [Robot] Movimiento completado.
+2025-11-16 | 07:27:19, INFO, [RPC] RPC call from user 'principalAdmin': robot.moveDefaultSpeed, principalAdmin, 127.0.0.1
+2025-11-16 | 07:27:19, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X1.000 Y1.000 Z1.000 E0.0"
+2025-11-16 | 07:27:19, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 07:27:24, CRITICAL, ERROR: POINT IS OUTSIDE OF WORKSPACE
+2025-11-16 | 07:27:24, WARNING, Failed RPC call for user 'principalAdmin': ERROR: POINT IS OUTSIDE OF WORKSPACE, principalAdmin, 127.0.0.1
+2025-11-16 | 07:27:27, INFO, [RPC] RPC call from user 'principalAdmin': robot.getStatus, principalAdmin, 127.0.0.1
+2025-11-16 | 07:27:44, INFO, [RPC] RPC call from user 'principalAdmin': robot.moveDefaultSpeed, principalAdmin, 127.0.0.1
+2025-11-16 | 07:27:44, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X100.000 Y100.000 Z100.000 E0.0"
+2025-11-16 | 07:27:44, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 07:27:49, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:100.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 07:27:49, INFO, [Robot] Movimiento completado.
+2025-11-16 | 07:28:34, INFO, [RPC] RPC call from user 'principalAdmin': robot.help, principalAdmin, 127.0.0.1
+2025-11-16 | 07:28:49, INFO, [RPC] RPC call from user 'principalAdmin': robot.listTasks, principalAdmin, 127.0.0.1
+2025-11-16 | 07:29:05, INFO, [RPC] RPC call from user 'principalAdmin': robot.executeTask, principalAdmin, 127.0.0.1
+2025-11-16 | 07:29:05, INFO, [Robot] Enviando G-Code crudo: "G91"
+2025-11-16 | 07:29:09, INFO, [Robot] Respuesta a G-Code crudo: INFO: RELATIVE MODE ON. OK. 
+2025-11-16 | 07:29:09, INFO, [Robot] Enviando G-Code crudo: "G1 Y30"
+2025-11-16 | 07:29:13, INFO, [Robot] Respuesta a G-Code crudo: INFO: LINEAR MOVE: [X:100.00 Y:130.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 07:29:14, INFO, [Robot] Enviando G-Code crudo: "G1 X30"
+2025-11-16 | 07:29:18, INFO, [Robot] Respuesta a G-Code crudo: INFO: LINEAR MOVE: [X:130.00 Y:130.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 07:29:18, INFO, [Robot] Enviando G-Code crudo: "G1 Y-30"
+2025-11-16 | 07:29:22, INFO, [Robot] Respuesta a G-Code crudo: INFO: LINEAR MOVE: [X:130.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 07:29:22, INFO, [Robot] Enviando G-Code crudo: "G1 X-30"
+2025-11-16 | 07:29:26, INFO, [Robot] Respuesta a G-Code crudo: INFO: LINEAR MOVE: [X:100.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 07:29:26, INFO, [Robot] Enviando G-Code crudo: "G90"
+2025-11-16 | 07:29:30, INFO, [Robot] Respuesta a G-Code crudo: INFO: ABSOLUTE MODE ON. OK. 
+2025-11-16 | 07:30:15, INFO, [RPC] RPC call from user 'principalAdmin': robot.setCoordinateMode, principalAdmin, 127.0.0.1
+2025-11-16 | 07:30:19, INFO, [Robot] Respuesta de G91: INFO: RELATIVE MODE ON. OK. 
+2025-11-16 | 07:30:31, INFO, [RPC] RPC call from user 'principalAdmin': robot.moveDefaultSpeed, principalAdmin, 127.0.0.1
+2025-11-16 | 07:30:31, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X10.000 Y0.000 Z0.000 E0.0"
+2025-11-16 | 07:30:31, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 07:30:36, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:110.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 07:30:36, INFO, [Robot] Movimiento completado.
+2025-11-16 | 07:30:53, INFO, [RPC] RPC call from user 'principalAdmin': robot.moveDefaultSpeed, principalAdmin, 127.0.0.1
+2025-11-16 | 07:30:53, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X-5.000 Y10.000 Z0.000 E0.0"
+2025-11-16 | 07:30:53, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 07:30:58, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:105.00 Y:110.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 07:30:58, INFO, [Robot] Movimiento completado.
+2025-11-16 | 07:31:08, INFO, [RPC] RPC call from user 'principalAdmin': robot.moveDefaultSpeed, principalAdmin, 127.0.0.1
+2025-11-16 | 07:31:08, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X-5.000 Y-10.000 Z0.000 E0.0"
+2025-11-16 | 07:31:08, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 07:31:13, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:100.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 07:31:13, INFO, [Robot] Movimiento completado.
+2025-11-16 | 07:31:27, INFO, [RPC] RPC call from user 'principalAdmin': robot.moveDefaultSpeed, principalAdmin, 127.0.0.1
+2025-11-16 | 07:31:27, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X20.000 Y0.000 Z0.000 E0.0"
+2025-11-16 | 07:31:27, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 07:31:32, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:120.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 07:31:32, INFO, [Robot] Movimiento completado.
+2025-11-16 | 07:31:42, INFO, [RPC] RPC call from user 'principalAdmin': robot.addTask, principalAdmin, 127.0.0.1
+2025-11-16 | 07:31:42, INFO, [TaskManager] 3 tareas cargadas exitosamente desde ./tasks.json
+2025-11-16 | 07:32:04, INFO, [RPC] RPC call from user 'principalAdmin': user.add, principalAdmin, 127.0.0.1
+2025-11-16 | 07:32:04, INFO, [DB] Usuario 'enzo' creado exitosamente.
+2025-11-16 | 07:32:29, INFO, Successful login attempt, enzo, 127.0.0.1
+2025-11-16 | 07:32:50, INFO, [RPC] RPC call from user 'enzo': robot.moveDefaultSpeed, enzo, 127.0.0.1
+2025-11-16 | 07:32:50, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X100.000 Y100.000 Z100.000 E0.0"
+2025-11-16 | 07:32:50, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 07:32:55, CRITICAL, ERROR: POINT IS OUTSIDE OF WORKSPACE
+2025-11-16 | 07:32:55, WARNING, Failed RPC call for user 'enzo': ERROR: POINT IS OUTSIDE OF WORKSPACE, enzo, 127.0.0.1
+2025-11-16 | 07:33:02, INFO, [RPC] RPC call from user 'enzo': robot.setCoordinateMode, enzo, 127.0.0.1
+2025-11-16 | 07:33:06, INFO, [Robot] Respuesta de G90: INFO: ABSOLUTE MODE ON. OK. 
+2025-11-16 | 07:33:09, INFO, [RPC] RPC call from user 'enzo': robot.moveDefaultSpeed, enzo, 127.0.0.1
+2025-11-16 | 07:33:09, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X100.000 Y100.000 Z100.000 E0.0"
+2025-11-16 | 07:33:09, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 07:33:14, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:100.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 07:33:14, INFO, [Robot] Movimiento completado.
+2025-11-16 | 07:33:27, INFO, [RPC] RPC call from user 'enzo': robot.getStatus, enzo, 127.0.0.1
+2025-11-16 | 07:33:47, INFO, [RPC] RPC call from user 'enzo': robot.listTasks, enzo, 127.0.0.1
+2025-11-16 | 07:34:06, INFO, [RPC] RPC call from user 'enzo': robot.executeTask, enzo, 127.0.0.1
+2025-11-16 | 07:34:06, INFO, [Robot] Enviando G-Code crudo: "G91"
+2025-11-16 | 07:34:10, INFO, [Robot] Respuesta a G-Code crudo: INFO: RELATIVE MODE ON. OK. 
+2025-11-16 | 07:34:10, INFO, [Robot] Enviando G-Code crudo: "G1 X10.0 Y0.0 Z0.0 E0"
+2025-11-16 | 07:34:14, INFO, [Robot] Respuesta a G-Code crudo: INFO: LINEAR MOVE: [X:110.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 07:34:14, INFO, [Robot] Enviando G-Code crudo: "G1 X-5.0 Y10.0 Z0.0 E0"
+2025-11-16 | 07:34:18, INFO, [Robot] Respuesta a G-Code crudo: INFO: LINEAR MOVE: [X:105.00 Y:110.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 07:34:18, INFO, [Robot] Enviando G-Code crudo: "G1 X-5.0 Y-10.0 Z0.0 E0"
+2025-11-16 | 07:34:22, INFO, [Robot] Respuesta a G-Code crudo: INFO: LINEAR MOVE: [X:100.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 07:34:22, INFO, [Robot] Enviando G-Code crudo: "G1 X20.0 Y0.0 Z0.0 E0"
+2025-11-16 | 07:34:26, INFO, [Robot] Respuesta a G-Code crudo: INFO: LINEAR MOVE: [X:120.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 07:35:25, INFO, [RPC] RPC call from user 'enzo': robot.disableMotors, enzo, 127.0.0.1
+2025-11-16 | 07:35:29, INFO, [Robot] Respuesta de M18: INFO: MOTORS DISABLED. OK. 
+2025-11-16 | 07:35:29, INFO, [Robot] Motores desactivados.
+2025-11-16 | 07:35:33, INFO, Successful logout attempt, enzo, 127.0.0.1
+2025-11-16 | 07:35:49, INFO, [RPC] RPC call from user 'principalAdmin': robot.getReport, principalAdmin, 127.0.0.1
+2025-11-16 | 07:36:33, INFO, [RPC] RPC call from user 'principalAdmin': robot.getStatus, principalAdmin, 127.0.0.1
+2025-11-16 | 07:36:56, INFO, [RPC] RPC call from user 'principalAdmin': user.list, principalAdmin, 127.0.0.1
+2025-11-16 | 07:37:56, INFO, [RPC] RPC call from user 'principalAdmin': robot.getAdminReport, principalAdmin, 127.0.0.1
+2025-11-16 | 07:38:11, INFO, [RPC] RPC call from user 'principalAdmin': robot.getAdminReport, principalAdmin, 127.0.0.1
+2025-11-16 | 07:38:33, INFO, [RPC] RPC call from user 'principalAdmin': robot.getLogReport, principalAdmin, 127.0.0.1
+2025-11-16 | 07:39:00, INFO, [RPC] RPC call from user 'principalAdmin': robot.getLogReport, principalAdmin, 127.0.0.1
+2025-11-16 | 07:39:14, INFO, [RPC] RPC call from user 'principalAdmin': robot.getLogReport, principalAdmin, 127.0.0.1
+2025-11-16 | 07:39:47, INFO, Successful logout attempt, principalAdmin, 127.0.0.1
+2025-11-16 | 07:42:10, INFO, Logger finalizado.
+2025-11-16 | 07:43:31, INFO, Logger inicializado.
+2025-11-16 | 07:43:31, INFO, [DB] Base de datos abierta en /home/nenodios/Desktop/Codes_POO/TP_INTEGRADOR/ProyectoCompleto/ProyectoPooFinal/Servidor/server_database.db
+2025-11-16 | 07:43:31, INFO, [DB] Tabla de usuarios lista.
+2025-11-16 | 07:43:31, INFO, [TaskManager] 3 tareas cargadas exitosamente desde ./tasks.json
+2025-11-16 | 07:43:31, INFO, [Server] Tareas cargadas exitosamente desde tasks.json.
+2025-11-16 | 07:43:31, INFO, [Main] Iniciando Servidor RPC. Use Ctrl+C para detener.
+2025-11-16 | 07:43:31, INFO, [RPC Server] Servidor XML-RPC iniciado en el puerto 8080. Esperando peticiones...
+2025-11-16 | 07:43:56, INFO, Successful login attempt, enzo, 127.0.0.1
+2025-11-16 | 07:44:04, INFO, [RPC] RPC call from user 'enzo': robot.connect, enzo, 127.0.0.1
+2025-11-16 | 07:44:04, INFO, [Robot] Iniciando conexión...
+2025-11-16 | 07:44:04, INFO, Puerto serie /dev/ttyUSB0 abierto con éxito a 115200 baudios.
+2025-11-16 | 07:44:04, INFO, [Robot] Limpiando mensajes de arranque...
+2025-11-16 | 07:44:06, INFO, [Robot] Conexión establecida.
+2025-11-16 | 07:44:08, INFO, [RPC] RPC call from user 'enzo': robot.connect, enzo, 127.0.0.1
+2025-11-16 | 07:44:08, CRITICAL, [Robot] Error: El robot ya está conectado.
+2025-11-16 | 07:44:08, WARNING, Failed RPC call for user 'enzo': [Robot] Error: El robot ya está conectado., enzo, 127.0.0.1
+2025-11-16 | 07:44:11, INFO, [RPC] RPC call from user 'enzo': robot.disconnect, enzo, 127.0.0.1
+2025-11-16 | 07:44:11, INFO, [Robot] Cerrando conexión...
+2025-11-16 | 07:44:11, INFO, [Robot] Desconexión completada.
+2025-11-16 | 07:44:13, INFO, [RPC] RPC call from user 'enzo': robot.disconnect, enzo, 127.0.0.1
+2025-11-16 | 07:44:13, CRITICAL, [Robot] Error: El robot ya está desconectado.
+2025-11-16 | 07:44:13, WARNING, Failed RPC call for user 'enzo': [Robot] Error: El robot ya está desconectado., enzo, 127.0.0.1
+2025-11-16 | 07:44:16, INFO, [RPC] RPC call from user 'enzo': robot.connect, enzo, 127.0.0.1
+2025-11-16 | 07:44:16, INFO, [Robot] Iniciando conexión...
+2025-11-16 | 07:44:16, INFO, Puerto serie /dev/ttyUSB0 abierto con éxito a 115200 baudios.
+2025-11-16 | 07:44:16, INFO, [Robot] Limpiando mensajes de arranque...
+2025-11-16 | 07:44:18, INFO, [Robot] Conexión establecida.
+2025-11-16 | 07:44:53, INFO, [RPC] RPC call from user 'enzo': robot.enableMotors, enzo, 127.0.0.1
+2025-11-16 | 07:44:57, INFO, [Robot] Respuesta de M17: INFO: MOTORS ENABLED. OK. 
+2025-11-16 | 07:44:57, INFO, [Robot] Motores activados.
+2025-11-16 | 07:44:59, INFO, [RPC] RPC call from user 'enzo': robot.enableMotors, enzo, 127.0.0.1
+2025-11-16 | 07:44:59, CRITICAL, [Robot] Error: Los motores ya están activados.
+2025-11-16 | 07:44:59, WARNING, Failed RPC call for user 'enzo': [Robot] Error: Los motores ya están activados., enzo, 127.0.0.1
+2025-11-16 | 07:44:59, INFO, [RPC] RPC call from user 'enzo': robot.enableMotors, enzo, 127.0.0.1
+2025-11-16 | 07:44:59, CRITICAL, [Robot] Error: Los motores ya están activados.
+2025-11-16 | 07:44:59, WARNING, Failed RPC call for user 'enzo': [Robot] Error: Los motores ya están activados., enzo, 127.0.0.1
+2025-11-16 | 07:45:02, INFO, [RPC] RPC call from user 'enzo': robot.disableMotors, enzo, 127.0.0.1
+2025-11-16 | 07:45:06, INFO, [Robot] Respuesta de M18: INFO: MOTORS DISABLED. OK. 
+2025-11-16 | 07:45:06, INFO, [Robot] Motores desactivados.
+2025-11-16 | 07:45:07, INFO, [RPC] RPC call from user 'enzo': robot.disableMotors, enzo, 127.0.0.1
+2025-11-16 | 07:45:07, CRITICAL, [Robot] Error: Los motores ya están desactivados.
+2025-11-16 | 07:45:07, WARNING, Failed RPC call for user 'enzo': [Robot] Error: Los motores ya están desactivados., enzo, 127.0.0.1
+2025-11-16 | 07:45:11, INFO, [RPC] RPC call from user 'enzo': robot.enableMotors, enzo, 127.0.0.1
+2025-11-16 | 07:45:15, INFO, [Robot] Respuesta de M17: INFO: MOTORS ENABLED. OK. 
+2025-11-16 | 07:45:15, INFO, [Robot] Motores activados.
+2025-11-16 | 07:45:32, INFO, [RPC] RPC call from user 'enzo': robot.moveDefaultSpeed, enzo, 127.0.0.1
+2025-11-16 | 07:45:32, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X100.000 Y100.000 Z100.000 E0.0"
+2025-11-16 | 07:45:32, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 07:45:37, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:100.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 07:45:37, INFO, [Robot] Movimiento completado.
+2025-11-16 | 07:45:43, INFO, [RPC] RPC call from user 'enzo': robot.setCoordinateMode, enzo, 127.0.0.1
+2025-11-16 | 07:45:47, INFO, [Robot] Respuesta de G91: INFO: RELATIVE MODE ON. OK. 
+2025-11-16 | 07:46:06, INFO, [RPC] RPC call from user 'enzo': robot.moveDefaultSpeed, enzo, 127.0.0.1
+2025-11-16 | 07:46:06, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X30.000 Y0.000 Z0.000 E0.0"
+2025-11-16 | 07:46:06, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 07:46:11, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:130.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 07:46:11, INFO, [Robot] Movimiento completado.
+2025-11-16 | 07:46:20, INFO, [RPC] RPC call from user 'enzo': robot.moveDefaultSpeed, enzo, 127.0.0.1
+2025-11-16 | 07:46:20, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X-30.000 Y0.000 Z0.000 E0.0"
+2025-11-16 | 07:46:20, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 07:46:25, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:100.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 07:46:25, INFO, [Robot] Movimiento completado.
+2025-11-16 | 07:46:45, INFO, [RPC] RPC call from user 'enzo': robot.setCoordinateMode, enzo, 127.0.0.1
+2025-11-16 | 07:46:49, INFO, [Robot] Respuesta de G90: INFO: ABSOLUTE MODE ON. OK. 
+2025-11-16 | 07:46:50, INFO, [RPC] RPC call from user 'enzo': robot.moveDefaultSpeed, enzo, 127.0.0.1
+2025-11-16 | 07:46:50, INFO, [Robot] Moviendo al origen (0,0,0).
+2025-11-16 | 07:46:50, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 07:46:58, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: HOMING COMPLETE. OK. 
+2025-11-16 | 07:46:58, INFO, [Robot] Movimiento completado.
+2025-11-16 | 07:47:11, INFO, [RPC] RPC call from user 'enzo': robot.moveDefaultSpeed, enzo, 127.0.0.1
+2025-11-16 | 07:47:11, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X100.000 Y100.000 Z100.000 E0.0"
+2025-11-16 | 07:47:11, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 07:47:16, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:100.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 07:47:16, INFO, [Robot] Movimiento completado.
+2025-11-16 | 07:47:22, INFO, [RPC] RPC call from user 'enzo': robot.getStatus, enzo, 127.0.0.1
+2025-11-16 | 07:47:32, INFO, [RPC] RPC call from user 'enzo': robot.help, enzo, 127.0.0.1
+2025-11-16 | 07:47:42, INFO, [RPC] RPC call from user 'enzo': robot.listTasks, enzo, 127.0.0.1
+2025-11-16 | 07:48:03, INFO, [RPC] RPC call from user 'enzo': robot.executeTask, enzo, 127.0.0.1
+2025-11-16 | 07:48:03, INFO, [Robot] Enviando G-Code crudo: "G91"
+2025-11-16 | 07:48:07, INFO, [Robot] Respuesta a G-Code crudo: INFO: RELATIVE MODE ON. OK. 
+2025-11-16 | 07:48:07, INFO, [Robot] Enviando G-Code crudo: "G1 Y30"
+2025-11-16 | 07:48:11, INFO, [Robot] Respuesta a G-Code crudo: INFO: LINEAR MOVE: [X:100.00 Y:130.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 07:48:11, INFO, [Robot] Enviando G-Code crudo: "G1 X30"
+2025-11-16 | 07:48:15, INFO, [Robot] Respuesta a G-Code crudo: INFO: LINEAR MOVE: [X:130.00 Y:130.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 07:48:15, INFO, [Robot] Enviando G-Code crudo: "G1 Y-30"
+2025-11-16 | 07:48:19, INFO, [Robot] Respuesta a G-Code crudo: INFO: LINEAR MOVE: [X:130.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 07:48:19, INFO, [Robot] Enviando G-Code crudo: "G1 X-30"
+2025-11-16 | 07:48:23, INFO, [Robot] Respuesta a G-Code crudo: INFO: LINEAR MOVE: [X:100.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 07:48:23, INFO, [Robot] Enviando G-Code crudo: "G90"
+2025-11-16 | 07:48:27, INFO, [Robot] Respuesta a G-Code crudo: INFO: ABSOLUTE MODE ON. OK. 
+2025-11-16 | 07:48:34, INFO, [RPC] RPC call from user 'enzo': robot.getStatus, enzo, 127.0.0.1
+2025-11-16 | 07:49:24, INFO, [RPC] RPC call from user 'enzo': robot.moveDefaultSpeed, enzo, 127.0.0.1
+2025-11-16 | 07:49:24, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X10.000 Y0.000 Z0.000 E0.0"
+2025-11-16 | 07:49:24, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 07:49:29, CRITICAL, ERROR: POINT IS OUTSIDE OF WORKSPACE
+2025-11-16 | 07:49:29, WARNING, Failed RPC call for user 'enzo': ERROR: POINT IS OUTSIDE OF WORKSPACE, enzo, 127.0.0.1
+2025-11-16 | 07:49:35, INFO, [RPC] RPC call from user 'enzo': robot.setCoordinateMode, enzo, 127.0.0.1
+2025-11-16 | 07:49:39, INFO, [Robot] Respuesta de G91: INFO: RELATIVE MODE ON. OK. 
+2025-11-16 | 07:49:42, INFO, [RPC] RPC call from user 'enzo': robot.moveDefaultSpeed, enzo, 127.0.0.1
+2025-11-16 | 07:49:42, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X10.000 Y0.000 Z0.000 E0.0"
+2025-11-16 | 07:49:42, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 07:49:47, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:77.86 Y:64.29 Z:64.29 E:0.00]. OK. 
+2025-11-16 | 07:49:47, INFO, [Robot] Movimiento completado.
+2025-11-16 | 07:49:59, INFO, [RPC] RPC call from user 'enzo': robot.moveDefaultSpeed, enzo, 127.0.0.1
+2025-11-16 | 07:49:59, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X-5.000 Y10.000 Z0.000 E0.0"
+2025-11-16 | 07:49:59, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 07:50:04, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:72.86 Y:74.29 Z:64.29 E:0.00]. OK. 
+2025-11-16 | 07:50:04, INFO, [Robot] Movimiento completado.
+2025-11-16 | 07:50:09, INFO, [RPC] RPC call from user 'enzo': robot.moveDefaultSpeed, enzo, 127.0.0.1
+2025-11-16 | 07:50:09, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X-5.000 Y-10.000 Z0.000 E0.0"
+2025-11-16 | 07:50:09, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 07:50:14, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:67.86 Y:64.29 Z:64.29 E:0.00]. OK. 
+2025-11-16 | 07:50:14, INFO, [Robot] Movimiento completado.
+2025-11-16 | 07:50:23, INFO, [RPC] RPC call from user 'enzo': robot.moveDefaultSpeed, enzo, 127.0.0.1
+2025-11-16 | 07:50:23, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X20.000 Y0.000 Z0.000 E0.0"
+2025-11-16 | 07:50:23, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 07:50:28, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:87.86 Y:64.29 Z:64.29 E:0.00]. OK. 
+2025-11-16 | 07:50:28, INFO, [Robot] Movimiento completado.
+2025-11-16 | 07:50:33, INFO, [RPC] RPC call from user 'enzo': robot.addTask, enzo, 127.0.0.1
+2025-11-16 | 07:50:33, INFO, [TaskManager] 3 tareas cargadas exitosamente desde ./tasks.json
+2025-11-16 | 07:50:41, INFO, [RPC] RPC call from user 'enzo': robot.getStatus, enzo, 127.0.0.1
+2025-11-16 | 07:51:14, INFO, Successful logout attempt, enzo, 127.0.0.1
+2025-11-16 | 07:51:26, INFO, Logger finalizado.
+2025-11-16 | 07:52:59, INFO, Logger inicializado.
+2025-11-16 | 07:52:59, INFO, [DB] Base de datos abierta en /home/nenodios/Desktop/Codes_POO/TP_INTEGRADOR/ProyectoCompleto/ProyectoPooFinal/Servidor/server_database.db
+2025-11-16 | 07:52:59, INFO, [DB] Tabla de usuarios lista.
+2025-11-16 | 07:52:59, INFO, [TaskManager] 4 tareas cargadas exitosamente desde ./tasks.json
+2025-11-16 | 07:52:59, INFO, [Server] Tareas cargadas exitosamente desde tasks.json.
+2025-11-16 | 07:52:59, INFO, [Main] Iniciando Servidor RPC. Use Ctrl+C para detener.
+2025-11-16 | 07:52:59, INFO, [RPC Server] Servidor XML-RPC iniciado en el puerto 8080. Esperando peticiones...
+2025-11-16 | 07:53:20, INFO, Successful login attempt, enzo, 127.0.0.1
+2025-11-16 | 07:53:24, INFO, [RPC] RPC call from user 'enzo': robot.connect, enzo, 127.0.0.1
+2025-11-16 | 07:53:24, INFO, [Robot] Iniciando conexión...
+2025-11-16 | 07:53:24, INFO, Puerto serie /dev/ttyUSB0 abierto con éxito a 115200 baudios.
+2025-11-16 | 07:53:24, INFO, [Robot] Limpiando mensajes de arranque...
+2025-11-16 | 07:53:26, INFO, [Robot] Conexión establecida.
+2025-11-16 | 07:53:36, INFO, [RPC] RPC call from user 'enzo': robot.connect, enzo, 127.0.0.1
+2025-11-16 | 07:53:36, CRITICAL, [Robot] Error: El robot ya está conectado.
+2025-11-16 | 07:53:36, WARNING, Failed RPC call for user 'enzo': [Robot] Error: El robot ya está conectado., enzo, 127.0.0.1
+2025-11-16 | 07:53:40, INFO, [RPC] RPC call from user 'enzo': robot.disconnect, enzo, 127.0.0.1
+2025-11-16 | 07:53:40, INFO, [Robot] Cerrando conexión...
+2025-11-16 | 07:53:40, INFO, [Robot] Desconexión completada.
+2025-11-16 | 07:53:43, INFO, [RPC] RPC call from user 'enzo': robot.disconnect, enzo, 127.0.0.1
+2025-11-16 | 07:53:43, CRITICAL, [Robot] Error: El robot ya está desconectado.
+2025-11-16 | 07:53:43, WARNING, Failed RPC call for user 'enzo': [Robot] Error: El robot ya está desconectado., enzo, 127.0.0.1
+2025-11-16 | 07:53:46, INFO, [RPC] RPC call from user 'enzo': robot.connect, enzo, 127.0.0.1
+2025-11-16 | 07:53:46, INFO, [Robot] Iniciando conexión...
+2025-11-16 | 07:53:46, INFO, Puerto serie /dev/ttyUSB0 abierto con éxito a 115200 baudios.
+2025-11-16 | 07:53:46, INFO, [Robot] Limpiando mensajes de arranque...
+2025-11-16 | 07:53:48, INFO, [Robot] Conexión establecida.
+2025-11-16 | 07:54:03, INFO, [RPC] RPC call from user 'enzo': robot.enableMotors, enzo, 127.0.0.1
+2025-11-16 | 07:54:07, INFO, [Robot] Respuesta de M17: INFO: MOTORS ENABLED. OK. 
+2025-11-16 | 07:54:07, INFO, [Robot] Motores activados.
+2025-11-16 | 07:54:09, INFO, [RPC] RPC call from user 'enzo': robot.enableMotors, enzo, 127.0.0.1
+2025-11-16 | 07:54:09, CRITICAL, [Robot] Error: Los motores ya están activados.
+2025-11-16 | 07:54:09, WARNING, Failed RPC call for user 'enzo': [Robot] Error: Los motores ya están activados., enzo, 127.0.0.1
+2025-11-16 | 07:54:11, INFO, [RPC] RPC call from user 'enzo': robot.disableMotors, enzo, 127.0.0.1
+2025-11-16 | 07:54:15, INFO, [Robot] Respuesta de M18: INFO: MOTORS DISABLED. OK. 
+2025-11-16 | 07:54:15, INFO, [Robot] Motores desactivados.
+2025-11-16 | 07:54:16, INFO, [RPC] RPC call from user 'enzo': robot.disableMotors, enzo, 127.0.0.1
+2025-11-16 | 07:54:16, CRITICAL, [Robot] Error: Los motores ya están desactivados.
+2025-11-16 | 07:54:16, WARNING, Failed RPC call for user 'enzo': [Robot] Error: Los motores ya están desactivados., enzo, 127.0.0.1
+2025-11-16 | 07:54:18, INFO, [RPC] RPC call from user 'enzo': robot.enableMotors, enzo, 127.0.0.1
+2025-11-16 | 07:54:22, INFO, [Robot] Respuesta de M17: INFO: MOTORS ENABLED. OK. 
+2025-11-16 | 07:54:22, INFO, [Robot] Motores activados.
+2025-11-16 | 07:54:29, INFO, [RPC] RPC call from user 'enzo': robot.setCoordinateMode, enzo, 127.0.0.1
+2025-11-16 | 07:54:33, INFO, [Robot] Respuesta de G90: INFO: ABSOLUTE MODE ON. OK. 
+2025-11-16 | 07:54:43, INFO, [RPC] RPC call from user 'enzo': robot.moveDefaultSpeed, enzo, 127.0.0.1
+2025-11-16 | 07:54:43, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X100.000 Y100.000 Z100.000 E0.0"
+2025-11-16 | 07:54:43, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 07:54:48, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:100.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 07:54:48, INFO, [Robot] Movimiento completado.
+2025-11-16 | 07:54:58, INFO, [RPC] RPC call from user 'enzo': robot.setCoordinateMode, enzo, 127.0.0.1
+2025-11-16 | 07:55:02, INFO, [Robot] Respuesta de G91: INFO: RELATIVE MODE ON. OK. 
+2025-11-16 | 07:55:16, INFO, [RPC] RPC call from user 'enzo': robot.moveDefaultSpeed, enzo, 127.0.0.1
+2025-11-16 | 07:55:16, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X0.000 Y20.000 Z0.000 E0.0"
+2025-11-16 | 07:55:16, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 07:55:21, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:100.00 Y:120.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 07:55:21, INFO, [Robot] Movimiento completado.
+2025-11-16 | 07:55:30, INFO, [RPC] RPC call from user 'enzo': robot.moveDefaultSpeed, enzo, 127.0.0.1
+2025-11-16 | 07:55:30, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X0.000 Y-20.000 Z0.000 E0.0"
+2025-11-16 | 07:55:30, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 07:55:35, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:100.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 07:55:35, INFO, [Robot] Movimiento completado.
+2025-11-16 | 07:55:39, INFO, [RPC] RPC call from user 'enzo': robot.getStatus, enzo, 127.0.0.1
+2025-11-16 | 07:55:55, INFO, [RPC] RPC call from user 'enzo': robot.help, enzo, 127.0.0.1
+2025-11-16 | 07:56:06, INFO, [RPC] RPC call from user 'enzo': robot.listTasks, enzo, 127.0.0.1
+2025-11-16 | 07:56:23, INFO, [RPC] RPC call from user 'enzo': robot.executeTask, enzo, 127.0.0.1
+2025-11-16 | 07:56:23, INFO, [Robot] Enviando G-Code crudo: "G91"
+2025-11-16 | 07:56:27, INFO, [Robot] Respuesta a G-Code crudo: INFO: RELATIVE MODE ON. OK. 
+2025-11-16 | 07:56:27, INFO, [Robot] Enviando G-Code crudo: "G1 Y30"
+2025-11-16 | 07:56:31, INFO, [Robot] Respuesta a G-Code crudo: INFO: LINEAR MOVE: [X:100.00 Y:130.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 07:56:31, INFO, [Robot] Enviando G-Code crudo: "G1 X30"
+2025-11-16 | 07:56:35, INFO, [Robot] Respuesta a G-Code crudo: INFO: LINEAR MOVE: [X:130.00 Y:130.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 07:56:35, INFO, [Robot] Enviando G-Code crudo: "G1 Y-30"
+2025-11-16 | 07:56:39, INFO, [Robot] Respuesta a G-Code crudo: INFO: LINEAR MOVE: [X:130.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 07:56:39, INFO, [Robot] Enviando G-Code crudo: "G1 X-30"
+2025-11-16 | 07:56:43, INFO, [Robot] Respuesta a G-Code crudo: INFO: LINEAR MOVE: [X:100.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 07:56:43, INFO, [Robot] Enviando G-Code crudo: "G90"
+2025-11-16 | 07:56:47, INFO, [Robot] Respuesta a G-Code crudo: INFO: ABSOLUTE MODE ON. OK. 
+2025-11-16 | 07:56:59, INFO, [RPC] RPC call from user 'enzo': robot.getStatus, enzo, 127.0.0.1
+2025-11-16 | 07:57:12, INFO, [RPC] RPC call from user 'enzo': robot.setCoordinateMode, enzo, 127.0.0.1
+2025-11-16 | 07:57:16, INFO, [Robot] Respuesta de G91: INFO: RELATIVE MODE ON. OK. 
+2025-11-16 | 07:57:45, INFO, [RPC] RPC call from user 'enzo': robot.setCoordinateMode, enzo, 127.0.0.1
+2025-11-16 | 07:57:49, INFO, [Robot] Respuesta de G91: INFO: RELATIVE MODE ON. OK. 
+2025-11-16 | 07:57:59, INFO, [RPC] RPC call from user 'enzo': robot.moveDefaultSpeed, enzo, 127.0.0.1
+2025-11-16 | 07:57:59, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X10.000 Y0.000 Z0.000 E0.0"
+2025-11-16 | 07:57:59, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 07:58:04, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:110.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 07:58:04, INFO, [Robot] Movimiento completado.
+2025-11-16 | 07:58:13, INFO, [RPC] RPC call from user 'enzo': robot.moveDefaultSpeed, enzo, 127.0.0.1
+2025-11-16 | 07:58:13, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X-5.000 Y10.000 Z0.000 E0.0"
+2025-11-16 | 07:58:13, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 07:58:18, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:105.00 Y:110.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 07:58:18, INFO, [Robot] Movimiento completado.
+2025-11-16 | 07:58:27, INFO, [RPC] RPC call from user 'enzo': robot.moveDefaultSpeed, enzo, 127.0.0.1
+2025-11-16 | 07:58:27, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X-5.000 Y-10.000 Z0.000 E0.0"
+2025-11-16 | 07:58:27, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 07:58:32, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:100.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 07:58:32, INFO, [Robot] Movimiento completado.
+2025-11-16 | 07:58:41, INFO, [RPC] RPC call from user 'enzo': robot.moveDefaultSpeed, enzo, 127.0.0.1
+2025-11-16 | 07:58:41, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X20.000 Y0.000 Z0.000 E0.0"
+2025-11-16 | 07:58:41, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 07:58:46, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:120.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 07:58:46, INFO, [Robot] Movimiento completado.
+2025-11-16 | 07:58:48, INFO, [RPC] RPC call from user 'enzo': robot.addTask, enzo, 127.0.0.1
+2025-11-16 | 07:58:48, INFO, [TaskManager] 4 tareas cargadas exitosamente desde ./tasks.json
+2025-11-16 | 07:58:48, ERROR, [TaskManager] Ya existe una tarea con el ID 'draw_triangle'.
+2025-11-16 | 07:58:51, INFO, [RPC] RPC call from user 'enzo': robot.getStatus, enzo, 127.0.0.1
+2025-11-16 | 07:59:16, INFO, Successful logout attempt, enzo, 127.0.0.1
+2025-11-16 | 08:00:08, INFO, Logger finalizado.
+2025-11-16 | 08:00:46, INFO, Logger inicializado.
+2025-11-16 | 08:00:46, INFO, [DB] Base de datos abierta en /home/nenodios/Desktop/Codes_POO/TP_INTEGRADOR/ProyectoCompleto/ProyectoPooFinal/Servidor/server_database.db
+2025-11-16 | 08:00:46, INFO, [DB] Tabla de usuarios lista.
+2025-11-16 | 08:00:46, INFO, [TaskManager] 3 tareas cargadas exitosamente desde ./tasks.json
+2025-11-16 | 08:00:46, INFO, [Server] Tareas cargadas exitosamente desde tasks.json.
+2025-11-16 | 08:00:46, INFO, [Main] Iniciando Servidor RPC. Use Ctrl+C para detener.
+2025-11-16 | 08:00:46, INFO, [RPC Server] Servidor XML-RPC iniciado en el puerto 8080. Esperando peticiones...
+2025-11-16 | 08:01:04, INFO, Successful login attempt, enzo, 127.0.0.1
+2025-11-16 | 08:01:09, INFO, [RPC] RPC call from user 'enzo': robot.connect, enzo, 127.0.0.1
+2025-11-16 | 08:01:09, INFO, [Robot] Iniciando conexión...
+2025-11-16 | 08:01:09, INFO, Puerto serie /dev/ttyUSB0 abierto con éxito a 115200 baudios.
+2025-11-16 | 08:01:09, INFO, [Robot] Limpiando mensajes de arranque...
+2025-11-16 | 08:01:11, INFO, [Robot] Conexión establecida.
+2025-11-16 | 08:01:23, INFO, [RPC] RPC call from user 'enzo': robot.connect, enzo, 127.0.0.1
+2025-11-16 | 08:01:23, CRITICAL, [Robot] Error: El robot ya está conectado.
+2025-11-16 | 08:01:23, WARNING, Failed RPC call for user 'enzo': [Robot] Error: El robot ya está conectado., enzo, 127.0.0.1
+2025-11-16 | 08:01:26, INFO, [RPC] RPC call from user 'enzo': robot.disconnect, enzo, 127.0.0.1
+2025-11-16 | 08:01:26, INFO, [Robot] Cerrando conexión...
+2025-11-16 | 08:01:26, INFO, [Robot] Desconexión completada.
+2025-11-16 | 08:01:29, INFO, [RPC] RPC call from user 'enzo': robot.disconnect, enzo, 127.0.0.1
+2025-11-16 | 08:01:29, CRITICAL, [Robot] Error: El robot ya está desconectado.
+2025-11-16 | 08:01:29, WARNING, Failed RPC call for user 'enzo': [Robot] Error: El robot ya está desconectado., enzo, 127.0.0.1
+2025-11-16 | 08:01:31, INFO, [RPC] RPC call from user 'enzo': robot.connect, enzo, 127.0.0.1
+2025-11-16 | 08:01:31, INFO, [Robot] Iniciando conexión...
+2025-11-16 | 08:01:31, INFO, Puerto serie /dev/ttyUSB0 abierto con éxito a 115200 baudios.
+2025-11-16 | 08:01:31, INFO, [Robot] Limpiando mensajes de arranque...
+2025-11-16 | 08:01:33, INFO, [Robot] Conexión establecida.
+2025-11-16 | 08:01:46, INFO, [RPC] RPC call from user 'enzo': robot.enableMotors, enzo, 127.0.0.1
+2025-11-16 | 08:01:50, INFO, [Robot] Respuesta de M17: INFO: MOTORS ENABLED. OK. 
+2025-11-16 | 08:01:50, INFO, [Robot] Motores activados.
+2025-11-16 | 08:01:52, INFO, [RPC] RPC call from user 'enzo': robot.enableMotors, enzo, 127.0.0.1
+2025-11-16 | 08:01:52, CRITICAL, [Robot] Error: Los motores ya están activados.
+2025-11-16 | 08:01:52, WARNING, Failed RPC call for user 'enzo': [Robot] Error: Los motores ya están activados., enzo, 127.0.0.1
+2025-11-16 | 08:01:54, INFO, [RPC] RPC call from user 'enzo': robot.disableMotors, enzo, 127.0.0.1
+2025-11-16 | 08:01:58, INFO, [Robot] Respuesta de M18: INFO: MOTORS DISABLED. OK. 
+2025-11-16 | 08:01:58, INFO, [Robot] Motores desactivados.
+2025-11-16 | 08:01:59, INFO, [RPC] RPC call from user 'enzo': robot.disableMotors, enzo, 127.0.0.1
+2025-11-16 | 08:01:59, CRITICAL, [Robot] Error: Los motores ya están desactivados.
+2025-11-16 | 08:01:59, WARNING, Failed RPC call for user 'enzo': [Robot] Error: Los motores ya están desactivados., enzo, 127.0.0.1
+2025-11-16 | 08:02:01, INFO, [RPC] RPC call from user 'enzo': robot.enableMotors, enzo, 127.0.0.1
+2025-11-16 | 08:02:05, INFO, [Robot] Respuesta de M17: INFO: MOTORS ENABLED. OK. 
+2025-11-16 | 08:02:05, INFO, [Robot] Motores activados.
+2025-11-16 | 08:02:18, INFO, [RPC] RPC call from user 'enzo': robot.moveDefaultSpeed, enzo, 127.0.0.1
+2025-11-16 | 08:02:18, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X100.000 Y100.000 Z100.000 E0.0"
+2025-11-16 | 08:02:18, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 08:02:23, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:100.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 08:02:23, INFO, [Robot] Movimiento completado.
+2025-11-16 | 08:02:33, INFO, [RPC] RPC call from user 'enzo': robot.setCoordinateMode, enzo, 127.0.0.1
+2025-11-16 | 08:02:37, INFO, [Robot] Respuesta de G91: INFO: RELATIVE MODE ON. OK. 
+2025-11-16 | 08:02:47, INFO, [RPC] RPC call from user 'enzo': robot.moveDefaultSpeed, enzo, 127.0.0.1
+2025-11-16 | 08:02:47, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X0.000 Y30.000 Z0.000 E0.0"
+2025-11-16 | 08:02:47, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 08:02:52, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:100.00 Y:130.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 08:02:52, INFO, [Robot] Movimiento completado.
+2025-11-16 | 08:02:59, INFO, [RPC] RPC call from user 'enzo': robot.moveDefaultSpeed, enzo, 127.0.0.1
+2025-11-16 | 08:02:59, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X0.000 Y-30.000 Z0.000 E0.0"
+2025-11-16 | 08:02:59, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 08:03:04, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:100.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 08:03:04, INFO, [Robot] Movimiento completado.
+2025-11-16 | 08:03:09, INFO, [RPC] RPC call from user 'enzo': robot.getStatus, enzo, 127.0.0.1
+2025-11-16 | 08:03:21, INFO, [RPC] RPC call from user 'enzo': robot.help, enzo, 127.0.0.1
+2025-11-16 | 08:03:30, INFO, [RPC] RPC call from user 'enzo': robot.listTasks, enzo, 127.0.0.1
+2025-11-16 | 08:03:48, INFO, [RPC] RPC call from user 'enzo': robot.executeTask, enzo, 127.0.0.1
+2025-11-16 | 08:03:48, INFO, [Robot] Enviando G-Code crudo: "G91"
+2025-11-16 | 08:03:52, INFO, [Robot] Respuesta a G-Code crudo: INFO: RELATIVE MODE ON. OK. 
+2025-11-16 | 08:03:52, INFO, [Robot] Enviando G-Code crudo: "G1 Y30"
+2025-11-16 | 08:03:56, INFO, [Robot] Respuesta a G-Code crudo: INFO: LINEAR MOVE: [X:100.00 Y:130.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 08:03:56, INFO, [Robot] Enviando G-Code crudo: "G1 X30"
+2025-11-16 | 08:04:00, INFO, [Robot] Respuesta a G-Code crudo: INFO: LINEAR MOVE: [X:130.00 Y:130.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 08:04:00, INFO, [Robot] Enviando G-Code crudo: "G1 Y-30"
+2025-11-16 | 08:04:04, INFO, [Robot] Respuesta a G-Code crudo: INFO: LINEAR MOVE: [X:130.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 08:04:04, INFO, [Robot] Enviando G-Code crudo: "G1 X-30"
+2025-11-16 | 08:04:08, INFO, [Robot] Respuesta a G-Code crudo: INFO: LINEAR MOVE: [X:100.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 08:04:09, INFO, [Robot] Enviando G-Code crudo: "G90"
+2025-11-16 | 08:04:13, INFO, [Robot] Respuesta a G-Code crudo: INFO: ABSOLUTE MODE ON. OK. 
+2025-11-16 | 08:04:17, INFO, [RPC] RPC call from user 'enzo': robot.getStatus, enzo, 127.0.0.1
+2025-11-16 | 08:04:32, INFO, [RPC] RPC call from user 'enzo': robot.setCoordinateMode, enzo, 127.0.0.1
+2025-11-16 | 08:04:36, INFO, [Robot] Respuesta de G91: INFO: RELATIVE MODE ON. OK. 
+2025-11-16 | 08:05:07, INFO, [RPC] RPC call from user 'enzo': robot.moveDefaultSpeed, enzo, 127.0.0.1
+2025-11-16 | 08:05:07, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X10.000 Y0.000 Z0.000 E0.0"
+2025-11-16 | 08:05:07, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 08:05:12, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:110.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 08:05:12, INFO, [Robot] Movimiento completado.
+2025-11-16 | 08:05:43, INFO, [RPC] RPC call from user 'enzo': robot.moveDefaultSpeed, enzo, 127.0.0.1
+2025-11-16 | 08:05:43, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X-5.000 Y10.000 Z0.000 E0.0"
+2025-11-16 | 08:05:43, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 08:05:48, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:105.00 Y:110.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 08:05:48, INFO, [Robot] Movimiento completado.
+2025-11-16 | 08:06:00, INFO, [RPC] RPC call from user 'enzo': robot.moveDefaultSpeed, enzo, 127.0.0.1
+2025-11-16 | 08:06:00, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X-5.000 Y-10.000 Z0.000 E0.0"
+2025-11-16 | 08:06:00, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 08:06:05, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:100.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 08:06:05, INFO, [Robot] Movimiento completado.
+2025-11-16 | 08:06:14, INFO, [RPC] RPC call from user 'enzo': robot.moveDefaultSpeed, enzo, 127.0.0.1
+2025-11-16 | 08:06:14, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X20.000 Y0.000 Z0.000 E0.0"
+2025-11-16 | 08:06:14, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 08:06:19, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:120.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 08:06:19, INFO, [Robot] Movimiento completado.
+2025-11-16 | 08:06:22, INFO, [RPC] RPC call from user 'enzo': robot.getStatus, enzo, 127.0.0.1
+2025-11-16 | 08:06:55, INFO, [RPC] RPC call from user 'enzo': user.add, enzo, 127.0.0.1
+2025-11-16 | 08:06:55, INFO, [DB] Usuario 'ProfeAranda' creado exitosamente.
+2025-11-16 | 08:07:19, INFO, Successful login attempt, ProfeAranda, 127.0.0.1
+2025-11-16 | 08:07:31, INFO, [RPC] RPC call from user 'ProfeAranda': robot.setCoordinateMode, ProfeAranda, 127.0.0.1
+2025-11-16 | 08:07:35, INFO, [Robot] Respuesta de G90: INFO: ABSOLUTE MODE ON. OK. 
+2025-11-16 | 08:07:42, INFO, [RPC] RPC call from user 'ProfeAranda': robot.moveDefaultSpeed, ProfeAranda, 127.0.0.1
+2025-11-16 | 08:07:42, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X100.000 Y100.000 Z100.000 E0.0"
+2025-11-16 | 08:07:42, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 08:07:47, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:100.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 08:07:47, INFO, [Robot] Movimiento completado.
+2025-11-16 | 08:07:52, INFO, [RPC] RPC call from user 'ProfeAranda': robot.listTasks, ProfeAranda, 127.0.0.1
+2025-11-16 | 08:08:08, INFO, [RPC] RPC call from user 'ProfeAranda': robot.executeTask, ProfeAranda, 127.0.0.1
+2025-11-16 | 08:08:47, INFO, Successful logout attempt, ProfeAranda, 127.0.0.1
+2025-11-16 | 08:08:50, INFO, Successful logout attempt, enzo, 127.0.0.1
+2025-11-16 | 08:09:02, INFO, Logger finalizado.
+2025-11-16 | 08:10:03, INFO, Logger inicializado.
+2025-11-16 | 08:10:03, INFO, [DB] Base de datos abierta en /home/nenodios/Desktop/Codes_POO/TP_INTEGRADOR/ProyectoCompleto/ProyectoPooFinal/Servidor/server_database.db
+2025-11-16 | 08:10:03, INFO, [DB] Tabla de usuarios lista.
+2025-11-16 | 08:10:03, INFO, [TaskManager] 3 tareas cargadas exitosamente desde ./tasks.json
+2025-11-16 | 08:10:03, INFO, [Server] Tareas cargadas exitosamente desde tasks.json.
+2025-11-16 | 08:10:03, INFO, [Main] Iniciando Servidor RPC. Use Ctrl+C para detener.
+2025-11-16 | 08:10:03, INFO, [RPC Server] Servidor XML-RPC iniciado en el puerto 8080. Esperando peticiones...
+2025-11-16 | 08:10:27, INFO, Successful login attempt, enzo, 127.0.0.1
+2025-11-16 | 08:10:31, INFO, [RPC] RPC call from user 'enzo': robot.connect, enzo, 127.0.0.1
+2025-11-16 | 08:10:31, INFO, [Robot] Iniciando conexión...
+2025-11-16 | 08:10:31, INFO, Puerto serie /dev/ttyUSB0 abierto con éxito a 115200 baudios.
+2025-11-16 | 08:10:31, INFO, [Robot] Limpiando mensajes de arranque...
+2025-11-16 | 08:10:33, INFO, [Robot] Conexión establecida.
+2025-11-16 | 08:10:35, INFO, [RPC] RPC call from user 'enzo': robot.connect, enzo, 127.0.0.1
+2025-11-16 | 08:10:35, CRITICAL, [Robot] Error: El robot ya está conectado.
+2025-11-16 | 08:10:35, WARNING, Failed RPC call for user 'enzo': [Robot] Error: El robot ya está conectado., enzo, 127.0.0.1
+2025-11-16 | 08:10:37, INFO, [RPC] RPC call from user 'enzo': robot.disconnect, enzo, 127.0.0.1
+2025-11-16 | 08:10:37, INFO, [Robot] Cerrando conexión...
+2025-11-16 | 08:10:37, INFO, [Robot] Desconexión completada.
+2025-11-16 | 08:10:38, INFO, [RPC] RPC call from user 'enzo': robot.disconnect, enzo, 127.0.0.1
+2025-11-16 | 08:10:38, CRITICAL, [Robot] Error: El robot ya está desconectado.
+2025-11-16 | 08:10:38, WARNING, Failed RPC call for user 'enzo': [Robot] Error: El robot ya está desconectado., enzo, 127.0.0.1
+2025-11-16 | 08:10:40, INFO, [RPC] RPC call from user 'enzo': robot.connect, enzo, 127.0.0.1
+2025-11-16 | 08:10:40, INFO, [Robot] Iniciando conexión...
+2025-11-16 | 08:10:40, INFO, Puerto serie /dev/ttyUSB0 abierto con éxito a 115200 baudios.
+2025-11-16 | 08:10:40, INFO, [Robot] Limpiando mensajes de arranque...
+2025-11-16 | 08:10:42, INFO, [Robot] Conexión establecida.
+2025-11-16 | 08:10:57, INFO, [RPC] RPC call from user 'enzo': robot.enableMotors, enzo, 127.0.0.1
+2025-11-16 | 08:11:01, INFO, [Robot] Respuesta de M17: INFO: MOTORS ENABLED. OK. 
+2025-11-16 | 08:11:01, INFO, [Robot] Motores activados.
+2025-11-16 | 08:11:04, INFO, [RPC] RPC call from user 'enzo': robot.disableMotors, enzo, 127.0.0.1
+2025-11-16 | 08:11:08, INFO, [Robot] Respuesta de M18: INFO: MOTORS DISABLED. OK. 
+2025-11-16 | 08:11:08, INFO, [Robot] Motores desactivados.
+2025-11-16 | 08:11:09, INFO, [RPC] RPC call from user 'enzo': robot.disableMotors, enzo, 127.0.0.1
+2025-11-16 | 08:11:09, CRITICAL, [Robot] Error: Los motores ya están desactivados.
+2025-11-16 | 08:11:09, WARNING, Failed RPC call for user 'enzo': [Robot] Error: Los motores ya están desactivados., enzo, 127.0.0.1
+2025-11-16 | 08:11:11, INFO, [RPC] RPC call from user 'enzo': robot.enableMotors, enzo, 127.0.0.1
+2025-11-16 | 08:11:15, INFO, [Robot] Respuesta de M17: INFO: MOTORS ENABLED. OK. 
+2025-11-16 | 08:11:15, INFO, [Robot] Motores activados.
+2025-11-16 | 08:11:24, INFO, [RPC] RPC call from user 'enzo': robot.moveDefaultSpeed, enzo, 127.0.0.1
+2025-11-16 | 08:11:24, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X1.000 Y1.000 Z1.000 E0.0"
+2025-11-16 | 08:11:24, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 08:11:29, CRITICAL, ERROR: POINT IS OUTSIDE OF WORKSPACE
+2025-11-16 | 08:11:29, WARNING, Failed RPC call for user 'enzo': ERROR: POINT IS OUTSIDE OF WORKSPACE, enzo, 127.0.0.1
+2025-11-16 | 08:11:40, INFO, [RPC] RPC call from user 'enzo': robot.moveDefaultSpeed, enzo, 127.0.0.1
+2025-11-16 | 08:11:40, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X100.000 Y100.000 Z100.000 E0.0"
+2025-11-16 | 08:11:40, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 08:11:45, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:100.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 08:11:45, INFO, [Robot] Movimiento completado.
+2025-11-16 | 08:11:54, INFO, [RPC] RPC call from user 'enzo': robot.setCoordinateMode, enzo, 127.0.0.1
+2025-11-16 | 08:11:58, INFO, [Robot] Respuesta de G91: INFO: RELATIVE MODE ON. OK. 
+2025-11-16 | 08:12:06, INFO, [RPC] RPC call from user 'enzo': robot.moveDefaultSpeed, enzo, 127.0.0.1
+2025-11-16 | 08:12:06, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X0.000 Y10.000 Z0.000 E0.0"
+2025-11-16 | 08:12:06, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 08:12:11, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:100.00 Y:110.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 08:12:11, INFO, [Robot] Movimiento completado.
+2025-11-16 | 08:12:18, INFO, [RPC] RPC call from user 'enzo': robot.moveDefaultSpeed, enzo, 127.0.0.1
+2025-11-16 | 08:12:18, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X0.000 Y-10.000 Z0.000 E0.0"
+2025-11-16 | 08:12:18, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 08:12:23, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:100.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 08:12:23, INFO, [Robot] Movimiento completado.
+2025-11-16 | 08:12:26, INFO, [RPC] RPC call from user 'enzo': robot.getStatus, enzo, 127.0.0.1
+2025-11-16 | 08:12:34, INFO, [RPC] RPC call from user 'enzo': robot.help, enzo, 127.0.0.1
+2025-11-16 | 08:12:39, INFO, [RPC] RPC call from user 'enzo': robot.listTasks, enzo, 127.0.0.1
+2025-11-16 | 08:12:59, INFO, [RPC] RPC call from user 'enzo': robot.executeTask, enzo, 127.0.0.1
+2025-11-16 | 08:12:59, INFO, [Robot] Enviando G-Code crudo: "G91"
+2025-11-16 | 08:13:03, INFO, [Robot] Respuesta a G-Code crudo: INFO: RELATIVE MODE ON. OK. 
+2025-11-16 | 08:13:03, INFO, [Robot] Enviando G-Code crudo: "G1 Y30"
+2025-11-16 | 08:13:07, INFO, [Robot] Respuesta a G-Code crudo: INFO: LINEAR MOVE: [X:100.00 Y:130.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 08:13:07, INFO, [Robot] Enviando G-Code crudo: "G1 X30"
+2025-11-16 | 08:13:11, INFO, [Robot] Respuesta a G-Code crudo: INFO: LINEAR MOVE: [X:130.00 Y:130.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 08:13:11, INFO, [Robot] Enviando G-Code crudo: "G1 Y-30"
+2025-11-16 | 08:13:15, INFO, [Robot] Respuesta a G-Code crudo: INFO: LINEAR MOVE: [X:130.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 08:13:15, INFO, [Robot] Enviando G-Code crudo: "G1 X-30"
+2025-11-16 | 08:13:19, INFO, [Robot] Respuesta a G-Code crudo: INFO: LINEAR MOVE: [X:100.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 08:13:20, INFO, [Robot] Enviando G-Code crudo: "G90"
+2025-11-16 | 08:13:24, INFO, [Robot] Respuesta a G-Code crudo: INFO: ABSOLUTE MODE ON. OK. 
+2025-11-16 | 08:13:33, INFO, [RPC] RPC call from user 'enzo': robot.getStatus, enzo, 127.0.0.1
+2025-11-16 | 08:13:42, INFO, [RPC] RPC call from user 'enzo': robot.setCoordinateMode, enzo, 127.0.0.1
+2025-11-16 | 08:13:46, INFO, [Robot] Respuesta de G91: INFO: RELATIVE MODE ON. OK. 
+2025-11-16 | 08:14:13, INFO, [RPC] RPC call from user 'enzo': robot.setCoordinateMode, enzo, 127.0.0.1
+2025-11-16 | 08:14:17, INFO, [Robot] Respuesta de G91: INFO: RELATIVE MODE ON. OK. 
+2025-11-16 | 08:14:25, INFO, [RPC] RPC call from user 'enzo': robot.moveDefaultSpeed, enzo, 127.0.0.1
+2025-11-16 | 08:14:25, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X10.000 Y0.000 Z0.000 E0.0"
+2025-11-16 | 08:14:25, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 08:14:30, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:110.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 08:14:30, INFO, [Robot] Movimiento completado.
+2025-11-16 | 08:14:41, INFO, [RPC] RPC call from user 'enzo': robot.moveDefaultSpeed, enzo, 127.0.0.1
+2025-11-16 | 08:14:41, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X-5.000 Y10.000 Z0.000 E0.0"
+2025-11-16 | 08:14:41, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 08:14:46, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:105.00 Y:110.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 08:14:46, INFO, [Robot] Movimiento completado.
+2025-11-16 | 08:14:50, INFO, [RPC] RPC call from user 'enzo': robot.moveDefaultSpeed, enzo, 127.0.0.1
+2025-11-16 | 08:14:50, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X-5.000 Y-10.000 Z0.000 E0.0"
+2025-11-16 | 08:14:50, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 08:14:55, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:100.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 08:14:55, INFO, [Robot] Movimiento completado.
+2025-11-16 | 08:15:06, INFO, [RPC] RPC call from user 'enzo': robot.moveDefaultSpeed, enzo, 127.0.0.1
+2025-11-16 | 08:15:06, INFO, [Robot] Generado G-Code (velocidad por defecto): "G1 X20.000 Y0.000 Z0.000 E0.0"
+2025-11-16 | 08:15:06, INFO, [Robot] Enviando comando al puerto serie...
+2025-11-16 | 08:15:11, INFO, [Robot] Comando de movimiento aceptado por el robot. Respuesta: INFO: LINEAR MOVE: [X:120.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 08:15:11, INFO, [Robot] Movimiento completado.
+2025-11-16 | 08:15:14, INFO, [RPC] RPC call from user 'enzo': robot.setCoordinateMode, enzo, 127.0.0.1
+2025-11-16 | 08:15:18, INFO, [Robot] Respuesta de G90: INFO: ABSOLUTE MODE ON. OK. 
+2025-11-16 | 08:15:19, INFO, [RPC] RPC call from user 'enzo': robot.addTask, enzo, 127.0.0.1
+2025-11-16 | 08:15:19, INFO, [TaskManager] 3 tareas cargadas exitosamente desde ./tasks.json
+2025-11-16 | 08:15:49, INFO, [RPC] RPC call from user 'enzo': user.add, enzo, 127.0.0.1
+2025-11-16 | 08:15:49, INFO, [DB] Usuario 'profeAranda' creado exitosamente.
+2025-11-16 | 08:16:12, INFO, Successful login attempt, profeAranda, 127.0.0.1
+2025-11-16 | 08:16:30, INFO, [RPC] RPC call from user 'profeAranda': robot.listTasks, profeAranda, 127.0.0.1
+2025-11-16 | 08:16:44, INFO, [RPC] RPC call from user 'profeAranda': robot.executeTask, profeAranda, 127.0.0.1
+2025-11-16 | 08:16:44, INFO, [Robot] Enviando G-Code crudo: "G91"
+2025-11-16 | 08:16:48, INFO, [Robot] Respuesta a G-Code crudo: INFO: RELATIVE MODE ON. OK. 
+2025-11-16 | 08:16:49, INFO, [Robot] Enviando G-Code crudo: "G1 X10.0 Y0.0 Z0.0 E0"
+2025-11-16 | 08:16:53, INFO, [Robot] Respuesta a G-Code crudo: INFO: LINEAR MOVE: [X:130.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 08:16:53, INFO, [Robot] Enviando G-Code crudo: "G1 X-5.0 Y10.0 Z0.0 E0"
+2025-11-16 | 08:16:57, INFO, [Robot] Respuesta a G-Code crudo: INFO: LINEAR MOVE: [X:125.00 Y:110.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 08:16:57, INFO, [Robot] Enviando G-Code crudo: "G1 X-5.0 Y-10.0 Z0.0 E0"
+2025-11-16 | 08:17:01, INFO, [Robot] Respuesta a G-Code crudo: INFO: LINEAR MOVE: [X:120.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 08:17:01, INFO, [Robot] Enviando G-Code crudo: "G1 X20.0 Y0.0 Z0.0 E0"
+2025-11-16 | 08:17:05, INFO, [Robot] Respuesta a G-Code crudo: INFO: LINEAR MOVE: [X:140.00 Y:100.00 Z:100.00 E:0.00]. OK. 
+2025-11-16 | 08:17:05, INFO, [Robot] Enviando G-Code crudo: "G90"
+2025-11-16 | 08:17:09, INFO, [Robot] Respuesta a G-Code crudo: INFO: ABSOLUTE MODE ON. OK. 
+2025-11-16 | 08:17:12, INFO, [RPC] RPC call from user 'profeAranda': robot.disableMotors, profeAranda, 127.0.0.1
+2025-11-16 | 08:17:16, INFO, [Robot] Respuesta de M18: INFO: MOTORS DISABLED. OK. 
+2025-11-16 | 08:17:16, INFO, [Robot] Motores desactivados.
+2025-11-16 | 08:17:20, INFO, [RPC] RPC call from user 'profeAranda': robot.getReport, profeAranda, 127.0.0.1
+2025-11-16 | 08:17:45, INFO, [RPC] RPC call from user 'enzo': robot.getStatus, enzo, 127.0.0.1
+2025-11-16 | 08:17:53, INFO, [RPC] RPC call from user 'enzo': robot.enableMotors, enzo, 127.0.0.1
+2025-11-16 | 08:17:57, INFO, [Robot] Respuesta de M17: INFO: MOTORS ENABLED. OK. 
+2025-11-16 | 08:17:57, INFO, [Robot] Motores activados.
+2025-11-16 | 08:18:03, INFO, [RPC] RPC call from user 'enzo': user.list, enzo, 127.0.0.1
+2025-11-16 | 08:18:14, INFO, [RPC] RPC call from user 'enzo': robot.getReport, enzo, 127.0.0.1
+2025-11-16 | 08:18:34, INFO, [RPC] RPC call from user 'enzo': robot.getAdminReport, enzo, 127.0.0.1
+2025-11-16 | 08:18:52, INFO, [RPC] RPC call from user 'enzo': robot.getAdminReport, enzo, 127.0.0.1
+2025-11-16 | 08:19:16, INFO, [RPC] RPC call from user 'enzo': robot.getLogReport, enzo, 127.0.0.1
+2025-11-16 | 08:19:37, INFO, [RPC] RPC call from user 'enzo': robot.getLogReport, enzo, 127.0.0.1
+2025-11-16 | 08:19:58, INFO, Successful logout attempt, enzo, 127.0.0.1
+2025-11-16 | 08:20:16, INFO, Successful logout attempt, profeAranda, 127.0.0.1
+2025-11-16 | 08:20:24, INFO, Logger finalizado.
+2025-11-16 | 08:48:08, INFO, Logger inicializado.
+2025-11-16 | 08:48:08, INFO, [DB] Base de datos abierta en /home/nenodios/Desktop/Codes_POO/TP_INTEGRADOR/GitHubProject/test/ProyectoPooFinal/Servidor/server_database.db
+2025-11-16 | 08:48:08, INFO, [DB] Tabla de usuarios lista.
+2025-11-16 | 08:48:08, INFO, [TaskManager] 4 tareas cargadas exitosamente desde ./tasks.json
+2025-11-16 | 08:48:08, INFO, [Server] Tareas cargadas exitosamente desde tasks.json.
+2025-11-16 | 08:48:08, INFO, [Main] Iniciando Servidor RPC. Use Ctrl+C para detener.
+2025-11-16 | 08:48:08, INFO, [RPC Server] Servidor XML-RPC iniciado en el puerto 8080. Esperando peticiones...
+2025-11-16 | 09:08:17, INFO, Logger finalizado.
+2025-11-16 | 17:31:42, INFO, Logger inicializado.
+2025-11-16 | 17:31:42, INFO, [DB] Base de datos abierta en /home/nenodios/Desktop/Codes_POO/TP_INTEGRADOR/GitHubProject/test/ProyectoPooFinal/Servidor/server_database.db
+2025-11-16 | 17:31:42, INFO, [DB] Tabla de usuarios lista.
+2025-11-16 | 17:31:42, INFO, [TaskManager] 4 tareas cargadas exitosamente desde ./tasks.json
+2025-11-16 | 17:31:42, INFO, [Server] Tareas cargadas exitosamente desde tasks.json.
+2025-11-16 | 17:31:42, INFO, [Main] Iniciando Servidor RPC. Use Ctrl+C para detener.
+2025-11-16 | 17:31:42, INFO, [RPC Server] Servidor XML-RPC iniciado en el puerto 8080. Esperando peticiones...
+2025-11-16 | 17:32:51, CRITICAL, Authentication Error: Token inválido o sesión expirada.
+2025-11-16 | 17:32:51, WARNING, Failed RPC call for user 'unknown_token': Authentication Error: Token inválido o sesión expirada., unknown_token, 127.0.0.1
+2025-11-16 | 17:33:06, CRITICAL, Authentication Error: Token inválido o sesión expirada.
+2025-11-16 | 17:33:06, WARNING, Failed RPC call for user 'unknown_token': Authentication Error: Token inválido o sesión expirada., unknown_token, 127.0.0.1
+2025-11-16 | 17:34:28, INFO, Successful login attempt, enzo, 127.0.0.1
+2025-11-16 | 17:34:41, INFO, Successful login attempt, principalAdmin, 127.0.0.1
+2025-11-16 | 17:43:03, INFO, Successful login attempt, enzo, 127.0.0.1
+2025-11-16 | 17:43:03, INFO, Successful logout attempt, enzo, 127.0.0.1
